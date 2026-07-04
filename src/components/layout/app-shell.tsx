@@ -219,11 +219,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         {/* Top bar */}
         <header className="sticky top-0 z-20 border-b border-border/60 bg-background/70 backdrop-blur-xl">
           <div className="flex h-16 items-center gap-3 px-4 sm:px-6">
-            <SheetTrigger asChild onClick={() => setMobileOpen(true)}>
-              <Button variant="ghost" size="icon" className="lg:hidden">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={() => setMobileOpen(true)}
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
 
             <div className="relative hidden max-w-md flex-1 md:block">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
