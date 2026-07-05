@@ -46,10 +46,21 @@ interface NavItem {
   badge?: string;
 }
 
-const NAV: { section: string; items: NavItem[] }[] = [
+interface NavSection {
+  section: string;
+  items: NavItem[];
+  superOnly?: boolean;
+}
+
+const NAV: NavSection[] = [
   {
     section: "Overview",
     items: [{ label: "Dashboard", to: "/dashboard", icon: LayoutDashboard }],
+  },
+  {
+    section: "Platform",
+    superOnly: true,
+    items: [{ label: "Schools", to: "/schools", icon: Building2 }],
   },
   {
     section: "People",
