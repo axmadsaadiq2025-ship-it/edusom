@@ -46,10 +46,21 @@ interface NavItem {
   badge?: string;
 }
 
-const NAV: { section: string; items: NavItem[] }[] = [
+interface NavSection {
+  section: string;
+  items: NavItem[];
+  superOnly?: boolean;
+}
+
+const NAV: NavSection[] = [
   {
     section: "Overview",
     items: [{ label: "Dashboard", to: "/dashboard", icon: LayoutDashboard }],
+  },
+  {
+    section: "Platform",
+    superOnly: true,
+    items: [{ label: "Schools", to: "/schools", icon: Building2 }],
   },
   {
     section: "People",
@@ -84,19 +95,25 @@ const NAV: { section: string; items: NavItem[] }[] = [
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { roles } = useAuth();
+  const isSuper = roles.includes("super_admin");
+  const sections = NAV.filter((s) => !s.superOnly || isSuper);
   return (
     <div className="flex h-full flex-col gap-6 overflow-y-auto p-4">
       <div className="px-2 pt-1">
         <BrandLogo size="sm" />
       </div>
       <nav className="flex flex-col gap-6">
-        {NAV.map((section) => (
+        {sections.map((section) => (
           <div key={section.section} className="flex flex-col gap-1">
             <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
               {section.section}
             </p>
             {section.items.map((item) => {
-              const active = pathname === item.to && item.label === "Dashboard";
+              const active =
+                item.to !== "/dashboard"
+                  ? pathname.startsWith(item.to)
+                  : pathname === item.to && item.label === "Dashboard";
               const Icon = item.icon;
               return (
                 <Link
