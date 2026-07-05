@@ -147,6 +147,21 @@ export type Database = {
         }
         Relationships: []
       }
+      super_admin_seeds: {
+        Row: {
+          created_at: string
+          email: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
