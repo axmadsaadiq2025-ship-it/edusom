@@ -14,6 +14,82 @@ export type Database = {
   }
   public: {
     Tables: {
+      academic_years: {
+        Row: {
+          created_at: string
+          end_date: string
+          id: string
+          is_current: boolean
+          name: string
+          school_id: string
+          start_date: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_date: string
+          id?: string
+          is_current?: boolean
+          name: string
+          school_id: string
+          start_date: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string
+          id?: string
+          is_current?: boolean
+          name?: string
+          school_id?: string
+          start_date?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "academic_years_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      classes: {
+        Row: {
+          created_at: string
+          id: string
+          level: number | null
+          name: string
+          school_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          level?: number | null
+          name: string
+          school_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          level?: number | null
+          name?: string
+          school_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "classes_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invitations: {
         Row: {
           accepted_at: string | null
@@ -147,6 +223,167 @@ export type Database = {
         }
         Relationships: []
       }
+      sections: {
+        Row: {
+          capacity: number | null
+          class_id: string
+          created_at: string
+          id: string
+          name: string
+          school_id: string
+          updated_at: string
+        }
+        Insert: {
+          capacity?: number | null
+          class_id: string
+          created_at?: string
+          id?: string
+          name: string
+          school_id: string
+          updated_at?: string
+        }
+        Update: {
+          capacity?: number | null
+          class_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          school_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sections_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sections_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      students: {
+        Row: {
+          academic_year_id: string | null
+          address: string | null
+          admission_date: string
+          admission_number: string
+          class_id: string | null
+          created_at: string
+          date_of_birth: string | null
+          email: string | null
+          first_name: string
+          gender: Database["public"]["Enums"]["gender_type"] | null
+          guardian_email: string | null
+          guardian_name: string | null
+          guardian_phone: string | null
+          guardian_relation: string | null
+          id: string
+          last_name: string
+          middle_name: string | null
+          nationality: string | null
+          notes: string | null
+          phone: string | null
+          photo_url: string | null
+          school_id: string
+          section_id: string | null
+          status: Database["public"]["Enums"]["student_status"]
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          academic_year_id?: string | null
+          address?: string | null
+          admission_date?: string
+          admission_number: string
+          class_id?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          email?: string | null
+          first_name: string
+          gender?: Database["public"]["Enums"]["gender_type"] | null
+          guardian_email?: string | null
+          guardian_name?: string | null
+          guardian_phone?: string | null
+          guardian_relation?: string | null
+          id?: string
+          last_name: string
+          middle_name?: string | null
+          nationality?: string | null
+          notes?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          school_id: string
+          section_id?: string | null
+          status?: Database["public"]["Enums"]["student_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          academic_year_id?: string | null
+          address?: string | null
+          admission_date?: string
+          admission_number?: string
+          class_id?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          email?: string | null
+          first_name?: string
+          gender?: Database["public"]["Enums"]["gender_type"] | null
+          guardian_email?: string | null
+          guardian_name?: string | null
+          guardian_phone?: string | null
+          guardian_relation?: string | null
+          id?: string
+          last_name?: string
+          middle_name?: string | null
+          nationality?: string | null
+          notes?: string | null
+          phone?: string | null
+          photo_url?: string | null
+          school_id?: string
+          section_id?: string | null
+          status?: Database["public"]["Enums"]["student_status"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "students_academic_year_id_fkey"
+            columns: ["academic_year_id"]
+            isOneToOne: false
+            referencedRelation: "academic_years"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "students_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "students_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "students_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       super_admin_seeds: {
         Row: {
           created_at: string
@@ -225,6 +462,13 @@ export type Database = {
         | "librarian"
         | "parent"
         | "student"
+      gender_type: "male" | "female" | "other"
+      student_status:
+        | "active"
+        | "inactive"
+        | "graduated"
+        | "transferred"
+        | "suspended"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -363,6 +607,14 @@ export const Constants = {
         "librarian",
         "parent",
         "student",
+      ],
+      gender_type: ["male", "female", "other"],
+      student_status: [
+        "active",
+        "inactive",
+        "graduated",
+        "transferred",
+        "suspended",
       ],
     },
   },
