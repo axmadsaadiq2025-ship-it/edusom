@@ -66,7 +66,7 @@ const NAV: NavSection[] = [
     section: "People",
     items: [
       { label: "Students", to: "/students", icon: GraduationCap },
-      { label: "Teachers", to: "/dashboard", icon: UserSquare2, badge: "Soon" },
+      { label: "Teachers", to: "/teachers", icon: UserSquare2 },
       { label: "Parents", to: "/dashboard", icon: Users, badge: "Soon" },
     ],
   },
@@ -75,13 +75,12 @@ const NAV: NavSection[] = [
     items: [
       { label: "Academic Years", to: "/academic-years", icon: CalendarClock },
       { label: "Classes", to: "/classes", icon: BookOpen },
+      { label: "Subjects", to: "/subjects", icon: Library },
     ],
   },
   {
     section: "Academics",
     items: [
-      { label: "Classes", to: "/dashboard", icon: Building2, badge: "Soon" },
-      { label: "Subjects", to: "/dashboard", icon: BookOpen, badge: "Soon" },
       { label: "Timetable", to: "/dashboard", icon: CalendarClock, badge: "Soon" },
       { label: "Attendance", to: "/dashboard", icon: ClipboardCheck, badge: "Soon" },
     ],
