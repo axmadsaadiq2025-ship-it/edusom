@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedTeachersIndexRouteImport } from './routes/_authenticated/teachers/index'
+import { Route as AuthenticatedSubjectsIndexRouteImport } from './routes/_authenticated/subjects/index'
 import { Route as AuthenticatedStudentsIndexRouteImport } from './routes/_authenticated/students/index'
 import { Route as AuthenticatedSchoolsIndexRouteImport } from './routes/_authenticated/schools/index'
 import { Route as AuthenticatedClassesIndexRouteImport } from './routes/_authenticated/classes/index'
@@ -45,6 +46,12 @@ const AuthenticatedTeachersIndexRoute =
   AuthenticatedTeachersIndexRouteImport.update({
     id: '/teachers/',
     path: '/teachers/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSubjectsIndexRoute =
+  AuthenticatedSubjectsIndexRouteImport.update({
+    id: '/subjects/',
+    path: '/subjects/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedStudentsIndexRoute =
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/classes/': typeof AuthenticatedClassesIndexRoute
   '/schools/': typeof AuthenticatedSchoolsIndexRoute
   '/students/': typeof AuthenticatedStudentsIndexRoute
+  '/subjects/': typeof AuthenticatedSubjectsIndexRoute
   '/teachers/': typeof AuthenticatedTeachersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -113,6 +121,7 @@ export interface FileRoutesByTo {
   '/classes': typeof AuthenticatedClassesIndexRoute
   '/schools': typeof AuthenticatedSchoolsIndexRoute
   '/students': typeof AuthenticatedStudentsIndexRoute
+  '/subjects': typeof AuthenticatedSubjectsIndexRoute
   '/teachers': typeof AuthenticatedTeachersIndexRoute
 }
 export interface FileRoutesById {
@@ -128,6 +137,7 @@ export interface FileRoutesById {
   '/_authenticated/classes/': typeof AuthenticatedClassesIndexRoute
   '/_authenticated/schools/': typeof AuthenticatedSchoolsIndexRoute
   '/_authenticated/students/': typeof AuthenticatedStudentsIndexRoute
+  '/_authenticated/subjects/': typeof AuthenticatedSubjectsIndexRoute
   '/_authenticated/teachers/': typeof AuthenticatedTeachersIndexRoute
 }
 export interface FileRouteTypes {
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
     | '/classes/'
     | '/schools/'
     | '/students/'
+    | '/subjects/'
     | '/teachers/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/classes'
     | '/schools'
     | '/students'
+    | '/subjects'
     | '/teachers'
   id:
     | '__root__'
@@ -170,6 +182,7 @@ export interface FileRouteTypes {
     | '/_authenticated/classes/'
     | '/_authenticated/schools/'
     | '/_authenticated/students/'
+    | '/_authenticated/subjects/'
     | '/_authenticated/teachers/'
   fileRoutesById: FileRoutesById
 }
@@ -214,6 +227,13 @@ declare module '@tanstack/react-router' {
       path: '/teachers'
       fullPath: '/teachers/'
       preLoaderRoute: typeof AuthenticatedTeachersIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/subjects/': {
+      id: '/_authenticated/subjects/'
+      path: '/subjects'
+      fullPath: '/subjects/'
+      preLoaderRoute: typeof AuthenticatedSubjectsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/students/': {
@@ -277,6 +297,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedClassesIndexRoute: typeof AuthenticatedClassesIndexRoute
   AuthenticatedSchoolsIndexRoute: typeof AuthenticatedSchoolsIndexRoute
   AuthenticatedStudentsIndexRoute: typeof AuthenticatedStudentsIndexRoute
+  AuthenticatedSubjectsIndexRoute: typeof AuthenticatedSubjectsIndexRoute
   AuthenticatedTeachersIndexRoute: typeof AuthenticatedTeachersIndexRoute
 }
 
@@ -289,6 +310,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedClassesIndexRoute: AuthenticatedClassesIndexRoute,
   AuthenticatedSchoolsIndexRoute: AuthenticatedSchoolsIndexRoute,
   AuthenticatedStudentsIndexRoute: AuthenticatedStudentsIndexRoute,
+  AuthenticatedSubjectsIndexRoute: AuthenticatedSubjectsIndexRoute,
   AuthenticatedTeachersIndexRoute: AuthenticatedTeachersIndexRoute,
 }
 
