@@ -18,6 +18,7 @@ import { Route as AuthenticatedStudentsIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedSchoolsIndexRouteImport } from './routes/_authenticated/schools/index'
 import { Route as AuthenticatedClassesIndexRouteImport } from './routes/_authenticated/classes/index'
 import { Route as AuthenticatedAcademicYearsIndexRouteImport } from './routes/_authenticated/academic-years/index'
+import { Route as AuthenticatedTeachersNewRouteImport } from './routes/_authenticated/teachers/new'
 import { Route as AuthenticatedStudentsNewRouteImport } from './routes/_authenticated/students/new'
 import { Route as AuthenticatedSchoolsNewRouteImport } from './routes/_authenticated/schools/new'
 
@@ -70,6 +71,12 @@ const AuthenticatedAcademicYearsIndexRoute =
     path: '/academic-years/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedTeachersNewRoute =
+  AuthenticatedTeachersNewRouteImport.update({
+    id: '/teachers/new',
+    path: '/teachers/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedStudentsNewRoute =
   AuthenticatedStudentsNewRouteImport.update({
     id: '/students/new',
@@ -88,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/students/new': typeof AuthenticatedStudentsNewRoute
+  '/teachers/new': typeof AuthenticatedTeachersNewRoute
   '/academic-years/': typeof AuthenticatedAcademicYearsIndexRoute
   '/classes/': typeof AuthenticatedClassesIndexRoute
   '/schools/': typeof AuthenticatedSchoolsIndexRoute
@@ -100,6 +108,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/students/new': typeof AuthenticatedStudentsNewRoute
+  '/teachers/new': typeof AuthenticatedTeachersNewRoute
   '/academic-years': typeof AuthenticatedAcademicYearsIndexRoute
   '/classes': typeof AuthenticatedClassesIndexRoute
   '/schools': typeof AuthenticatedSchoolsIndexRoute
@@ -114,6 +123,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/_authenticated/students/new': typeof AuthenticatedStudentsNewRoute
+  '/_authenticated/teachers/new': typeof AuthenticatedTeachersNewRoute
   '/_authenticated/academic-years/': typeof AuthenticatedAcademicYearsIndexRoute
   '/_authenticated/classes/': typeof AuthenticatedClassesIndexRoute
   '/_authenticated/schools/': typeof AuthenticatedSchoolsIndexRoute
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/schools/new'
     | '/students/new'
+    | '/teachers/new'
     | '/academic-years/'
     | '/classes/'
     | '/schools/'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/schools/new'
     | '/students/new'
+    | '/teachers/new'
     | '/academic-years'
     | '/classes'
     | '/schools'
@@ -153,6 +165,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/schools/new'
     | '/_authenticated/students/new'
+    | '/_authenticated/teachers/new'
     | '/_authenticated/academic-years/'
     | '/_authenticated/classes/'
     | '/_authenticated/schools/'
@@ -231,6 +244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAcademicYearsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/teachers/new': {
+      id: '/_authenticated/teachers/new'
+      path: '/teachers/new'
+      fullPath: '/teachers/new'
+      preLoaderRoute: typeof AuthenticatedTeachersNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/students/new': {
       id: '/_authenticated/students/new'
       path: '/students/new'
@@ -252,6 +272,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedSchoolsNewRoute: typeof AuthenticatedSchoolsNewRoute
   AuthenticatedStudentsNewRoute: typeof AuthenticatedStudentsNewRoute
+  AuthenticatedTeachersNewRoute: typeof AuthenticatedTeachersNewRoute
   AuthenticatedAcademicYearsIndexRoute: typeof AuthenticatedAcademicYearsIndexRoute
   AuthenticatedClassesIndexRoute: typeof AuthenticatedClassesIndexRoute
   AuthenticatedSchoolsIndexRoute: typeof AuthenticatedSchoolsIndexRoute
@@ -263,6 +284,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedSchoolsNewRoute: AuthenticatedSchoolsNewRoute,
   AuthenticatedStudentsNewRoute: AuthenticatedStudentsNewRoute,
+  AuthenticatedTeachersNewRoute: AuthenticatedTeachersNewRoute,
   AuthenticatedAcademicYearsIndexRoute: AuthenticatedAcademicYearsIndexRoute,
   AuthenticatedClassesIndexRoute: AuthenticatedClassesIndexRoute,
   AuthenticatedSchoolsIndexRoute: AuthenticatedSchoolsIndexRoute,
