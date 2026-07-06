@@ -384,6 +384,44 @@ export type Database = {
           },
         ]
       }
+      subjects: {
+        Row: {
+          code: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          school_id: string
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          school_id: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          school_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subjects_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       super_admin_seeds: {
         Row: {
           created_at: string
@@ -398,6 +436,129 @@ export type Database = {
           email?: string
         }
         Relationships: []
+      }
+      teacher_subjects: {
+        Row: {
+          created_at: string
+          id: string
+          school_id: string
+          subject_id: string
+          teacher_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          school_id: string
+          subject_id: string
+          teacher_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          school_id?: string
+          subject_id?: string
+          teacher_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teacher_subjects_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "teacher_subjects_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "teacher_subjects_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "teachers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      teachers: {
+        Row: {
+          address: string | null
+          avatar_url: string | null
+          created_at: string
+          date_of_birth: string | null
+          email: string | null
+          employee_code: string
+          full_name: string
+          gender: string | null
+          id: string
+          joining_date: string | null
+          notes: string | null
+          phone: string | null
+          qualification: string | null
+          salary: number | null
+          school_id: string
+          specialization: string | null
+          status: Database["public"]["Enums"]["employment_status"]
+          updated_at: string
+          user_id: string | null
+          years_of_experience: number | null
+        }
+        Insert: {
+          address?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          email?: string | null
+          employee_code: string
+          full_name: string
+          gender?: string | null
+          id?: string
+          joining_date?: string | null
+          notes?: string | null
+          phone?: string | null
+          qualification?: string | null
+          salary?: number | null
+          school_id: string
+          specialization?: string | null
+          status?: Database["public"]["Enums"]["employment_status"]
+          updated_at?: string
+          user_id?: string | null
+          years_of_experience?: number | null
+        }
+        Update: {
+          address?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          email?: string | null
+          employee_code?: string
+          full_name?: string
+          gender?: string | null
+          id?: string
+          joining_date?: string | null
+          notes?: string | null
+          phone?: string | null
+          qualification?: string | null
+          salary?: number | null
+          school_id?: string
+          specialization?: string | null
+          status?: Database["public"]["Enums"]["employment_status"]
+          updated_at?: string
+          user_id?: string | null
+          years_of_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teachers_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -448,6 +609,10 @@ export type Database = {
         Args: { _school_id: string; _user_id: string }
         Returns: boolean
       }
+      is_school_staff: {
+        Args: { _school_id: string; _user_id: string }
+        Returns: boolean
+      }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
@@ -462,6 +627,12 @@ export type Database = {
         | "librarian"
         | "parent"
         | "student"
+      employment_status:
+        | "active"
+        | "on_leave"
+        | "suspended"
+        | "terminated"
+        | "resigned"
       gender_type: "male" | "female" | "other"
       student_status:
         | "active"
@@ -607,6 +778,13 @@ export const Constants = {
         "librarian",
         "parent",
         "student",
+      ],
+      employment_status: [
+        "active",
+        "on_leave",
+        "suspended",
+        "terminated",
+        "resigned",
       ],
       gender_type: ["male", "female", "other"],
       student_status: [
