@@ -90,7 +90,7 @@ function NewStudentPage() {
         first_name: form.first_name.trim(),
         last_name: form.last_name.trim(),
         middle_name: form.middle_name.trim() || null,
-        gender: form.gender || null,
+        gender: (form.gender || null) as "male" | "female" | "other" | null,
         date_of_birth: form.date_of_birth || null,
         email: form.email.trim() || null,
         phone: form.phone.trim() || null,
