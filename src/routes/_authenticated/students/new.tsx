@@ -84,7 +84,7 @@ function NewStudentPage() {
   const create = useMutation({
     mutationFn: async () => {
       if (!profile?.school_id) throw new Error("No school assigned to your account");
-      const payload: Record<string, unknown> = {
+      const payload = {
         school_id: profile.school_id,
         admission_number: form.admission_number.trim(),
         first_name: form.first_name.trim(),
