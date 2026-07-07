@@ -67,7 +67,7 @@ const NAV: NavSection[] = [
     items: [
       { label: "Students", to: "/students", icon: GraduationCap },
       { label: "Teachers", to: "/teachers", icon: UserSquare2 },
-      { label: "Parents", to: "/dashboard", icon: Users, badge: "Soon" },
+      { label: "Parents", to: "/parents", icon: Users },
     ],
   },
   {
