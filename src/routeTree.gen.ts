@@ -23,6 +23,7 @@ import { Route as AuthenticatedAcademicYearsIndexRouteImport } from './routes/_a
 import { Route as AuthenticatedTeachersNewRouteImport } from './routes/_authenticated/teachers/new'
 import { Route as AuthenticatedStudentsNewRouteImport } from './routes/_authenticated/students/new'
 import { Route as AuthenticatedSchoolsNewRouteImport } from './routes/_authenticated/schools/new'
+import { Route as AuthenticatedParentsNewRouteImport } from './routes/_authenticated/parents/new'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -102,11 +103,17 @@ const AuthenticatedSchoolsNewRoute = AuthenticatedSchoolsNewRouteImport.update({
   path: '/schools/new',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedParentsNewRoute = AuthenticatedParentsNewRouteImport.update({
+  id: '/parents/new',
+  path: '/parents/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/parents/new': typeof AuthenticatedParentsNewRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/students/new': typeof AuthenticatedStudentsNewRoute
   '/teachers/new': typeof AuthenticatedTeachersNewRoute
@@ -122,6 +129,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/parents/new': typeof AuthenticatedParentsNewRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/students/new': typeof AuthenticatedStudentsNewRoute
   '/teachers/new': typeof AuthenticatedTeachersNewRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/parents/new': typeof AuthenticatedParentsNewRoute
   '/_authenticated/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/_authenticated/students/new': typeof AuthenticatedStudentsNewRoute
   '/_authenticated/teachers/new': typeof AuthenticatedTeachersNewRoute
@@ -156,6 +165,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/parents/new'
     | '/schools/new'
     | '/students/new'
     | '/teachers/new'
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/parents/new'
     | '/schools/new'
     | '/students/new'
     | '/teachers/new'
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/dashboard'
+    | '/_authenticated/parents/new'
     | '/_authenticated/schools/new'
     | '/_authenticated/students/new'
     | '/_authenticated/teachers/new'
@@ -305,11 +317,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSchoolsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/parents/new': {
+      id: '/_authenticated/parents/new'
+      path: '/parents/new'
+      fullPath: '/parents/new'
+      preLoaderRoute: typeof AuthenticatedParentsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedParentsNewRoute: typeof AuthenticatedParentsNewRoute
   AuthenticatedSchoolsNewRoute: typeof AuthenticatedSchoolsNewRoute
   AuthenticatedStudentsNewRoute: typeof AuthenticatedStudentsNewRoute
   AuthenticatedTeachersNewRoute: typeof AuthenticatedTeachersNewRoute
@@ -324,6 +344,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedParentsNewRoute: AuthenticatedParentsNewRoute,
   AuthenticatedSchoolsNewRoute: AuthenticatedSchoolsNewRoute,
   AuthenticatedStudentsNewRoute: AuthenticatedStudentsNewRoute,
   AuthenticatedTeachersNewRoute: AuthenticatedTeachersNewRoute,

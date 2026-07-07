@@ -29,7 +29,7 @@ interface StudentLite {
   admission_number: string;
 }
 
-interface Link {
+interface ChildLink {
   student_id: string;
   relationship: string;
   is_primary: boolean;
