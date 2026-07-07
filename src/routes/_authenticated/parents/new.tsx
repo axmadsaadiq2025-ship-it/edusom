@@ -52,7 +52,7 @@ function NewParentPage() {
     notes: "",
   });
 
-  const [links, setLinks] = useState<Link[]>([]);
+  const [links, setLinks] = useState<ChildLink[]>([]);
   const [studentPick, setStudentPick] = useState("");
   const [relationship, setRelationship] = useState("father");
 
