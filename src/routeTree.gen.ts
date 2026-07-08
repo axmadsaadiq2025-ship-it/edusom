@@ -13,6 +13,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedTimetableIndexRouteImport } from './routes/_authenticated/timetable/index'
 import { Route as AuthenticatedTeachersIndexRouteImport } from './routes/_authenticated/teachers/index'
 import { Route as AuthenticatedSubjectsIndexRouteImport } from './routes/_authenticated/subjects/index'
 import { Route as AuthenticatedStudentsIndexRouteImport } from './routes/_authenticated/students/index'
@@ -51,6 +52,12 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTimetableIndexRoute =
+  AuthenticatedTimetableIndexRouteImport.update({
+    id: '/timetable/',
+    path: '/timetable/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedTeachersIndexRoute =
   AuthenticatedTeachersIndexRouteImport.update({
     id: '/teachers/',
@@ -177,6 +184,7 @@ export interface FileRoutesByFullPath {
   '/students/': typeof AuthenticatedStudentsIndexRoute
   '/subjects/': typeof AuthenticatedSubjectsIndexRoute
   '/teachers/': typeof AuthenticatedTeachersIndexRoute
+  '/timetable/': typeof AuthenticatedTimetableIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -200,6 +208,7 @@ export interface FileRoutesByTo {
   '/students': typeof AuthenticatedStudentsIndexRoute
   '/subjects': typeof AuthenticatedSubjectsIndexRoute
   '/teachers': typeof AuthenticatedTeachersIndexRoute
+  '/timetable': typeof AuthenticatedTimetableIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -225,6 +234,7 @@ export interface FileRoutesById {
   '/_authenticated/students/': typeof AuthenticatedStudentsIndexRoute
   '/_authenticated/subjects/': typeof AuthenticatedSubjectsIndexRoute
   '/_authenticated/teachers/': typeof AuthenticatedTeachersIndexRoute
+  '/_authenticated/timetable/': typeof AuthenticatedTimetableIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -250,6 +260,7 @@ export interface FileRouteTypes {
     | '/students/'
     | '/subjects/'
     | '/teachers/'
+    | '/timetable/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -273,6 +284,7 @@ export interface FileRouteTypes {
     | '/students'
     | '/subjects'
     | '/teachers'
+    | '/timetable'
   id:
     | '__root__'
     | '/'
@@ -297,6 +309,7 @@ export interface FileRouteTypes {
     | '/_authenticated/students/'
     | '/_authenticated/subjects/'
     | '/_authenticated/teachers/'
+    | '/_authenticated/timetable/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -333,6 +346,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/timetable/': {
+      id: '/_authenticated/timetable/'
+      path: '/timetable'
+      fullPath: '/timetable/'
+      preLoaderRoute: typeof AuthenticatedTimetableIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/teachers/': {
@@ -484,6 +504,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedStudentsIndexRoute: typeof AuthenticatedStudentsIndexRoute
   AuthenticatedSubjectsIndexRoute: typeof AuthenticatedSubjectsIndexRoute
   AuthenticatedTeachersIndexRoute: typeof AuthenticatedTeachersIndexRoute
+  AuthenticatedTimetableIndexRoute: typeof AuthenticatedTimetableIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -506,6 +527,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedStudentsIndexRoute: AuthenticatedStudentsIndexRoute,
   AuthenticatedSubjectsIndexRoute: AuthenticatedSubjectsIndexRoute,
   AuthenticatedTeachersIndexRoute: AuthenticatedTeachersIndexRoute,
+  AuthenticatedTimetableIndexRoute: AuthenticatedTimetableIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

@@ -82,7 +82,7 @@ const NAV: NavSection[] = [
     section: "Academics",
     items: [
       { label: "Attendance", to: "/attendance", icon: ClipboardCheck },
-      { label: "Timetable", to: "/dashboard", icon: CalendarClock, badge: "Soon" },
+      { label: "Timetable", to: "/timetable", icon: CalendarClock },
     ],
   },
   {
