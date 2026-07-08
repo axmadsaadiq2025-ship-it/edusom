@@ -127,7 +127,7 @@ function TimetablePage() {
     enabled: !!schoolId,
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("teachers").select("id,first_name,last_name").eq("school_id", schoolId)
+        .from("teachers").select("id,full_name").eq("school_id", schoolId)
         .eq("status", "active").order("first_name");
       if (error) throw error;
       return data;
@@ -429,7 +429,7 @@ function TimetablePage() {
               <Select value={cellForm.teacher_id} onValueChange={(v) => setCellForm({ ...cellForm, teacher_id: v })}>
                 <SelectTrigger><SelectValue placeholder="Select teacher" /></SelectTrigger>
                 <SelectContent>
-                  {(teachersQ.data ?? []).map((t) => <SelectItem key={t.id} value={t.id}>{t.first_name} {t.last_name}</SelectItem>)}
+                  {(teachersQ.data ?? []).map((t) => <SelectItem key={t.id} value={t.id}>{t.full_name}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
