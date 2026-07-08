@@ -89,8 +89,8 @@ const NAV: NavSection[] = [
     section: "Operations",
     items: [
       { label: "Fees", to: "/fees", icon: Wallet },
+      { label: "Reports", to: "/reports", icon: FileBarChart },
       { label: "Library", to: "/dashboard", icon: Library, badge: "Soon" },
-      { label: "Reports", to: "/dashboard", icon: FileBarChart, badge: "Soon" },
     ],
   },
   {
