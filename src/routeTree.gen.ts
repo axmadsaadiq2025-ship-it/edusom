@@ -25,6 +25,7 @@ import { Route as AuthenticatedTeachersNewRouteImport } from './routes/_authenti
 import { Route as AuthenticatedStudentsNewRouteImport } from './routes/_authenticated/students/new'
 import { Route as AuthenticatedSchoolsNewRouteImport } from './routes/_authenticated/schools/new'
 import { Route as AuthenticatedParentsNewRouteImport } from './routes/_authenticated/parents/new'
+import { Route as AuthenticatedAttendanceNewRouteImport } from './routes/_authenticated/attendance/new'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -115,11 +116,18 @@ const AuthenticatedParentsNewRoute = AuthenticatedParentsNewRouteImport.update({
   path: '/parents/new',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAttendanceNewRoute =
+  AuthenticatedAttendanceNewRouteImport.update({
+    id: '/attendance/new',
+    path: '/attendance/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/attendance/new': typeof AuthenticatedAttendanceNewRoute
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/students/new': typeof AuthenticatedStudentsNewRoute
@@ -137,6 +145,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/attendance/new': typeof AuthenticatedAttendanceNewRoute
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/students/new': typeof AuthenticatedStudentsNewRoute
@@ -156,6 +165,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/attendance/new': typeof AuthenticatedAttendanceNewRoute
   '/_authenticated/parents/new': typeof AuthenticatedParentsNewRoute
   '/_authenticated/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/_authenticated/students/new': typeof AuthenticatedStudentsNewRoute
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/attendance/new'
     | '/parents/new'
     | '/schools/new'
     | '/students/new'
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/attendance/new'
     | '/parents/new'
     | '/schools/new'
     | '/students/new'
@@ -210,6 +222,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/dashboard'
+    | '/_authenticated/attendance/new'
     | '/_authenticated/parents/new'
     | '/_authenticated/schools/new'
     | '/_authenticated/students/new'
@@ -344,11 +357,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedParentsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/attendance/new': {
+      id: '/_authenticated/attendance/new'
+      path: '/attendance/new'
+      fullPath: '/attendance/new'
+      preLoaderRoute: typeof AuthenticatedAttendanceNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedAttendanceNewRoute: typeof AuthenticatedAttendanceNewRoute
   AuthenticatedParentsNewRoute: typeof AuthenticatedParentsNewRoute
   AuthenticatedSchoolsNewRoute: typeof AuthenticatedSchoolsNewRoute
   AuthenticatedStudentsNewRoute: typeof AuthenticatedStudentsNewRoute
@@ -365,6 +386,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedAttendanceNewRoute: AuthenticatedAttendanceNewRoute,
   AuthenticatedParentsNewRoute: AuthenticatedParentsNewRoute,
   AuthenticatedSchoolsNewRoute: AuthenticatedSchoolsNewRoute,
   AuthenticatedStudentsNewRoute: AuthenticatedStudentsNewRoute,
