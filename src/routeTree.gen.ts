@@ -28,6 +28,7 @@ import { Route as AuthenticatedSchoolsNewRouteImport } from './routes/_authentic
 import { Route as AuthenticatedParentsNewRouteImport } from './routes/_authenticated/parents/new'
 import { Route as AuthenticatedFeesNewRouteImport } from './routes/_authenticated/fees/new'
 import { Route as AuthenticatedFeesCategoriesRouteImport } from './routes/_authenticated/fees/categories'
+import { Route as AuthenticatedFeesIdRouteImport } from './routes/_authenticated/fees/$id'
 import { Route as AuthenticatedAttendanceNewRouteImport } from './routes/_authenticated/attendance/new'
 
 const AuthRoute = AuthRouteImport.update({
@@ -135,6 +136,11 @@ const AuthenticatedFeesCategoriesRoute =
     path: '/fees/categories',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedFeesIdRoute = AuthenticatedFeesIdRouteImport.update({
+  id: '/fees/$id',
+  path: '/fees/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAttendanceNewRoute =
   AuthenticatedAttendanceNewRouteImport.update({
     id: '/attendance/new',
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/attendance/new': typeof AuthenticatedAttendanceNewRoute
+  '/fees/$id': typeof AuthenticatedFeesIdRoute
   '/fees/categories': typeof AuthenticatedFeesCategoriesRoute
   '/fees/new': typeof AuthenticatedFeesNewRoute
   '/parents/new': typeof AuthenticatedParentsNewRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/attendance/new': typeof AuthenticatedAttendanceNewRoute
+  '/fees/$id': typeof AuthenticatedFeesIdRoute
   '/fees/categories': typeof AuthenticatedFeesCategoriesRoute
   '/fees/new': typeof AuthenticatedFeesNewRoute
   '/parents/new': typeof AuthenticatedParentsNewRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/attendance/new': typeof AuthenticatedAttendanceNewRoute
+  '/_authenticated/fees/$id': typeof AuthenticatedFeesIdRoute
   '/_authenticated/fees/categories': typeof AuthenticatedFeesCategoriesRoute
   '/_authenticated/fees/new': typeof AuthenticatedFeesNewRoute
   '/_authenticated/parents/new': typeof AuthenticatedParentsNewRoute
@@ -214,6 +223,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/attendance/new'
+    | '/fees/$id'
     | '/fees/categories'
     | '/fees/new'
     | '/parents/new'
@@ -235,6 +245,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/attendance/new'
+    | '/fees/$id'
     | '/fees/categories'
     | '/fees/new'
     | '/parents/new'
@@ -257,6 +268,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/dashboard'
     | '/_authenticated/attendance/new'
+    | '/_authenticated/fees/$id'
     | '/_authenticated/fees/categories'
     | '/_authenticated/fees/new'
     | '/_authenticated/parents/new'
@@ -415,6 +427,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFeesCategoriesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/fees/$id': {
+      id: '/_authenticated/fees/$id'
+      path: '/fees/$id'
+      fullPath: '/fees/$id'
+      preLoaderRoute: typeof AuthenticatedFeesIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/attendance/new': {
       id: '/_authenticated/attendance/new'
       path: '/attendance/new'
@@ -428,6 +447,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedAttendanceNewRoute: typeof AuthenticatedAttendanceNewRoute
+  AuthenticatedFeesIdRoute: typeof AuthenticatedFeesIdRoute
   AuthenticatedFeesCategoriesRoute: typeof AuthenticatedFeesCategoriesRoute
   AuthenticatedFeesNewRoute: typeof AuthenticatedFeesNewRoute
   AuthenticatedParentsNewRoute: typeof AuthenticatedParentsNewRoute
@@ -448,6 +468,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedAttendanceNewRoute: AuthenticatedAttendanceNewRoute,
+  AuthenticatedFeesIdRoute: AuthenticatedFeesIdRoute,
   AuthenticatedFeesCategoriesRoute: AuthenticatedFeesCategoriesRoute,
   AuthenticatedFeesNewRoute: AuthenticatedFeesNewRoute,
   AuthenticatedParentsNewRoute: AuthenticatedParentsNewRoute,
