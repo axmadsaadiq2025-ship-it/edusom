@@ -128,7 +128,7 @@ function TimetablePage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("teachers").select("id,full_name").eq("school_id", schoolId)
-        .eq("status", "active").order("first_name");
+        .eq("status", "active").order("full_name");
       if (error) throw error;
       return data;
     },
@@ -390,7 +390,7 @@ function TimetablePage() {
                           {e ? (
                             <>
                               <div className="font-semibold text-foreground">{subj?.name ?? "—"}</div>
-                              {tch && <div className="text-muted-foreground">{tch.first_name} {tch.last_name}</div>}
+                              {tch && <div className="text-muted-foreground">{tch.full_name}</div>}
                               {e.room && <Badge variant="secondary" className="mt-1 text-[9px]">Rm {e.room}</Badge>}
                             </>
                           ) : (
