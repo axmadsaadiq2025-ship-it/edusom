@@ -19,6 +19,7 @@ import { Route as AuthenticatedStudentsIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedSchoolsIndexRouteImport } from './routes/_authenticated/schools/index'
 import { Route as AuthenticatedParentsIndexRouteImport } from './routes/_authenticated/parents/index'
 import { Route as AuthenticatedClassesIndexRouteImport } from './routes/_authenticated/classes/index'
+import { Route as AuthenticatedAttendanceIndexRouteImport } from './routes/_authenticated/attendance/index'
 import { Route as AuthenticatedAcademicYearsIndexRouteImport } from './routes/_authenticated/academic-years/index'
 import { Route as AuthenticatedTeachersNewRouteImport } from './routes/_authenticated/teachers/new'
 import { Route as AuthenticatedStudentsNewRouteImport } from './routes/_authenticated/students/new'
@@ -80,6 +81,12 @@ const AuthenticatedClassesIndexRoute =
     path: '/classes/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAttendanceIndexRoute =
+  AuthenticatedAttendanceIndexRouteImport.update({
+    id: '/attendance/',
+    path: '/attendance/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAcademicYearsIndexRoute =
   AuthenticatedAcademicYearsIndexRouteImport.update({
     id: '/academic-years/',
@@ -118,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/students/new': typeof AuthenticatedStudentsNewRoute
   '/teachers/new': typeof AuthenticatedTeachersNewRoute
   '/academic-years/': typeof AuthenticatedAcademicYearsIndexRoute
+  '/attendance/': typeof AuthenticatedAttendanceIndexRoute
   '/classes/': typeof AuthenticatedClassesIndexRoute
   '/parents/': typeof AuthenticatedParentsIndexRoute
   '/schools/': typeof AuthenticatedSchoolsIndexRoute
@@ -134,6 +142,7 @@ export interface FileRoutesByTo {
   '/students/new': typeof AuthenticatedStudentsNewRoute
   '/teachers/new': typeof AuthenticatedTeachersNewRoute
   '/academic-years': typeof AuthenticatedAcademicYearsIndexRoute
+  '/attendance': typeof AuthenticatedAttendanceIndexRoute
   '/classes': typeof AuthenticatedClassesIndexRoute
   '/parents': typeof AuthenticatedParentsIndexRoute
   '/schools': typeof AuthenticatedSchoolsIndexRoute
@@ -152,6 +161,7 @@ export interface FileRoutesById {
   '/_authenticated/students/new': typeof AuthenticatedStudentsNewRoute
   '/_authenticated/teachers/new': typeof AuthenticatedTeachersNewRoute
   '/_authenticated/academic-years/': typeof AuthenticatedAcademicYearsIndexRoute
+  '/_authenticated/attendance/': typeof AuthenticatedAttendanceIndexRoute
   '/_authenticated/classes/': typeof AuthenticatedClassesIndexRoute
   '/_authenticated/parents/': typeof AuthenticatedParentsIndexRoute
   '/_authenticated/schools/': typeof AuthenticatedSchoolsIndexRoute
@@ -170,6 +180,7 @@ export interface FileRouteTypes {
     | '/students/new'
     | '/teachers/new'
     | '/academic-years/'
+    | '/attendance/'
     | '/classes/'
     | '/parents/'
     | '/schools/'
@@ -186,6 +197,7 @@ export interface FileRouteTypes {
     | '/students/new'
     | '/teachers/new'
     | '/academic-years'
+    | '/attendance'
     | '/classes'
     | '/parents'
     | '/schools'
@@ -203,6 +215,7 @@ export interface FileRouteTypes {
     | '/_authenticated/students/new'
     | '/_authenticated/teachers/new'
     | '/_authenticated/academic-years/'
+    | '/_authenticated/attendance/'
     | '/_authenticated/classes/'
     | '/_authenticated/parents/'
     | '/_authenticated/schools/'
@@ -289,6 +302,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedClassesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/attendance/': {
+      id: '/_authenticated/attendance/'
+      path: '/attendance'
+      fullPath: '/attendance/'
+      preLoaderRoute: typeof AuthenticatedAttendanceIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/academic-years/': {
       id: '/_authenticated/academic-years/'
       path: '/academic-years'
@@ -334,6 +354,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedStudentsNewRoute: typeof AuthenticatedStudentsNewRoute
   AuthenticatedTeachersNewRoute: typeof AuthenticatedTeachersNewRoute
   AuthenticatedAcademicYearsIndexRoute: typeof AuthenticatedAcademicYearsIndexRoute
+  AuthenticatedAttendanceIndexRoute: typeof AuthenticatedAttendanceIndexRoute
   AuthenticatedClassesIndexRoute: typeof AuthenticatedClassesIndexRoute
   AuthenticatedParentsIndexRoute: typeof AuthenticatedParentsIndexRoute
   AuthenticatedSchoolsIndexRoute: typeof AuthenticatedSchoolsIndexRoute
@@ -349,6 +370,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedStudentsNewRoute: AuthenticatedStudentsNewRoute,
   AuthenticatedTeachersNewRoute: AuthenticatedTeachersNewRoute,
   AuthenticatedAcademicYearsIndexRoute: AuthenticatedAcademicYearsIndexRoute,
+  AuthenticatedAttendanceIndexRoute: AuthenticatedAttendanceIndexRoute,
   AuthenticatedClassesIndexRoute: AuthenticatedClassesIndexRoute,
   AuthenticatedParentsIndexRoute: AuthenticatedParentsIndexRoute,
   AuthenticatedSchoolsIndexRoute: AuthenticatedSchoolsIndexRoute,
