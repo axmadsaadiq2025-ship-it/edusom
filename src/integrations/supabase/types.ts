@@ -55,6 +55,119 @@ export type Database = {
           },
         ]
       }
+      attendance_records: {
+        Row: {
+          created_at: string
+          id: string
+          remarks: string | null
+          session_id: string
+          status: Database["public"]["Enums"]["attendance_status"]
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          remarks?: string | null
+          session_id: string
+          status?: Database["public"]["Enums"]["attendance_status"]
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          remarks?: string | null
+          session_id?: string
+          status?: Database["public"]["Enums"]["attendance_status"]
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_records_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "attendance_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attendance_records_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      attendance_sessions: {
+        Row: {
+          academic_year_id: string
+          class_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          school_id: string
+          section_id: string
+          session_date: string
+          taken_by: string | null
+          updated_at: string
+        }
+        Insert: {
+          academic_year_id: string
+          class_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          school_id: string
+          section_id: string
+          session_date: string
+          taken_by?: string | null
+          updated_at?: string
+        }
+        Update: {
+          academic_year_id?: string
+          class_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          school_id?: string
+          section_id?: string
+          session_date?: string
+          taken_by?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendance_sessions_academic_year_id_fkey"
+            columns: ["academic_year_id"]
+            isOneToOne: false
+            referencedRelation: "academic_years"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attendance_sessions_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attendance_sessions_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "attendance_sessions_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       classes: {
         Row: {
           created_at: string
@@ -731,6 +844,7 @@ export type Database = {
         | "librarian"
         | "parent"
         | "student"
+      attendance_status: "present" | "absent" | "late" | "excused"
       employment_status:
         | "active"
         | "on_leave"
@@ -883,6 +997,7 @@ export const Constants = {
         "parent",
         "student",
       ],
+      attendance_status: ["present", "absent", "late", "excused"],
       employment_status: [
         "active",
         "on_leave",
