@@ -83,6 +83,7 @@ const NAV: NavSection[] = [
     items: [
       { label: "Attendance", to: "/attendance", icon: ClipboardCheck },
       { label: "Timetable", to: "/timetable", icon: CalendarClock },
+      { label: "Exams", to: "/exams", icon: GraduationCap },
     ],
   },
   {
