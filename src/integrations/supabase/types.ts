@@ -646,6 +646,144 @@ export type Database = {
           },
         ]
       }
+      library_books: {
+        Row: {
+          author: string | null
+          available_copies: number
+          category: string | null
+          cover_url: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          isbn: string | null
+          language: string | null
+          notes: string | null
+          publication_year: number | null
+          publisher: string | null
+          school_id: string
+          shelf_location: string | null
+          title: string
+          total_copies: number
+          updated_at: string
+        }
+        Insert: {
+          author?: string | null
+          available_copies?: number
+          category?: string | null
+          cover_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          isbn?: string | null
+          language?: string | null
+          notes?: string | null
+          publication_year?: number | null
+          publisher?: string | null
+          school_id: string
+          shelf_location?: string | null
+          title: string
+          total_copies?: number
+          updated_at?: string
+        }
+        Update: {
+          author?: string | null
+          available_copies?: number
+          category?: string | null
+          cover_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          isbn?: string | null
+          language?: string | null
+          notes?: string | null
+          publication_year?: number | null
+          publisher?: string | null
+          school_id?: string
+          shelf_location?: string | null
+          title?: string
+          total_copies?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "library_books_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      library_loans: {
+        Row: {
+          book_id: string
+          created_at: string
+          due_date: string
+          fine_amount: number | null
+          id: string
+          issued_at: string
+          issued_by: string | null
+          notes: string | null
+          returned_at: string | null
+          school_id: string
+          status: Database["public"]["Enums"]["loan_status"]
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          book_id: string
+          created_at?: string
+          due_date: string
+          fine_amount?: number | null
+          id?: string
+          issued_at?: string
+          issued_by?: string | null
+          notes?: string | null
+          returned_at?: string | null
+          school_id: string
+          status?: Database["public"]["Enums"]["loan_status"]
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          book_id?: string
+          created_at?: string
+          due_date?: string
+          fine_amount?: number | null
+          id?: string
+          issued_at?: string
+          issued_by?: string | null
+          notes?: string | null
+          returned_at?: string | null
+          school_id?: string
+          status?: Database["public"]["Enums"]["loan_status"]
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "library_loans_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "library_books"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "library_loans_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "library_loans_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       parents: {
         Row: {
           address: string | null
@@ -1394,6 +1532,7 @@ export type Database = {
         | "resigned"
       gender_type: "male" | "female" | "other"
       invoice_status: "pending" | "partial" | "paid" | "overdue" | "cancelled"
+      loan_status: "issued" | "returned" | "overdue" | "lost"
       payment_method:
         | "cash"
         | "bank_transfer"
@@ -1556,6 +1695,7 @@ export const Constants = {
       ],
       gender_type: ["male", "female", "other"],
       invoice_status: ["pending", "partial", "paid", "overdue", "cancelled"],
+      loan_status: ["issued", "returned", "overdue", "lost"],
       payment_method: [
         "cash",
         "bank_transfer",

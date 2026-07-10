@@ -20,6 +20,7 @@ import { Route as AuthenticatedStudentsIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedSchoolsIndexRouteImport } from './routes/_authenticated/schools/index'
 import { Route as AuthenticatedReportsIndexRouteImport } from './routes/_authenticated/reports/index'
 import { Route as AuthenticatedParentsIndexRouteImport } from './routes/_authenticated/parents/index'
+import { Route as AuthenticatedLibraryIndexRouteImport } from './routes/_authenticated/library/index'
 import { Route as AuthenticatedFeesIndexRouteImport } from './routes/_authenticated/fees/index'
 import { Route as AuthenticatedExamsIndexRouteImport } from './routes/_authenticated/exams/index'
 import { Route as AuthenticatedClassesIndexRouteImport } from './routes/_authenticated/classes/index'
@@ -29,6 +30,7 @@ import { Route as AuthenticatedTeachersNewRouteImport } from './routes/_authenti
 import { Route as AuthenticatedStudentsNewRouteImport } from './routes/_authenticated/students/new'
 import { Route as AuthenticatedSchoolsNewRouteImport } from './routes/_authenticated/schools/new'
 import { Route as AuthenticatedParentsNewRouteImport } from './routes/_authenticated/parents/new'
+import { Route as AuthenticatedLibraryLoansRouteImport } from './routes/_authenticated/library/loans'
 import { Route as AuthenticatedFeesNewRouteImport } from './routes/_authenticated/fees/new'
 import { Route as AuthenticatedFeesCategoriesRouteImport } from './routes/_authenticated/fees/categories'
 import { Route as AuthenticatedFeesIdRouteImport } from './routes/_authenticated/fees/$id'
@@ -96,6 +98,12 @@ const AuthenticatedParentsIndexRoute =
     path: '/parents/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedLibraryIndexRoute =
+  AuthenticatedLibraryIndexRouteImport.update({
+    id: '/library/',
+    path: '/library/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedFeesIndexRoute = AuthenticatedFeesIndexRouteImport.update({
   id: '/fees/',
   path: '/fees/',
@@ -146,6 +154,12 @@ const AuthenticatedParentsNewRoute = AuthenticatedParentsNewRouteImport.update({
   path: '/parents/new',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedLibraryLoansRoute =
+  AuthenticatedLibraryLoansRouteImport.update({
+    id: '/library/loans',
+    path: '/library/loans',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedFeesNewRoute = AuthenticatedFeesNewRouteImport.update({
   id: '/fees/new',
   path: '/fees/new',
@@ -183,6 +197,7 @@ export interface FileRoutesByFullPath {
   '/fees/$id': typeof AuthenticatedFeesIdRoute
   '/fees/categories': typeof AuthenticatedFeesCategoriesRoute
   '/fees/new': typeof AuthenticatedFeesNewRoute
+  '/library/loans': typeof AuthenticatedLibraryLoansRoute
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/students/new': typeof AuthenticatedStudentsNewRoute
@@ -192,6 +207,7 @@ export interface FileRoutesByFullPath {
   '/classes/': typeof AuthenticatedClassesIndexRoute
   '/exams/': typeof AuthenticatedExamsIndexRoute
   '/fees/': typeof AuthenticatedFeesIndexRoute
+  '/library/': typeof AuthenticatedLibraryIndexRoute
   '/parents/': typeof AuthenticatedParentsIndexRoute
   '/reports/': typeof AuthenticatedReportsIndexRoute
   '/schools/': typeof AuthenticatedSchoolsIndexRoute
@@ -209,6 +225,7 @@ export interface FileRoutesByTo {
   '/fees/$id': typeof AuthenticatedFeesIdRoute
   '/fees/categories': typeof AuthenticatedFeesCategoriesRoute
   '/fees/new': typeof AuthenticatedFeesNewRoute
+  '/library/loans': typeof AuthenticatedLibraryLoansRoute
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/students/new': typeof AuthenticatedStudentsNewRoute
@@ -218,6 +235,7 @@ export interface FileRoutesByTo {
   '/classes': typeof AuthenticatedClassesIndexRoute
   '/exams': typeof AuthenticatedExamsIndexRoute
   '/fees': typeof AuthenticatedFeesIndexRoute
+  '/library': typeof AuthenticatedLibraryIndexRoute
   '/parents': typeof AuthenticatedParentsIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/schools': typeof AuthenticatedSchoolsIndexRoute
@@ -237,6 +255,7 @@ export interface FileRoutesById {
   '/_authenticated/fees/$id': typeof AuthenticatedFeesIdRoute
   '/_authenticated/fees/categories': typeof AuthenticatedFeesCategoriesRoute
   '/_authenticated/fees/new': typeof AuthenticatedFeesNewRoute
+  '/_authenticated/library/loans': typeof AuthenticatedLibraryLoansRoute
   '/_authenticated/parents/new': typeof AuthenticatedParentsNewRoute
   '/_authenticated/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/_authenticated/students/new': typeof AuthenticatedStudentsNewRoute
@@ -246,6 +265,7 @@ export interface FileRoutesById {
   '/_authenticated/classes/': typeof AuthenticatedClassesIndexRoute
   '/_authenticated/exams/': typeof AuthenticatedExamsIndexRoute
   '/_authenticated/fees/': typeof AuthenticatedFeesIndexRoute
+  '/_authenticated/library/': typeof AuthenticatedLibraryIndexRoute
   '/_authenticated/parents/': typeof AuthenticatedParentsIndexRoute
   '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
   '/_authenticated/schools/': typeof AuthenticatedSchoolsIndexRoute
@@ -265,6 +285,7 @@ export interface FileRouteTypes {
     | '/fees/$id'
     | '/fees/categories'
     | '/fees/new'
+    | '/library/loans'
     | '/parents/new'
     | '/schools/new'
     | '/students/new'
@@ -274,6 +295,7 @@ export interface FileRouteTypes {
     | '/classes/'
     | '/exams/'
     | '/fees/'
+    | '/library/'
     | '/parents/'
     | '/reports/'
     | '/schools/'
@@ -291,6 +313,7 @@ export interface FileRouteTypes {
     | '/fees/$id'
     | '/fees/categories'
     | '/fees/new'
+    | '/library/loans'
     | '/parents/new'
     | '/schools/new'
     | '/students/new'
@@ -300,6 +323,7 @@ export interface FileRouteTypes {
     | '/classes'
     | '/exams'
     | '/fees'
+    | '/library'
     | '/parents'
     | '/reports'
     | '/schools'
@@ -318,6 +342,7 @@ export interface FileRouteTypes {
     | '/_authenticated/fees/$id'
     | '/_authenticated/fees/categories'
     | '/_authenticated/fees/new'
+    | '/_authenticated/library/loans'
     | '/_authenticated/parents/new'
     | '/_authenticated/schools/new'
     | '/_authenticated/students/new'
@@ -327,6 +352,7 @@ export interface FileRouteTypes {
     | '/_authenticated/classes/'
     | '/_authenticated/exams/'
     | '/_authenticated/fees/'
+    | '/_authenticated/library/'
     | '/_authenticated/parents/'
     | '/_authenticated/reports/'
     | '/_authenticated/schools/'
@@ -421,6 +447,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedParentsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/library/': {
+      id: '/_authenticated/library/'
+      path: '/library'
+      fullPath: '/library/'
+      preLoaderRoute: typeof AuthenticatedLibraryIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/fees/': {
       id: '/_authenticated/fees/'
       path: '/fees'
@@ -484,6 +517,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedParentsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/library/loans': {
+      id: '/_authenticated/library/loans'
+      path: '/library/loans'
+      fullPath: '/library/loans'
+      preLoaderRoute: typeof AuthenticatedLibraryLoansRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/fees/new': {
       id: '/_authenticated/fees/new'
       path: '/fees/new'
@@ -529,6 +569,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFeesIdRoute: typeof AuthenticatedFeesIdRoute
   AuthenticatedFeesCategoriesRoute: typeof AuthenticatedFeesCategoriesRoute
   AuthenticatedFeesNewRoute: typeof AuthenticatedFeesNewRoute
+  AuthenticatedLibraryLoansRoute: typeof AuthenticatedLibraryLoansRoute
   AuthenticatedParentsNewRoute: typeof AuthenticatedParentsNewRoute
   AuthenticatedSchoolsNewRoute: typeof AuthenticatedSchoolsNewRoute
   AuthenticatedStudentsNewRoute: typeof AuthenticatedStudentsNewRoute
@@ -538,6 +579,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedClassesIndexRoute: typeof AuthenticatedClassesIndexRoute
   AuthenticatedExamsIndexRoute: typeof AuthenticatedExamsIndexRoute
   AuthenticatedFeesIndexRoute: typeof AuthenticatedFeesIndexRoute
+  AuthenticatedLibraryIndexRoute: typeof AuthenticatedLibraryIndexRoute
   AuthenticatedParentsIndexRoute: typeof AuthenticatedParentsIndexRoute
   AuthenticatedReportsIndexRoute: typeof AuthenticatedReportsIndexRoute
   AuthenticatedSchoolsIndexRoute: typeof AuthenticatedSchoolsIndexRoute
@@ -554,6 +596,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFeesIdRoute: AuthenticatedFeesIdRoute,
   AuthenticatedFeesCategoriesRoute: AuthenticatedFeesCategoriesRoute,
   AuthenticatedFeesNewRoute: AuthenticatedFeesNewRoute,
+  AuthenticatedLibraryLoansRoute: AuthenticatedLibraryLoansRoute,
   AuthenticatedParentsNewRoute: AuthenticatedParentsNewRoute,
   AuthenticatedSchoolsNewRoute: AuthenticatedSchoolsNewRoute,
   AuthenticatedStudentsNewRoute: AuthenticatedStudentsNewRoute,
@@ -563,6 +606,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedClassesIndexRoute: AuthenticatedClassesIndexRoute,
   AuthenticatedExamsIndexRoute: AuthenticatedExamsIndexRoute,
   AuthenticatedFeesIndexRoute: AuthenticatedFeesIndexRoute,
+  AuthenticatedLibraryIndexRoute: AuthenticatedLibraryIndexRoute,
   AuthenticatedParentsIndexRoute: AuthenticatedParentsIndexRoute,
   AuthenticatedReportsIndexRoute: AuthenticatedReportsIndexRoute,
   AuthenticatedSchoolsIndexRoute: AuthenticatedSchoolsIndexRoute,
