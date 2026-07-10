@@ -267,17 +267,17 @@ function LibraryPage() {
 
       <div className="grid gap-4 sm:grid-cols-3">
         <StatCard
-          title="Titles"
+          label="Titles"
           value={(booksQ.data ?? []).length.toString()}
           icon={BookOpen}
         />
         <StatCard
-          title="Copies available"
+          label="Copies available"
           value={`${availableCopies} / ${totalCopies}`}
           icon={BookOpen}
         />
         <StatCard
-          title="Active loans"
+          label="Active loans"
           value={(loansQ.data ?? 0).toString()}
           icon={ArrowRightLeft}
         />
