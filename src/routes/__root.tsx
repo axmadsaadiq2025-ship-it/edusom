@@ -85,22 +85,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "EduSom Cloud — School Management System" },
+      { title: "EduSom — School Management System" },
       {
         name: "description",
         content:
           "Modern cloud-based school management system for schools in Somalia. Manage admissions, students, teachers, fees, exams, and more.",
       },
       { name: "author", content: "EduSom" },
-      { property: "og:title", content: "EduSom Cloud — School Management System" },
+      { property: "og:title", content: "EduSom — School Management System" },
       {
         property: "og:description",
         content:
-          "Enterprise-grade school management for Somalia. Students, teachers, attendance, fees, exams, and reports — one platform.",
+          "Modern cloud-based school management system for schools in Somalia. Manage admissions, students, teachers, fees, exams, and more.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#7c3aed" },
+      { name: "twitter:title", content: "EduSom — School Management System" },
+      { name: "twitter:description", content: "Modern cloud-based school management system for schools in Somalia. Manage admissions, students, teachers, fees, exams, and more." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/b65f6795-30b3-4fa7-81eb-b0a7654b2b36" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/b65f6795-30b3-4fa7-81eb-b0a7654b2b36" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
