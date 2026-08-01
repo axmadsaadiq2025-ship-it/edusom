@@ -96,8 +96,9 @@ const NAV: NavSection[] = [
   },
   {
     section: "System",
-    items: [{ label: "Settings", to: "/dashboard", icon: Settings, badge: "Soon" }],
+    items: [{ label: "Settings", to: "/settings", icon: Settings }],
   },
+
 ];
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
