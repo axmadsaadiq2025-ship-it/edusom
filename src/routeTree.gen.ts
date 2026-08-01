@@ -17,6 +17,7 @@ import { Route as AuthenticatedTimetableIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedTeachersIndexRouteImport } from './routes/_authenticated/teachers/index'
 import { Route as AuthenticatedSubjectsIndexRouteImport } from './routes/_authenticated/subjects/index'
 import { Route as AuthenticatedStudentsIndexRouteImport } from './routes/_authenticated/students/index'
+import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedSchoolsIndexRouteImport } from './routes/_authenticated/schools/index'
 import { Route as AuthenticatedReportsIndexRouteImport } from './routes/_authenticated/reports/index'
 import { Route as AuthenticatedParentsIndexRouteImport } from './routes/_authenticated/parents/index'
@@ -28,6 +29,7 @@ import { Route as AuthenticatedAttendanceIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedAcademicYearsIndexRouteImport } from './routes/_authenticated/academic-years/index'
 import { Route as AuthenticatedTeachersNewRouteImport } from './routes/_authenticated/teachers/new'
 import { Route as AuthenticatedStudentsNewRouteImport } from './routes/_authenticated/students/new'
+import { Route as AuthenticatedSettingsUsersRouteImport } from './routes/_authenticated/settings/users'
 import { Route as AuthenticatedSchoolsNewRouteImport } from './routes/_authenticated/schools/new'
 import { Route as AuthenticatedParentsNewRouteImport } from './routes/_authenticated/parents/new'
 import { Route as AuthenticatedLibraryLoansRouteImport } from './routes/_authenticated/library/loans'
@@ -78,6 +80,12 @@ const AuthenticatedStudentsIndexRoute =
   AuthenticatedStudentsIndexRouteImport.update({
     id: '/students/',
     path: '/students/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSettingsIndexRoute =
+  AuthenticatedSettingsIndexRouteImport.update({
+    id: '/settings/',
+    path: '/settings/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedSchoolsIndexRoute =
@@ -144,6 +152,12 @@ const AuthenticatedStudentsNewRoute =
     path: '/students/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSettingsUsersRoute =
+  AuthenticatedSettingsUsersRouteImport.update({
+    id: '/settings/users',
+    path: '/settings/users',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSchoolsNewRoute = AuthenticatedSchoolsNewRouteImport.update({
   id: '/schools/new',
   path: '/schools/new',
@@ -200,6 +214,7 @@ export interface FileRoutesByFullPath {
   '/library/loans': typeof AuthenticatedLibraryLoansRoute
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
+  '/settings/users': typeof AuthenticatedSettingsUsersRoute
   '/students/new': typeof AuthenticatedStudentsNewRoute
   '/teachers/new': typeof AuthenticatedTeachersNewRoute
   '/academic-years/': typeof AuthenticatedAcademicYearsIndexRoute
@@ -211,6 +226,7 @@ export interface FileRoutesByFullPath {
   '/parents/': typeof AuthenticatedParentsIndexRoute
   '/reports/': typeof AuthenticatedReportsIndexRoute
   '/schools/': typeof AuthenticatedSchoolsIndexRoute
+  '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/students/': typeof AuthenticatedStudentsIndexRoute
   '/subjects/': typeof AuthenticatedSubjectsIndexRoute
   '/teachers/': typeof AuthenticatedTeachersIndexRoute
@@ -228,6 +244,7 @@ export interface FileRoutesByTo {
   '/library/loans': typeof AuthenticatedLibraryLoansRoute
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
+  '/settings/users': typeof AuthenticatedSettingsUsersRoute
   '/students/new': typeof AuthenticatedStudentsNewRoute
   '/teachers/new': typeof AuthenticatedTeachersNewRoute
   '/academic-years': typeof AuthenticatedAcademicYearsIndexRoute
@@ -239,6 +256,7 @@ export interface FileRoutesByTo {
   '/parents': typeof AuthenticatedParentsIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/schools': typeof AuthenticatedSchoolsIndexRoute
+  '/settings': typeof AuthenticatedSettingsIndexRoute
   '/students': typeof AuthenticatedStudentsIndexRoute
   '/subjects': typeof AuthenticatedSubjectsIndexRoute
   '/teachers': typeof AuthenticatedTeachersIndexRoute
@@ -258,6 +276,7 @@ export interface FileRoutesById {
   '/_authenticated/library/loans': typeof AuthenticatedLibraryLoansRoute
   '/_authenticated/parents/new': typeof AuthenticatedParentsNewRoute
   '/_authenticated/schools/new': typeof AuthenticatedSchoolsNewRoute
+  '/_authenticated/settings/users': typeof AuthenticatedSettingsUsersRoute
   '/_authenticated/students/new': typeof AuthenticatedStudentsNewRoute
   '/_authenticated/teachers/new': typeof AuthenticatedTeachersNewRoute
   '/_authenticated/academic-years/': typeof AuthenticatedAcademicYearsIndexRoute
@@ -269,6 +288,7 @@ export interface FileRoutesById {
   '/_authenticated/parents/': typeof AuthenticatedParentsIndexRoute
   '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
   '/_authenticated/schools/': typeof AuthenticatedSchoolsIndexRoute
+  '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/students/': typeof AuthenticatedStudentsIndexRoute
   '/_authenticated/subjects/': typeof AuthenticatedSubjectsIndexRoute
   '/_authenticated/teachers/': typeof AuthenticatedTeachersIndexRoute
@@ -288,6 +308,7 @@ export interface FileRouteTypes {
     | '/library/loans'
     | '/parents/new'
     | '/schools/new'
+    | '/settings/users'
     | '/students/new'
     | '/teachers/new'
     | '/academic-years/'
@@ -299,6 +320,7 @@ export interface FileRouteTypes {
     | '/parents/'
     | '/reports/'
     | '/schools/'
+    | '/settings/'
     | '/students/'
     | '/subjects/'
     | '/teachers/'
@@ -316,6 +338,7 @@ export interface FileRouteTypes {
     | '/library/loans'
     | '/parents/new'
     | '/schools/new'
+    | '/settings/users'
     | '/students/new'
     | '/teachers/new'
     | '/academic-years'
@@ -327,6 +350,7 @@ export interface FileRouteTypes {
     | '/parents'
     | '/reports'
     | '/schools'
+    | '/settings'
     | '/students'
     | '/subjects'
     | '/teachers'
@@ -345,6 +369,7 @@ export interface FileRouteTypes {
     | '/_authenticated/library/loans'
     | '/_authenticated/parents/new'
     | '/_authenticated/schools/new'
+    | '/_authenticated/settings/users'
     | '/_authenticated/students/new'
     | '/_authenticated/teachers/new'
     | '/_authenticated/academic-years/'
@@ -356,6 +381,7 @@ export interface FileRouteTypes {
     | '/_authenticated/parents/'
     | '/_authenticated/reports/'
     | '/_authenticated/schools/'
+    | '/_authenticated/settings/'
     | '/_authenticated/students/'
     | '/_authenticated/subjects/'
     | '/_authenticated/teachers/'
@@ -424,6 +450,13 @@ declare module '@tanstack/react-router' {
       path: '/students'
       fullPath: '/students/'
       preLoaderRoute: typeof AuthenticatedStudentsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings/': {
+      id: '/_authenticated/settings/'
+      path: '/settings'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/schools/': {
@@ -503,6 +536,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStudentsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings/users': {
+      id: '/_authenticated/settings/users'
+      path: '/settings/users'
+      fullPath: '/settings/users'
+      preLoaderRoute: typeof AuthenticatedSettingsUsersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/schools/new': {
       id: '/_authenticated/schools/new'
       path: '/schools/new'
@@ -572,6 +612,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedLibraryLoansRoute: typeof AuthenticatedLibraryLoansRoute
   AuthenticatedParentsNewRoute: typeof AuthenticatedParentsNewRoute
   AuthenticatedSchoolsNewRoute: typeof AuthenticatedSchoolsNewRoute
+  AuthenticatedSettingsUsersRoute: typeof AuthenticatedSettingsUsersRoute
   AuthenticatedStudentsNewRoute: typeof AuthenticatedStudentsNewRoute
   AuthenticatedTeachersNewRoute: typeof AuthenticatedTeachersNewRoute
   AuthenticatedAcademicYearsIndexRoute: typeof AuthenticatedAcademicYearsIndexRoute
@@ -583,6 +624,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedParentsIndexRoute: typeof AuthenticatedParentsIndexRoute
   AuthenticatedReportsIndexRoute: typeof AuthenticatedReportsIndexRoute
   AuthenticatedSchoolsIndexRoute: typeof AuthenticatedSchoolsIndexRoute
+  AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
   AuthenticatedStudentsIndexRoute: typeof AuthenticatedStudentsIndexRoute
   AuthenticatedSubjectsIndexRoute: typeof AuthenticatedSubjectsIndexRoute
   AuthenticatedTeachersIndexRoute: typeof AuthenticatedTeachersIndexRoute
@@ -599,6 +641,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedLibraryLoansRoute: AuthenticatedLibraryLoansRoute,
   AuthenticatedParentsNewRoute: AuthenticatedParentsNewRoute,
   AuthenticatedSchoolsNewRoute: AuthenticatedSchoolsNewRoute,
+  AuthenticatedSettingsUsersRoute: AuthenticatedSettingsUsersRoute,
   AuthenticatedStudentsNewRoute: AuthenticatedStudentsNewRoute,
   AuthenticatedTeachersNewRoute: AuthenticatedTeachersNewRoute,
   AuthenticatedAcademicYearsIndexRoute: AuthenticatedAcademicYearsIndexRoute,
@@ -610,6 +653,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedParentsIndexRoute: AuthenticatedParentsIndexRoute,
   AuthenticatedReportsIndexRoute: AuthenticatedReportsIndexRoute,
   AuthenticatedSchoolsIndexRoute: AuthenticatedSchoolsIndexRoute,
+  AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,
   AuthenticatedStudentsIndexRoute: AuthenticatedStudentsIndexRoute,
   AuthenticatedSubjectsIndexRoute: AuthenticatedSubjectsIndexRoute,
   AuthenticatedTeachersIndexRoute: AuthenticatedTeachersIndexRoute,
