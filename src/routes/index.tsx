@@ -83,9 +83,6 @@ function LandingPage() {
     <div className="min-h-screen bg-background">
       <LandingNav />
       <main>
-        <h1 className="sr-only">
-          EduSom Cloud — modern cloud school management system for Africa
-        </h1>
         <Hero />
         <TrustedBy />
         <WhyEduSom />
