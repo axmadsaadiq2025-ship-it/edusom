@@ -230,7 +230,7 @@ export function Hero() {
               label="Students"
               value="50,214"
               trend="+8.2% this term"
-              className="-left-2 top-16 sm:-left-10"
+              className="-left-2 top-40 sm:-left-12"
               delay="0.4s"
             />
             <FloatingStat
@@ -238,7 +238,7 @@ export function Hero() {
               label="Attendance"
               value="96.4%"
               trend="+1.4% vs last week"
-              className="-right-2 top-4 sm:-right-8"
+              className="-right-2 -top-6 sm:-right-10"
               delay="1.2s"
             />
             <FloatingStat
@@ -246,7 +246,7 @@ export function Hero() {
               label="Finance"
               value="$42.8k"
               trend="Collected this month"
-              className="-left-2 bottom-24 sm:-left-12"
+              className="-left-2 bottom-8 sm:-left-14"
               delay="2s"
             />
             <FloatingStat
@@ -254,7 +254,7 @@ export function Hero() {
               label="Reports"
               value="1,120"
               trend="Generated instantly"
-              className="-right-2 bottom-6 sm:-right-10"
+              className="-right-2 -bottom-8 sm:-right-12"
               delay="2.8s"
             />
           </div>
