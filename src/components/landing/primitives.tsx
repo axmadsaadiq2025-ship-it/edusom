@@ -60,15 +60,18 @@ export function Reveal({
   delay = 0,
   as: Tag = "div",
   className,
+  id,
 }: {
   children: ReactNode;
   delay?: number;
   as?: ElementType;
   className?: string;
+  id?: string;
 }) {
   const { ref, inView } = useInView<HTMLDivElement>();
   return (
     <Tag
+      id={id}
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
       className={cn(inView ? "reveal-shown" : "reveal-hidden", className)}
