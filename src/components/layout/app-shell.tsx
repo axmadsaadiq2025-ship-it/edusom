@@ -18,6 +18,8 @@ import {
   Bell,
   Search,
   ChevronDown,
+  ClipboardList,
+
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
@@ -60,8 +62,12 @@ const NAV: NavSection[] = [
   {
     section: "Platform",
     superOnly: true,
-    items: [{ label: "Schools", to: "/schools", icon: Building2 }],
+    items: [
+      { label: "Schools", to: "/schools", icon: Building2 },
+      { label: "Registration Requests", to: "/registration-requests", icon: ClipboardList },
+    ],
   },
+
   {
     section: "People",
     items: [
