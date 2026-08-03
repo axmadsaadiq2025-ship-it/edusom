@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { RequestAccessDialog } from "./request-access-dialog";
 import {
   ArrowRight,
   PlayCircle,
@@ -200,11 +201,11 @@ export function Hero() {
                   Start Free Trial <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="min-h-11 rounded-xl">
-                <a href="#contact">
-                  <CalendarCheck className="mr-1 h-4 w-4" /> Book Demo
-                </a>
-              </Button>
+              <RequestAccessDialog>
+                <Button size="lg" variant="outline" className="min-h-11 rounded-xl">
+                  <CalendarCheck className="mr-1 h-4 w-4" /> Request Access
+                </Button>
+              </RequestAccessDialog>
               <Button asChild size="lg" variant="ghost" className="min-h-11 rounded-xl">
                 <a href="#dashboard-preview">
                   <PlayCircle className="mr-1 h-4 w-4" /> Watch Demo
@@ -889,16 +890,15 @@ export function FinalCTA() {
                   Start Free Trial <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="min-h-11 rounded-xl border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
-              >
-                <a href="#support">
-                  <CalendarCheck className="mr-1 h-4 w-4" /> Book Demo
-                </a>
-              </Button>
+              <RequestAccessDialog>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="min-h-11 rounded-xl border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                >
+                  <CalendarCheck className="mr-1 h-4 w-4" /> Request Access
+                </Button>
+              </RequestAccessDialog>
             </div>
           </div>
         </Reveal>
