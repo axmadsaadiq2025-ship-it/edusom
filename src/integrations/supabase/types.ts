@@ -1249,48 +1249,182 @@ export type Database = {
           },
         ]
       }
+      school_registration_requests: {
+        Row: {
+          accepted_terms: boolean
+          admin_email: string
+          admin_full_name: string
+          admin_phone: string
+          admin_position: string
+          admin_user_id: string | null
+          city: string
+          country: string
+          created_at: string
+          district: string
+          estimated_students: number
+          estimated_teachers: number
+          id: string
+          notes: string | null
+          postal_code: string | null
+          preferred_plan: Database["public"]["Enums"]["subscription_plan"]
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          school_email: string
+          school_id: string | null
+          school_name: string
+          school_phone: string
+          school_type: Database["public"]["Enums"]["school_type"]
+          state_region: string
+          status: Database["public"]["Enums"]["registration_status"]
+          street_address: string
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          accepted_terms?: boolean
+          admin_email: string
+          admin_full_name: string
+          admin_phone: string
+          admin_position: string
+          admin_user_id?: string | null
+          city: string
+          country: string
+          created_at?: string
+          district: string
+          estimated_students?: number
+          estimated_teachers?: number
+          id?: string
+          notes?: string | null
+          postal_code?: string | null
+          preferred_plan?: Database["public"]["Enums"]["subscription_plan"]
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          school_email: string
+          school_id?: string | null
+          school_name: string
+          school_phone: string
+          school_type: Database["public"]["Enums"]["school_type"]
+          state_region: string
+          status?: Database["public"]["Enums"]["registration_status"]
+          street_address: string
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          accepted_terms?: boolean
+          admin_email?: string
+          admin_full_name?: string
+          admin_phone?: string
+          admin_position?: string
+          admin_user_id?: string | null
+          city?: string
+          country?: string
+          created_at?: string
+          district?: string
+          estimated_students?: number
+          estimated_teachers?: number
+          id?: string
+          notes?: string | null
+          postal_code?: string | null
+          preferred_plan?: Database["public"]["Enums"]["subscription_plan"]
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          school_email?: string
+          school_id?: string | null
+          school_name?: string
+          school_phone?: string
+          school_type?: Database["public"]["Enums"]["school_type"]
+          state_region?: string
+          status?: Database["public"]["Enums"]["registration_status"]
+          street_address?: string
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "school_registration_requests_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       schools: {
         Row: {
           address: string | null
+          city: string | null
+          country: string | null
           created_at: string
           currency: string
+          district: string | null
           email: string | null
           id: string
           is_active: boolean
           logo_url: string | null
           name: string
           phone: string | null
+          plan: Database["public"]["Enums"]["subscription_plan"]
+          postal_code: string | null
+          school_code: string | null
+          school_type: Database["public"]["Enums"]["school_type"] | null
           slug: string
+          state_region: string | null
+          subscription_status: string
           timezone: string
           updated_at: string
+          website: string | null
         }
         Insert: {
           address?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string
           currency?: string
+          district?: string | null
           email?: string | null
           id?: string
           is_active?: boolean
           logo_url?: string | null
           name: string
           phone?: string | null
+          plan?: Database["public"]["Enums"]["subscription_plan"]
+          postal_code?: string | null
+          school_code?: string | null
+          school_type?: Database["public"]["Enums"]["school_type"] | null
           slug: string
+          state_region?: string | null
+          subscription_status?: string
           timezone?: string
           updated_at?: string
+          website?: string | null
         }
         Update: {
           address?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string
           currency?: string
+          district?: string | null
           email?: string | null
           id?: string
           is_active?: boolean
           logo_url?: string | null
           name?: string
           phone?: string | null
+          plan?: Database["public"]["Enums"]["subscription_plan"]
+          postal_code?: string | null
+          school_code?: string | null
+          school_type?: Database["public"]["Enums"]["school_type"] | null
           slug?: string
+          state_region?: string | null
+          subscription_status?: string
           timezone?: string
           updated_at?: string
+          website?: string | null
         }
         Relationships: []
       }
@@ -2066,6 +2200,13 @@ export type Database = {
         | "card"
         | "cheque"
         | "other"
+      registration_status: "pending" | "approved" | "rejected"
+      school_type:
+        | "primary"
+        | "secondary"
+        | "university"
+        | "institute"
+        | "training_center"
       student_status:
         | "active"
         | "inactive"
@@ -2073,6 +2214,7 @@ export type Database = {
         | "transferred"
         | "suspended"
       submission_status: "pending" | "submitted" | "late" | "graded" | "missing"
+      subscription_plan: "starter" | "professional" | "enterprise"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2234,6 +2376,14 @@ export const Constants = {
         "cheque",
         "other",
       ],
+      registration_status: ["pending", "approved", "rejected"],
+      school_type: [
+        "primary",
+        "secondary",
+        "university",
+        "institute",
+        "training_center",
+      ],
       student_status: [
         "active",
         "inactive",
@@ -2242,6 +2392,7 @@ export const Constants = {
         "suspended",
       ],
       submission_status: ["pending", "submitted", "late", "graded", "missing"],
+      subscription_plan: ["starter", "professional", "enterprise"],
     },
   },
 } as const
