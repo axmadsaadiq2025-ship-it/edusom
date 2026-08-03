@@ -20,6 +20,7 @@ import { Route as AuthenticatedStudentsIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedSchoolsIndexRouteImport } from './routes/_authenticated/schools/index'
 import { Route as AuthenticatedReportsIndexRouteImport } from './routes/_authenticated/reports/index'
+import { Route as AuthenticatedRegistrationRequestsIndexRouteImport } from './routes/_authenticated/registration-requests/index'
 import { Route as AuthenticatedParentsIndexRouteImport } from './routes/_authenticated/parents/index'
 import { Route as AuthenticatedLibraryIndexRouteImport } from './routes/_authenticated/library/index'
 import { Route as AuthenticatedFeesIndexRouteImport } from './routes/_authenticated/fees/index'
@@ -98,6 +99,12 @@ const AuthenticatedReportsIndexRoute =
   AuthenticatedReportsIndexRouteImport.update({
     id: '/reports/',
     path: '/reports/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRegistrationRequestsIndexRoute =
+  AuthenticatedRegistrationRequestsIndexRouteImport.update({
+    id: '/registration-requests/',
+    path: '/registration-requests/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedParentsIndexRoute =
@@ -224,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/fees/': typeof AuthenticatedFeesIndexRoute
   '/library/': typeof AuthenticatedLibraryIndexRoute
   '/parents/': typeof AuthenticatedParentsIndexRoute
+  '/registration-requests/': typeof AuthenticatedRegistrationRequestsIndexRoute
   '/reports/': typeof AuthenticatedReportsIndexRoute
   '/schools/': typeof AuthenticatedSchoolsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -254,6 +262,7 @@ export interface FileRoutesByTo {
   '/fees': typeof AuthenticatedFeesIndexRoute
   '/library': typeof AuthenticatedLibraryIndexRoute
   '/parents': typeof AuthenticatedParentsIndexRoute
+  '/registration-requests': typeof AuthenticatedRegistrationRequestsIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/schools': typeof AuthenticatedSchoolsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
@@ -286,6 +295,7 @@ export interface FileRoutesById {
   '/_authenticated/fees/': typeof AuthenticatedFeesIndexRoute
   '/_authenticated/library/': typeof AuthenticatedLibraryIndexRoute
   '/_authenticated/parents/': typeof AuthenticatedParentsIndexRoute
+  '/_authenticated/registration-requests/': typeof AuthenticatedRegistrationRequestsIndexRoute
   '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
   '/_authenticated/schools/': typeof AuthenticatedSchoolsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -318,6 +328,7 @@ export interface FileRouteTypes {
     | '/fees/'
     | '/library/'
     | '/parents/'
+    | '/registration-requests/'
     | '/reports/'
     | '/schools/'
     | '/settings/'
@@ -348,6 +359,7 @@ export interface FileRouteTypes {
     | '/fees'
     | '/library'
     | '/parents'
+    | '/registration-requests'
     | '/reports'
     | '/schools'
     | '/settings'
@@ -379,6 +391,7 @@ export interface FileRouteTypes {
     | '/_authenticated/fees/'
     | '/_authenticated/library/'
     | '/_authenticated/parents/'
+    | '/_authenticated/registration-requests/'
     | '/_authenticated/reports/'
     | '/_authenticated/schools/'
     | '/_authenticated/settings/'
@@ -471,6 +484,13 @@ declare module '@tanstack/react-router' {
       path: '/reports'
       fullPath: '/reports/'
       preLoaderRoute: typeof AuthenticatedReportsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/registration-requests/': {
+      id: '/_authenticated/registration-requests/'
+      path: '/registration-requests'
+      fullPath: '/registration-requests/'
+      preLoaderRoute: typeof AuthenticatedRegistrationRequestsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/parents/': {
@@ -622,6 +642,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFeesIndexRoute: typeof AuthenticatedFeesIndexRoute
   AuthenticatedLibraryIndexRoute: typeof AuthenticatedLibraryIndexRoute
   AuthenticatedParentsIndexRoute: typeof AuthenticatedParentsIndexRoute
+  AuthenticatedRegistrationRequestsIndexRoute: typeof AuthenticatedRegistrationRequestsIndexRoute
   AuthenticatedReportsIndexRoute: typeof AuthenticatedReportsIndexRoute
   AuthenticatedSchoolsIndexRoute: typeof AuthenticatedSchoolsIndexRoute
   AuthenticatedSettingsIndexRoute: typeof AuthenticatedSettingsIndexRoute
@@ -651,6 +672,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFeesIndexRoute: AuthenticatedFeesIndexRoute,
   AuthenticatedLibraryIndexRoute: AuthenticatedLibraryIndexRoute,
   AuthenticatedParentsIndexRoute: AuthenticatedParentsIndexRoute,
+  AuthenticatedRegistrationRequestsIndexRoute:
+    AuthenticatedRegistrationRequestsIndexRoute,
   AuthenticatedReportsIndexRoute: AuthenticatedReportsIndexRoute,
   AuthenticatedSchoolsIndexRoute: AuthenticatedSchoolsIndexRoute,
   AuthenticatedSettingsIndexRoute: AuthenticatedSettingsIndexRoute,

@@ -60,8 +60,12 @@ const NAV: NavSection[] = [
   {
     section: "Platform",
     superOnly: true,
-    items: [{ label: "Schools", to: "/schools", icon: Building2 }],
+    items: [
+      { label: "Schools", to: "/schools", icon: Building2 },
+      { label: "Registration Requests", to: "/registration-requests", icon: ClipboardList },
+    ],
   },
+
   {
     section: "People",
     items: [
