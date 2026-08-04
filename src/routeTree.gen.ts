@@ -37,8 +37,11 @@ import { Route as AuthenticatedPlatformUsersRouteImport } from './routes/_authen
 import { Route as AuthenticatedPlatformSystemHealthRouteImport } from './routes/_authenticated/platform/system-health'
 import { Route as AuthenticatedPlatformSupportRouteImport } from './routes/_authenticated/platform/support'
 import { Route as AuthenticatedPlatformSubscriptionsRouteImport } from './routes/_authenticated/platform/subscriptions'
+import { Route as AuthenticatedPlatformSettingsRouteImport } from './routes/_authenticated/platform/settings'
+import { Route as AuthenticatedPlatformSecurityRouteImport } from './routes/_authenticated/platform/security'
 import { Route as AuthenticatedPlatformRevenueRouteImport } from './routes/_authenticated/platform/revenue'
 import { Route as AuthenticatedPlatformNotificationsRouteImport } from './routes/_authenticated/platform/notifications'
+import { Route as AuthenticatedPlatformIntegrationsRouteImport } from './routes/_authenticated/platform/integrations'
 import { Route as AuthenticatedPlatformAuditLogsRouteImport } from './routes/_authenticated/platform/audit-logs'
 import { Route as AuthenticatedPlatformAnalyticsRouteImport } from './routes/_authenticated/platform/analytics'
 import { Route as AuthenticatedParentsNewRouteImport } from './routes/_authenticated/parents/new'
@@ -209,6 +212,18 @@ const AuthenticatedPlatformSubscriptionsRoute =
     path: '/platform/subscriptions',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPlatformSettingsRoute =
+  AuthenticatedPlatformSettingsRouteImport.update({
+    id: '/platform/settings',
+    path: '/platform/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformSecurityRoute =
+  AuthenticatedPlatformSecurityRouteImport.update({
+    id: '/platform/security',
+    path: '/platform/security',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPlatformRevenueRoute =
   AuthenticatedPlatformRevenueRouteImport.update({
     id: '/platform/revenue',
@@ -219,6 +234,12 @@ const AuthenticatedPlatformNotificationsRoute =
   AuthenticatedPlatformNotificationsRouteImport.update({
     id: '/platform/notifications',
     path: '/platform/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformIntegrationsRoute =
+  AuthenticatedPlatformIntegrationsRouteImport.update({
+    id: '/platform/integrations',
+    path: '/platform/integrations',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedPlatformAuditLogsRoute =
@@ -285,8 +306,11 @@ export interface FileRoutesByFullPath {
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
   '/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
+  '/platform/integrations': typeof AuthenticatedPlatformIntegrationsRoute
   '/platform/notifications': typeof AuthenticatedPlatformNotificationsRoute
   '/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
+  '/platform/security': typeof AuthenticatedPlatformSecurityRoute
+  '/platform/settings': typeof AuthenticatedPlatformSettingsRoute
   '/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
   '/platform/support': typeof AuthenticatedPlatformSupportRoute
   '/platform/system-health': typeof AuthenticatedPlatformSystemHealthRoute
@@ -325,8 +349,11 @@ export interface FileRoutesByTo {
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
   '/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
+  '/platform/integrations': typeof AuthenticatedPlatformIntegrationsRoute
   '/platform/notifications': typeof AuthenticatedPlatformNotificationsRoute
   '/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
+  '/platform/security': typeof AuthenticatedPlatformSecurityRoute
+  '/platform/settings': typeof AuthenticatedPlatformSettingsRoute
   '/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
   '/platform/support': typeof AuthenticatedPlatformSupportRoute
   '/platform/system-health': typeof AuthenticatedPlatformSystemHealthRoute
@@ -367,8 +394,11 @@ export interface FileRoutesById {
   '/_authenticated/parents/new': typeof AuthenticatedParentsNewRoute
   '/_authenticated/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
   '/_authenticated/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
+  '/_authenticated/platform/integrations': typeof AuthenticatedPlatformIntegrationsRoute
   '/_authenticated/platform/notifications': typeof AuthenticatedPlatformNotificationsRoute
   '/_authenticated/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
+  '/_authenticated/platform/security': typeof AuthenticatedPlatformSecurityRoute
+  '/_authenticated/platform/settings': typeof AuthenticatedPlatformSettingsRoute
   '/_authenticated/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
   '/_authenticated/platform/support': typeof AuthenticatedPlatformSupportRoute
   '/_authenticated/platform/system-health': typeof AuthenticatedPlatformSystemHealthRoute
@@ -409,8 +439,11 @@ export interface FileRouteTypes {
     | '/parents/new'
     | '/platform/analytics'
     | '/platform/audit-logs'
+    | '/platform/integrations'
     | '/platform/notifications'
     | '/platform/revenue'
+    | '/platform/security'
+    | '/platform/settings'
     | '/platform/subscriptions'
     | '/platform/support'
     | '/platform/system-health'
@@ -449,8 +482,11 @@ export interface FileRouteTypes {
     | '/parents/new'
     | '/platform/analytics'
     | '/platform/audit-logs'
+    | '/platform/integrations'
     | '/platform/notifications'
     | '/platform/revenue'
+    | '/platform/security'
+    | '/platform/settings'
     | '/platform/subscriptions'
     | '/platform/support'
     | '/platform/system-health'
@@ -490,8 +526,11 @@ export interface FileRouteTypes {
     | '/_authenticated/parents/new'
     | '/_authenticated/platform/analytics'
     | '/_authenticated/platform/audit-logs'
+    | '/_authenticated/platform/integrations'
     | '/_authenticated/platform/notifications'
     | '/_authenticated/platform/revenue'
+    | '/_authenticated/platform/security'
+    | '/_authenticated/platform/settings'
     | '/_authenticated/platform/subscriptions'
     | '/_authenticated/platform/support'
     | '/_authenticated/platform/system-health'
@@ -722,6 +761,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPlatformSubscriptionsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/platform/settings': {
+      id: '/_authenticated/platform/settings'
+      path: '/platform/settings'
+      fullPath: '/platform/settings'
+      preLoaderRoute: typeof AuthenticatedPlatformSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform/security': {
+      id: '/_authenticated/platform/security'
+      path: '/platform/security'
+      fullPath: '/platform/security'
+      preLoaderRoute: typeof AuthenticatedPlatformSecurityRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/platform/revenue': {
       id: '/_authenticated/platform/revenue'
       path: '/platform/revenue'
@@ -734,6 +787,13 @@ declare module '@tanstack/react-router' {
       path: '/platform/notifications'
       fullPath: '/platform/notifications'
       preLoaderRoute: typeof AuthenticatedPlatformNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform/integrations': {
+      id: '/_authenticated/platform/integrations'
+      path: '/platform/integrations'
+      fullPath: '/platform/integrations'
+      preLoaderRoute: typeof AuthenticatedPlatformIntegrationsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/platform/audit-logs': {
@@ -813,8 +873,11 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedParentsNewRoute: typeof AuthenticatedParentsNewRoute
   AuthenticatedPlatformAnalyticsRoute: typeof AuthenticatedPlatformAnalyticsRoute
   AuthenticatedPlatformAuditLogsRoute: typeof AuthenticatedPlatformAuditLogsRoute
+  AuthenticatedPlatformIntegrationsRoute: typeof AuthenticatedPlatformIntegrationsRoute
   AuthenticatedPlatformNotificationsRoute: typeof AuthenticatedPlatformNotificationsRoute
   AuthenticatedPlatformRevenueRoute: typeof AuthenticatedPlatformRevenueRoute
+  AuthenticatedPlatformSecurityRoute: typeof AuthenticatedPlatformSecurityRoute
+  AuthenticatedPlatformSettingsRoute: typeof AuthenticatedPlatformSettingsRoute
   AuthenticatedPlatformSubscriptionsRoute: typeof AuthenticatedPlatformSubscriptionsRoute
   AuthenticatedPlatformSupportRoute: typeof AuthenticatedPlatformSupportRoute
   AuthenticatedPlatformSystemHealthRoute: typeof AuthenticatedPlatformSystemHealthRoute
@@ -852,9 +915,13 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedParentsNewRoute: AuthenticatedParentsNewRoute,
   AuthenticatedPlatformAnalyticsRoute: AuthenticatedPlatformAnalyticsRoute,
   AuthenticatedPlatformAuditLogsRoute: AuthenticatedPlatformAuditLogsRoute,
+  AuthenticatedPlatformIntegrationsRoute:
+    AuthenticatedPlatformIntegrationsRoute,
   AuthenticatedPlatformNotificationsRoute:
     AuthenticatedPlatformNotificationsRoute,
   AuthenticatedPlatformRevenueRoute: AuthenticatedPlatformRevenueRoute,
+  AuthenticatedPlatformSecurityRoute: AuthenticatedPlatformSecurityRoute,
+  AuthenticatedPlatformSettingsRoute: AuthenticatedPlatformSettingsRoute,
   AuthenticatedPlatformSubscriptionsRoute:
     AuthenticatedPlatformSubscriptionsRoute,
   AuthenticatedPlatformSupportRoute: AuthenticatedPlatformSupportRoute,
