@@ -21,6 +21,7 @@ import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedSchoolsIndexRouteImport } from './routes/_authenticated/schools/index'
 import { Route as AuthenticatedReportsIndexRouteImport } from './routes/_authenticated/reports/index'
 import { Route as AuthenticatedRegistrationRequestsIndexRouteImport } from './routes/_authenticated/registration-requests/index'
+import { Route as AuthenticatedPlatformIndexRouteImport } from './routes/_authenticated/platform/index'
 import { Route as AuthenticatedParentsIndexRouteImport } from './routes/_authenticated/parents/index'
 import { Route as AuthenticatedLibraryIndexRouteImport } from './routes/_authenticated/library/index'
 import { Route as AuthenticatedFeesIndexRouteImport } from './routes/_authenticated/fees/index'
@@ -105,6 +106,12 @@ const AuthenticatedRegistrationRequestsIndexRoute =
   AuthenticatedRegistrationRequestsIndexRouteImport.update({
     id: '/registration-requests/',
     path: '/registration-requests/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformIndexRoute =
+  AuthenticatedPlatformIndexRouteImport.update({
+    id: '/platform/',
+    path: '/platform/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedParentsIndexRoute =
@@ -231,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/fees/': typeof AuthenticatedFeesIndexRoute
   '/library/': typeof AuthenticatedLibraryIndexRoute
   '/parents/': typeof AuthenticatedParentsIndexRoute
+  '/platform/': typeof AuthenticatedPlatformIndexRoute
   '/registration-requests/': typeof AuthenticatedRegistrationRequestsIndexRoute
   '/reports/': typeof AuthenticatedReportsIndexRoute
   '/schools/': typeof AuthenticatedSchoolsIndexRoute
@@ -262,6 +270,7 @@ export interface FileRoutesByTo {
   '/fees': typeof AuthenticatedFeesIndexRoute
   '/library': typeof AuthenticatedLibraryIndexRoute
   '/parents': typeof AuthenticatedParentsIndexRoute
+  '/platform': typeof AuthenticatedPlatformIndexRoute
   '/registration-requests': typeof AuthenticatedRegistrationRequestsIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/schools': typeof AuthenticatedSchoolsIndexRoute
@@ -295,6 +304,7 @@ export interface FileRoutesById {
   '/_authenticated/fees/': typeof AuthenticatedFeesIndexRoute
   '/_authenticated/library/': typeof AuthenticatedLibraryIndexRoute
   '/_authenticated/parents/': typeof AuthenticatedParentsIndexRoute
+  '/_authenticated/platform/': typeof AuthenticatedPlatformIndexRoute
   '/_authenticated/registration-requests/': typeof AuthenticatedRegistrationRequestsIndexRoute
   '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
   '/_authenticated/schools/': typeof AuthenticatedSchoolsIndexRoute
@@ -328,6 +338,7 @@ export interface FileRouteTypes {
     | '/fees/'
     | '/library/'
     | '/parents/'
+    | '/platform/'
     | '/registration-requests/'
     | '/reports/'
     | '/schools/'
@@ -359,6 +370,7 @@ export interface FileRouteTypes {
     | '/fees'
     | '/library'
     | '/parents'
+    | '/platform'
     | '/registration-requests'
     | '/reports'
     | '/schools'
@@ -391,6 +403,7 @@ export interface FileRouteTypes {
     | '/_authenticated/fees/'
     | '/_authenticated/library/'
     | '/_authenticated/parents/'
+    | '/_authenticated/platform/'
     | '/_authenticated/registration-requests/'
     | '/_authenticated/reports/'
     | '/_authenticated/schools/'
@@ -491,6 +504,13 @@ declare module '@tanstack/react-router' {
       path: '/registration-requests'
       fullPath: '/registration-requests/'
       preLoaderRoute: typeof AuthenticatedRegistrationRequestsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform/': {
+      id: '/_authenticated/platform/'
+      path: '/platform'
+      fullPath: '/platform/'
+      preLoaderRoute: typeof AuthenticatedPlatformIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/parents/': {
@@ -642,6 +662,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFeesIndexRoute: typeof AuthenticatedFeesIndexRoute
   AuthenticatedLibraryIndexRoute: typeof AuthenticatedLibraryIndexRoute
   AuthenticatedParentsIndexRoute: typeof AuthenticatedParentsIndexRoute
+  AuthenticatedPlatformIndexRoute: typeof AuthenticatedPlatformIndexRoute
   AuthenticatedRegistrationRequestsIndexRoute: typeof AuthenticatedRegistrationRequestsIndexRoute
   AuthenticatedReportsIndexRoute: typeof AuthenticatedReportsIndexRoute
   AuthenticatedSchoolsIndexRoute: typeof AuthenticatedSchoolsIndexRoute
@@ -672,6 +693,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFeesIndexRoute: AuthenticatedFeesIndexRoute,
   AuthenticatedLibraryIndexRoute: AuthenticatedLibraryIndexRoute,
   AuthenticatedParentsIndexRoute: AuthenticatedParentsIndexRoute,
+  AuthenticatedPlatformIndexRoute: AuthenticatedPlatformIndexRoute,
   AuthenticatedRegistrationRequestsIndexRoute:
     AuthenticatedRegistrationRequestsIndexRoute,
   AuthenticatedReportsIndexRoute: AuthenticatedReportsIndexRoute,
