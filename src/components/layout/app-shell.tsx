@@ -19,6 +19,15 @@ import {
   Search,
   ChevronDown,
   ClipboardList,
+  CreditCard,
+  BarChart3,
+  LifeBuoy,
+  ScrollText,
+  Activity,
+  SlidersHorizontal,
+  ShieldCheck,
+  Plug,
+
 
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -60,15 +69,6 @@ const NAV: NavSection[] = [
     items: [{ label: "Dashboard", to: "/dashboard", icon: LayoutDashboard }],
   },
   {
-    section: "Platform",
-    superOnly: true,
-    items: [
-      { label: "Schools", to: "/schools", icon: Building2 },
-      { label: "Registration Requests", to: "/registration-requests", icon: ClipboardList },
-    ],
-  },
-
-  {
     section: "People",
     items: [
       { label: "Students", to: "/students", icon: GraduationCap },
@@ -104,14 +104,52 @@ const NAV: NavSection[] = [
     section: "System",
     items: [{ label: "Settings", to: "/settings", icon: Settings }],
   },
+];
 
+/** Super Admin console navigation — manages the whole platform, not one school. */
+const PLATFORM_NAV: NavSection[] = [
+  {
+    section: "Platform",
+    items: [
+      { label: "Dashboard Overview", to: "/platform", icon: LayoutDashboard },
+      { label: "Registration Requests", to: "/registration-requests", icon: ClipboardList },
+      { label: "Schools Management", to: "/schools", icon: Building2 },
+    ],
+  },
+  {
+    section: "Commercial",
+    items: [
+      { label: "Subscription & Plans", to: "/platform/subscriptions", icon: CreditCard },
+      { label: "Revenue & Payments", to: "/platform/revenue", icon: Wallet },
+      { label: "Platform Analytics", to: "/platform/analytics", icon: BarChart3 },
+    ],
+  },
+  {
+    section: "Operations",
+    items: [
+      { label: "Users & Roles", to: "/platform/users", icon: Users },
+      { label: "Support Tickets", to: "/platform/support", icon: LifeBuoy },
+      { label: "Audit Logs", to: "/platform/audit-logs", icon: ScrollText },
+      { label: "System Health", to: "/platform/system-health", icon: Activity },
+      { label: "Notifications", to: "/platform/notifications", icon: Bell },
+    ],
+  },
+  {
+    section: "Configuration",
+    items: [
+      { label: "Platform Settings", to: "/platform/settings", icon: SlidersHorizontal },
+      { label: "Security", to: "/platform/security", icon: ShieldCheck },
+      { label: "API & Integrations", to: "/platform/integrations", icon: Plug },
+    ],
+  },
 ];
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { roles } = useAuth();
   const isSuper = roles.includes("super_admin");
-  const sections = NAV.filter((s) => !s.superOnly || isSuper);
+  const sections = isSuper ? PLATFORM_NAV : NAV;
+
   return (
     <div className="flex h-full flex-col gap-6 overflow-y-auto p-4">
       <div className="px-2 pt-1">

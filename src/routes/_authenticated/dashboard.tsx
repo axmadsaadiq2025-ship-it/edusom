@@ -1,4 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+
 import {
   Users,
   GraduationCap,
@@ -47,9 +49,20 @@ const feesData = [
 ];
 
 function DashboardPage() {
-  const { profile, roles, user } = useAuth();
+  const { profile, roles, user, loading } = useAuth();
+  const navigate = useNavigate();
+  const isSuper = roles.includes("super_admin");
+
+  // Super Admins manage the whole platform, not a single school.
+  useEffect(() => {
+    if (!loading && isSuper) navigate({ to: "/platform", replace: true });
+  }, [loading, isSuper, navigate]);
+
   const primary = roles[0];
   const name = profile?.full_name?.split(" ")[0] ?? user?.email?.split("@")[0] ?? "there";
+
+  if (isSuper) return null;
+
 
   return (
     <div className="space-y-8">
