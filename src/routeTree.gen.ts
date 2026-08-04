@@ -33,6 +33,10 @@ import { Route as AuthenticatedTeachersNewRouteImport } from './routes/_authenti
 import { Route as AuthenticatedStudentsNewRouteImport } from './routes/_authenticated/students/new'
 import { Route as AuthenticatedSettingsUsersRouteImport } from './routes/_authenticated/settings/users'
 import { Route as AuthenticatedSchoolsNewRouteImport } from './routes/_authenticated/schools/new'
+import { Route as AuthenticatedPlatformUsersRouteImport } from './routes/_authenticated/platform/users'
+import { Route as AuthenticatedPlatformSubscriptionsRouteImport } from './routes/_authenticated/platform/subscriptions'
+import { Route as AuthenticatedPlatformRevenueRouteImport } from './routes/_authenticated/platform/revenue'
+import { Route as AuthenticatedPlatformAnalyticsRouteImport } from './routes/_authenticated/platform/analytics'
 import { Route as AuthenticatedParentsNewRouteImport } from './routes/_authenticated/parents/new'
 import { Route as AuthenticatedLibraryLoansRouteImport } from './routes/_authenticated/library/loans'
 import { Route as AuthenticatedFeesNewRouteImport } from './routes/_authenticated/fees/new'
@@ -177,6 +181,30 @@ const AuthenticatedSchoolsNewRoute = AuthenticatedSchoolsNewRouteImport.update({
   path: '/schools/new',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPlatformUsersRoute =
+  AuthenticatedPlatformUsersRouteImport.update({
+    id: '/platform/users',
+    path: '/platform/users',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformSubscriptionsRoute =
+  AuthenticatedPlatformSubscriptionsRouteImport.update({
+    id: '/platform/subscriptions',
+    path: '/platform/subscriptions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformRevenueRoute =
+  AuthenticatedPlatformRevenueRouteImport.update({
+    id: '/platform/revenue',
+    path: '/platform/revenue',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformAnalyticsRoute =
+  AuthenticatedPlatformAnalyticsRouteImport.update({
+    id: '/platform/analytics',
+    path: '/platform/analytics',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedParentsNewRoute = AuthenticatedParentsNewRouteImport.update({
   id: '/parents/new',
   path: '/parents/new',
@@ -227,6 +255,10 @@ export interface FileRoutesByFullPath {
   '/fees/new': typeof AuthenticatedFeesNewRoute
   '/library/loans': typeof AuthenticatedLibraryLoansRoute
   '/parents/new': typeof AuthenticatedParentsNewRoute
+  '/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
+  '/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
+  '/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
+  '/platform/users': typeof AuthenticatedPlatformUsersRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/settings/users': typeof AuthenticatedSettingsUsersRoute
   '/students/new': typeof AuthenticatedStudentsNewRoute
@@ -259,6 +291,10 @@ export interface FileRoutesByTo {
   '/fees/new': typeof AuthenticatedFeesNewRoute
   '/library/loans': typeof AuthenticatedLibraryLoansRoute
   '/parents/new': typeof AuthenticatedParentsNewRoute
+  '/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
+  '/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
+  '/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
+  '/platform/users': typeof AuthenticatedPlatformUsersRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/settings/users': typeof AuthenticatedSettingsUsersRoute
   '/students/new': typeof AuthenticatedStudentsNewRoute
@@ -293,6 +329,10 @@ export interface FileRoutesById {
   '/_authenticated/fees/new': typeof AuthenticatedFeesNewRoute
   '/_authenticated/library/loans': typeof AuthenticatedLibraryLoansRoute
   '/_authenticated/parents/new': typeof AuthenticatedParentsNewRoute
+  '/_authenticated/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
+  '/_authenticated/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
+  '/_authenticated/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
+  '/_authenticated/platform/users': typeof AuthenticatedPlatformUsersRoute
   '/_authenticated/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/_authenticated/settings/users': typeof AuthenticatedSettingsUsersRoute
   '/_authenticated/students/new': typeof AuthenticatedStudentsNewRoute
@@ -327,6 +367,10 @@ export interface FileRouteTypes {
     | '/fees/new'
     | '/library/loans'
     | '/parents/new'
+    | '/platform/analytics'
+    | '/platform/revenue'
+    | '/platform/subscriptions'
+    | '/platform/users'
     | '/schools/new'
     | '/settings/users'
     | '/students/new'
@@ -359,6 +403,10 @@ export interface FileRouteTypes {
     | '/fees/new'
     | '/library/loans'
     | '/parents/new'
+    | '/platform/analytics'
+    | '/platform/revenue'
+    | '/platform/subscriptions'
+    | '/platform/users'
     | '/schools/new'
     | '/settings/users'
     | '/students/new'
@@ -392,6 +440,10 @@ export interface FileRouteTypes {
     | '/_authenticated/fees/new'
     | '/_authenticated/library/loans'
     | '/_authenticated/parents/new'
+    | '/_authenticated/platform/analytics'
+    | '/_authenticated/platform/revenue'
+    | '/_authenticated/platform/subscriptions'
+    | '/_authenticated/platform/users'
     | '/_authenticated/schools/new'
     | '/_authenticated/settings/users'
     | '/_authenticated/students/new'
@@ -590,6 +642,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSchoolsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/platform/users': {
+      id: '/_authenticated/platform/users'
+      path: '/platform/users'
+      fullPath: '/platform/users'
+      preLoaderRoute: typeof AuthenticatedPlatformUsersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform/subscriptions': {
+      id: '/_authenticated/platform/subscriptions'
+      path: '/platform/subscriptions'
+      fullPath: '/platform/subscriptions'
+      preLoaderRoute: typeof AuthenticatedPlatformSubscriptionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform/revenue': {
+      id: '/_authenticated/platform/revenue'
+      path: '/platform/revenue'
+      fullPath: '/platform/revenue'
+      preLoaderRoute: typeof AuthenticatedPlatformRevenueRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform/analytics': {
+      id: '/_authenticated/platform/analytics'
+      path: '/platform/analytics'
+      fullPath: '/platform/analytics'
+      preLoaderRoute: typeof AuthenticatedPlatformAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/parents/new': {
       id: '/_authenticated/parents/new'
       path: '/parents/new'
@@ -651,6 +731,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFeesNewRoute: typeof AuthenticatedFeesNewRoute
   AuthenticatedLibraryLoansRoute: typeof AuthenticatedLibraryLoansRoute
   AuthenticatedParentsNewRoute: typeof AuthenticatedParentsNewRoute
+  AuthenticatedPlatformAnalyticsRoute: typeof AuthenticatedPlatformAnalyticsRoute
+  AuthenticatedPlatformRevenueRoute: typeof AuthenticatedPlatformRevenueRoute
+  AuthenticatedPlatformSubscriptionsRoute: typeof AuthenticatedPlatformSubscriptionsRoute
+  AuthenticatedPlatformUsersRoute: typeof AuthenticatedPlatformUsersRoute
   AuthenticatedSchoolsNewRoute: typeof AuthenticatedSchoolsNewRoute
   AuthenticatedSettingsUsersRoute: typeof AuthenticatedSettingsUsersRoute
   AuthenticatedStudentsNewRoute: typeof AuthenticatedStudentsNewRoute
@@ -682,6 +766,11 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFeesNewRoute: AuthenticatedFeesNewRoute,
   AuthenticatedLibraryLoansRoute: AuthenticatedLibraryLoansRoute,
   AuthenticatedParentsNewRoute: AuthenticatedParentsNewRoute,
+  AuthenticatedPlatformAnalyticsRoute: AuthenticatedPlatformAnalyticsRoute,
+  AuthenticatedPlatformRevenueRoute: AuthenticatedPlatformRevenueRoute,
+  AuthenticatedPlatformSubscriptionsRoute:
+    AuthenticatedPlatformSubscriptionsRoute,
+  AuthenticatedPlatformUsersRoute: AuthenticatedPlatformUsersRoute,
   AuthenticatedSchoolsNewRoute: AuthenticatedSchoolsNewRoute,
   AuthenticatedSettingsUsersRoute: AuthenticatedSettingsUsersRoute,
   AuthenticatedStudentsNewRoute: AuthenticatedStudentsNewRoute,
