@@ -137,6 +137,19 @@ export const approveRegistrationRequest = createServerFn({ method: "POST" })
       .single();
     if (schoolError || !school) throw new Error(schoolError?.message ?? "Could not create school");
 
+    // Default workspace: academic year for the current school year.
+    const now = new Date();
+    const startYear = now.getMonth() >= 7 ? now.getFullYear() : now.getFullYear() - 1;
+    await supabaseAdmin.from("academic_years").insert({
+      school_id: school.id,
+      name: `${startYear}/${startYear + 1}`,
+      start_date: `${startYear}-09-01`,
+      end_date: `${startYear + 1}-06-30`,
+      is_current: true,
+    });
+
+
+
     if (req.admin_user_id) {
       await supabaseAdmin.auth.admin.updateUserById(req.admin_user_id, {
         ban_duration: "none",
