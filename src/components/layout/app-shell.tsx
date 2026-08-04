@@ -19,6 +19,15 @@ import {
   Search,
   ChevronDown,
   ClipboardList,
+  CreditCard,
+  BarChart3,
+  LifeBuoy,
+  ScrollText,
+  Activity,
+  SlidersHorizontal,
+  ShieldCheck,
+  Plug,
+
 
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
