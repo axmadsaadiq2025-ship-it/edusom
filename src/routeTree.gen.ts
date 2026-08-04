@@ -34,8 +34,12 @@ import { Route as AuthenticatedStudentsNewRouteImport } from './routes/_authenti
 import { Route as AuthenticatedSettingsUsersRouteImport } from './routes/_authenticated/settings/users'
 import { Route as AuthenticatedSchoolsNewRouteImport } from './routes/_authenticated/schools/new'
 import { Route as AuthenticatedPlatformUsersRouteImport } from './routes/_authenticated/platform/users'
+import { Route as AuthenticatedPlatformSystemHealthRouteImport } from './routes/_authenticated/platform/system-health'
+import { Route as AuthenticatedPlatformSupportRouteImport } from './routes/_authenticated/platform/support'
 import { Route as AuthenticatedPlatformSubscriptionsRouteImport } from './routes/_authenticated/platform/subscriptions'
 import { Route as AuthenticatedPlatformRevenueRouteImport } from './routes/_authenticated/platform/revenue'
+import { Route as AuthenticatedPlatformNotificationsRouteImport } from './routes/_authenticated/platform/notifications'
+import { Route as AuthenticatedPlatformAuditLogsRouteImport } from './routes/_authenticated/platform/audit-logs'
 import { Route as AuthenticatedPlatformAnalyticsRouteImport } from './routes/_authenticated/platform/analytics'
 import { Route as AuthenticatedParentsNewRouteImport } from './routes/_authenticated/parents/new'
 import { Route as AuthenticatedLibraryLoansRouteImport } from './routes/_authenticated/library/loans'
@@ -187,6 +191,18 @@ const AuthenticatedPlatformUsersRoute =
     path: '/platform/users',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPlatformSystemHealthRoute =
+  AuthenticatedPlatformSystemHealthRouteImport.update({
+    id: '/platform/system-health',
+    path: '/platform/system-health',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformSupportRoute =
+  AuthenticatedPlatformSupportRouteImport.update({
+    id: '/platform/support',
+    path: '/platform/support',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPlatformSubscriptionsRoute =
   AuthenticatedPlatformSubscriptionsRouteImport.update({
     id: '/platform/subscriptions',
@@ -197,6 +213,18 @@ const AuthenticatedPlatformRevenueRoute =
   AuthenticatedPlatformRevenueRouteImport.update({
     id: '/platform/revenue',
     path: '/platform/revenue',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformNotificationsRoute =
+  AuthenticatedPlatformNotificationsRouteImport.update({
+    id: '/platform/notifications',
+    path: '/platform/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformAuditLogsRoute =
+  AuthenticatedPlatformAuditLogsRouteImport.update({
+    id: '/platform/audit-logs',
+    path: '/platform/audit-logs',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedPlatformAnalyticsRoute =
@@ -256,8 +284,12 @@ export interface FileRoutesByFullPath {
   '/library/loans': typeof AuthenticatedLibraryLoansRoute
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
+  '/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
+  '/platform/notifications': typeof AuthenticatedPlatformNotificationsRoute
   '/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
   '/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
+  '/platform/support': typeof AuthenticatedPlatformSupportRoute
+  '/platform/system-health': typeof AuthenticatedPlatformSystemHealthRoute
   '/platform/users': typeof AuthenticatedPlatformUsersRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/settings/users': typeof AuthenticatedSettingsUsersRoute
@@ -292,8 +324,12 @@ export interface FileRoutesByTo {
   '/library/loans': typeof AuthenticatedLibraryLoansRoute
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
+  '/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
+  '/platform/notifications': typeof AuthenticatedPlatformNotificationsRoute
   '/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
   '/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
+  '/platform/support': typeof AuthenticatedPlatformSupportRoute
+  '/platform/system-health': typeof AuthenticatedPlatformSystemHealthRoute
   '/platform/users': typeof AuthenticatedPlatformUsersRoute
   '/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/settings/users': typeof AuthenticatedSettingsUsersRoute
@@ -330,8 +366,12 @@ export interface FileRoutesById {
   '/_authenticated/library/loans': typeof AuthenticatedLibraryLoansRoute
   '/_authenticated/parents/new': typeof AuthenticatedParentsNewRoute
   '/_authenticated/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
+  '/_authenticated/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
+  '/_authenticated/platform/notifications': typeof AuthenticatedPlatformNotificationsRoute
   '/_authenticated/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
   '/_authenticated/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
+  '/_authenticated/platform/support': typeof AuthenticatedPlatformSupportRoute
+  '/_authenticated/platform/system-health': typeof AuthenticatedPlatformSystemHealthRoute
   '/_authenticated/platform/users': typeof AuthenticatedPlatformUsersRoute
   '/_authenticated/schools/new': typeof AuthenticatedSchoolsNewRoute
   '/_authenticated/settings/users': typeof AuthenticatedSettingsUsersRoute
@@ -368,8 +408,12 @@ export interface FileRouteTypes {
     | '/library/loans'
     | '/parents/new'
     | '/platform/analytics'
+    | '/platform/audit-logs'
+    | '/platform/notifications'
     | '/platform/revenue'
     | '/platform/subscriptions'
+    | '/platform/support'
+    | '/platform/system-health'
     | '/platform/users'
     | '/schools/new'
     | '/settings/users'
@@ -404,8 +448,12 @@ export interface FileRouteTypes {
     | '/library/loans'
     | '/parents/new'
     | '/platform/analytics'
+    | '/platform/audit-logs'
+    | '/platform/notifications'
     | '/platform/revenue'
     | '/platform/subscriptions'
+    | '/platform/support'
+    | '/platform/system-health'
     | '/platform/users'
     | '/schools/new'
     | '/settings/users'
@@ -441,8 +489,12 @@ export interface FileRouteTypes {
     | '/_authenticated/library/loans'
     | '/_authenticated/parents/new'
     | '/_authenticated/platform/analytics'
+    | '/_authenticated/platform/audit-logs'
+    | '/_authenticated/platform/notifications'
     | '/_authenticated/platform/revenue'
     | '/_authenticated/platform/subscriptions'
+    | '/_authenticated/platform/support'
+    | '/_authenticated/platform/system-health'
     | '/_authenticated/platform/users'
     | '/_authenticated/schools/new'
     | '/_authenticated/settings/users'
@@ -649,6 +701,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPlatformUsersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/platform/system-health': {
+      id: '/_authenticated/platform/system-health'
+      path: '/platform/system-health'
+      fullPath: '/platform/system-health'
+      preLoaderRoute: typeof AuthenticatedPlatformSystemHealthRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform/support': {
+      id: '/_authenticated/platform/support'
+      path: '/platform/support'
+      fullPath: '/platform/support'
+      preLoaderRoute: typeof AuthenticatedPlatformSupportRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/platform/subscriptions': {
       id: '/_authenticated/platform/subscriptions'
       path: '/platform/subscriptions'
@@ -661,6 +727,20 @@ declare module '@tanstack/react-router' {
       path: '/platform/revenue'
       fullPath: '/platform/revenue'
       preLoaderRoute: typeof AuthenticatedPlatformRevenueRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform/notifications': {
+      id: '/_authenticated/platform/notifications'
+      path: '/platform/notifications'
+      fullPath: '/platform/notifications'
+      preLoaderRoute: typeof AuthenticatedPlatformNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform/audit-logs': {
+      id: '/_authenticated/platform/audit-logs'
+      path: '/platform/audit-logs'
+      fullPath: '/platform/audit-logs'
+      preLoaderRoute: typeof AuthenticatedPlatformAuditLogsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/platform/analytics': {
@@ -732,8 +812,12 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedLibraryLoansRoute: typeof AuthenticatedLibraryLoansRoute
   AuthenticatedParentsNewRoute: typeof AuthenticatedParentsNewRoute
   AuthenticatedPlatformAnalyticsRoute: typeof AuthenticatedPlatformAnalyticsRoute
+  AuthenticatedPlatformAuditLogsRoute: typeof AuthenticatedPlatformAuditLogsRoute
+  AuthenticatedPlatformNotificationsRoute: typeof AuthenticatedPlatformNotificationsRoute
   AuthenticatedPlatformRevenueRoute: typeof AuthenticatedPlatformRevenueRoute
   AuthenticatedPlatformSubscriptionsRoute: typeof AuthenticatedPlatformSubscriptionsRoute
+  AuthenticatedPlatformSupportRoute: typeof AuthenticatedPlatformSupportRoute
+  AuthenticatedPlatformSystemHealthRoute: typeof AuthenticatedPlatformSystemHealthRoute
   AuthenticatedPlatformUsersRoute: typeof AuthenticatedPlatformUsersRoute
   AuthenticatedSchoolsNewRoute: typeof AuthenticatedSchoolsNewRoute
   AuthenticatedSettingsUsersRoute: typeof AuthenticatedSettingsUsersRoute
@@ -767,9 +851,15 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedLibraryLoansRoute: AuthenticatedLibraryLoansRoute,
   AuthenticatedParentsNewRoute: AuthenticatedParentsNewRoute,
   AuthenticatedPlatformAnalyticsRoute: AuthenticatedPlatformAnalyticsRoute,
+  AuthenticatedPlatformAuditLogsRoute: AuthenticatedPlatformAuditLogsRoute,
+  AuthenticatedPlatformNotificationsRoute:
+    AuthenticatedPlatformNotificationsRoute,
   AuthenticatedPlatformRevenueRoute: AuthenticatedPlatformRevenueRoute,
   AuthenticatedPlatformSubscriptionsRoute:
     AuthenticatedPlatformSubscriptionsRoute,
+  AuthenticatedPlatformSupportRoute: AuthenticatedPlatformSupportRoute,
+  AuthenticatedPlatformSystemHealthRoute:
+    AuthenticatedPlatformSystemHealthRoute,
   AuthenticatedPlatformUsersRoute: AuthenticatedPlatformUsersRoute,
   AuthenticatedSchoolsNewRoute: AuthenticatedSchoolsNewRoute,
   AuthenticatedSettingsUsersRoute: AuthenticatedSettingsUsersRoute,
