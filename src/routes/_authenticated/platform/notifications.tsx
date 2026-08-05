@@ -57,7 +57,7 @@ function NotificationsPage() {
           icon: Building2,
           title: `${m.activeSchools} of ${m.totalSchools} schools active`,
           body: "Inactive tenants cannot be used by their staff until re-enabled.",
-          to: "/schools",
+          to: "/platform/schools",
           tone: "primary" as const,
         }
       : null,

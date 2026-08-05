@@ -42,6 +42,7 @@ import { Route as AuthenticatedPlatformSecurityRouteImport } from './routes/_aut
 import { Route as AuthenticatedPlatformRevenueRouteImport } from './routes/_authenticated/platform/revenue'
 import { Route as AuthenticatedPlatformNotificationsRouteImport } from './routes/_authenticated/platform/notifications'
 import { Route as AuthenticatedPlatformIntegrationsRouteImport } from './routes/_authenticated/platform/integrations'
+import { Route as AuthenticatedPlatformDashboardRouteImport } from './routes/_authenticated/platform/dashboard'
 import { Route as AuthenticatedPlatformAuditLogsRouteImport } from './routes/_authenticated/platform/audit-logs'
 import { Route as AuthenticatedPlatformAnalyticsRouteImport } from './routes/_authenticated/platform/analytics'
 import { Route as AuthenticatedParentsNewRouteImport } from './routes/_authenticated/parents/new'
@@ -51,6 +52,8 @@ import { Route as AuthenticatedFeesCategoriesRouteImport } from './routes/_authe
 import { Route as AuthenticatedFeesIdRouteImport } from './routes/_authenticated/fees/$id'
 import { Route as AuthenticatedExamsIdRouteImport } from './routes/_authenticated/exams/$id'
 import { Route as AuthenticatedAttendanceNewRouteImport } from './routes/_authenticated/attendance/new'
+import { Route as AuthenticatedPlatformSchoolsIndexRouteImport } from './routes/_authenticated/platform/schools/index'
+import { Route as AuthenticatedPlatformSchoolsSchoolIdRouteImport } from './routes/_authenticated/platform/schools/$schoolId'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -242,6 +245,12 @@ const AuthenticatedPlatformIntegrationsRoute =
     path: '/platform/integrations',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPlatformDashboardRoute =
+  AuthenticatedPlatformDashboardRouteImport.update({
+    id: '/platform/dashboard',
+    path: '/platform/dashboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPlatformAuditLogsRoute =
   AuthenticatedPlatformAuditLogsRouteImport.update({
     id: '/platform/audit-logs',
@@ -292,6 +301,18 @@ const AuthenticatedAttendanceNewRoute =
     path: '/attendance/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPlatformSchoolsIndexRoute =
+  AuthenticatedPlatformSchoolsIndexRouteImport.update({
+    id: '/platform/schools/',
+    path: '/platform/schools/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformSchoolsSchoolIdRoute =
+  AuthenticatedPlatformSchoolsSchoolIdRouteImport.update({
+    id: '/platform/schools/$schoolId',
+    path: '/platform/schools/$schoolId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -306,6 +327,7 @@ export interface FileRoutesByFullPath {
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
   '/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
+  '/platform/dashboard': typeof AuthenticatedPlatformDashboardRoute
   '/platform/integrations': typeof AuthenticatedPlatformIntegrationsRoute
   '/platform/notifications': typeof AuthenticatedPlatformNotificationsRoute
   '/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
@@ -335,6 +357,8 @@ export interface FileRoutesByFullPath {
   '/subjects/': typeof AuthenticatedSubjectsIndexRoute
   '/teachers/': typeof AuthenticatedTeachersIndexRoute
   '/timetable/': typeof AuthenticatedTimetableIndexRoute
+  '/platform/schools/$schoolId': typeof AuthenticatedPlatformSchoolsSchoolIdRoute
+  '/platform/schools/': typeof AuthenticatedPlatformSchoolsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -349,6 +373,7 @@ export interface FileRoutesByTo {
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
   '/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
+  '/platform/dashboard': typeof AuthenticatedPlatformDashboardRoute
   '/platform/integrations': typeof AuthenticatedPlatformIntegrationsRoute
   '/platform/notifications': typeof AuthenticatedPlatformNotificationsRoute
   '/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
@@ -378,6 +403,8 @@ export interface FileRoutesByTo {
   '/subjects': typeof AuthenticatedSubjectsIndexRoute
   '/teachers': typeof AuthenticatedTeachersIndexRoute
   '/timetable': typeof AuthenticatedTimetableIndexRoute
+  '/platform/schools/$schoolId': typeof AuthenticatedPlatformSchoolsSchoolIdRoute
+  '/platform/schools': typeof AuthenticatedPlatformSchoolsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -394,6 +421,7 @@ export interface FileRoutesById {
   '/_authenticated/parents/new': typeof AuthenticatedParentsNewRoute
   '/_authenticated/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
   '/_authenticated/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
+  '/_authenticated/platform/dashboard': typeof AuthenticatedPlatformDashboardRoute
   '/_authenticated/platform/integrations': typeof AuthenticatedPlatformIntegrationsRoute
   '/_authenticated/platform/notifications': typeof AuthenticatedPlatformNotificationsRoute
   '/_authenticated/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
@@ -423,6 +451,8 @@ export interface FileRoutesById {
   '/_authenticated/subjects/': typeof AuthenticatedSubjectsIndexRoute
   '/_authenticated/teachers/': typeof AuthenticatedTeachersIndexRoute
   '/_authenticated/timetable/': typeof AuthenticatedTimetableIndexRoute
+  '/_authenticated/platform/schools/$schoolId': typeof AuthenticatedPlatformSchoolsSchoolIdRoute
+  '/_authenticated/platform/schools/': typeof AuthenticatedPlatformSchoolsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -439,6 +469,7 @@ export interface FileRouteTypes {
     | '/parents/new'
     | '/platform/analytics'
     | '/platform/audit-logs'
+    | '/platform/dashboard'
     | '/platform/integrations'
     | '/platform/notifications'
     | '/platform/revenue'
@@ -468,6 +499,8 @@ export interface FileRouteTypes {
     | '/subjects/'
     | '/teachers/'
     | '/timetable/'
+    | '/platform/schools/$schoolId'
+    | '/platform/schools/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -482,6 +515,7 @@ export interface FileRouteTypes {
     | '/parents/new'
     | '/platform/analytics'
     | '/platform/audit-logs'
+    | '/platform/dashboard'
     | '/platform/integrations'
     | '/platform/notifications'
     | '/platform/revenue'
@@ -511,6 +545,8 @@ export interface FileRouteTypes {
     | '/subjects'
     | '/teachers'
     | '/timetable'
+    | '/platform/schools/$schoolId'
+    | '/platform/schools'
   id:
     | '__root__'
     | '/'
@@ -526,6 +562,7 @@ export interface FileRouteTypes {
     | '/_authenticated/parents/new'
     | '/_authenticated/platform/analytics'
     | '/_authenticated/platform/audit-logs'
+    | '/_authenticated/platform/dashboard'
     | '/_authenticated/platform/integrations'
     | '/_authenticated/platform/notifications'
     | '/_authenticated/platform/revenue'
@@ -555,6 +592,8 @@ export interface FileRouteTypes {
     | '/_authenticated/subjects/'
     | '/_authenticated/teachers/'
     | '/_authenticated/timetable/'
+    | '/_authenticated/platform/schools/$schoolId'
+    | '/_authenticated/platform/schools/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -796,6 +835,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPlatformIntegrationsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/platform/dashboard': {
+      id: '/_authenticated/platform/dashboard'
+      path: '/platform/dashboard'
+      fullPath: '/platform/dashboard'
+      preLoaderRoute: typeof AuthenticatedPlatformDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/platform/audit-logs': {
       id: '/_authenticated/platform/audit-logs'
       path: '/platform/audit-logs'
@@ -859,6 +905,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAttendanceNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/platform/schools/': {
+      id: '/_authenticated/platform/schools/'
+      path: '/platform/schools'
+      fullPath: '/platform/schools/'
+      preLoaderRoute: typeof AuthenticatedPlatformSchoolsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform/schools/$schoolId': {
+      id: '/_authenticated/platform/schools/$schoolId'
+      path: '/platform/schools/$schoolId'
+      fullPath: '/platform/schools/$schoolId'
+      preLoaderRoute: typeof AuthenticatedPlatformSchoolsSchoolIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -873,6 +933,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedParentsNewRoute: typeof AuthenticatedParentsNewRoute
   AuthenticatedPlatformAnalyticsRoute: typeof AuthenticatedPlatformAnalyticsRoute
   AuthenticatedPlatformAuditLogsRoute: typeof AuthenticatedPlatformAuditLogsRoute
+  AuthenticatedPlatformDashboardRoute: typeof AuthenticatedPlatformDashboardRoute
   AuthenticatedPlatformIntegrationsRoute: typeof AuthenticatedPlatformIntegrationsRoute
   AuthenticatedPlatformNotificationsRoute: typeof AuthenticatedPlatformNotificationsRoute
   AuthenticatedPlatformRevenueRoute: typeof AuthenticatedPlatformRevenueRoute
@@ -902,6 +963,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSubjectsIndexRoute: typeof AuthenticatedSubjectsIndexRoute
   AuthenticatedTeachersIndexRoute: typeof AuthenticatedTeachersIndexRoute
   AuthenticatedTimetableIndexRoute: typeof AuthenticatedTimetableIndexRoute
+  AuthenticatedPlatformSchoolsSchoolIdRoute: typeof AuthenticatedPlatformSchoolsSchoolIdRoute
+  AuthenticatedPlatformSchoolsIndexRoute: typeof AuthenticatedPlatformSchoolsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -915,6 +978,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedParentsNewRoute: AuthenticatedParentsNewRoute,
   AuthenticatedPlatformAnalyticsRoute: AuthenticatedPlatformAnalyticsRoute,
   AuthenticatedPlatformAuditLogsRoute: AuthenticatedPlatformAuditLogsRoute,
+  AuthenticatedPlatformDashboardRoute: AuthenticatedPlatformDashboardRoute,
   AuthenticatedPlatformIntegrationsRoute:
     AuthenticatedPlatformIntegrationsRoute,
   AuthenticatedPlatformNotificationsRoute:
@@ -949,6 +1013,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSubjectsIndexRoute: AuthenticatedSubjectsIndexRoute,
   AuthenticatedTeachersIndexRoute: AuthenticatedTeachersIndexRoute,
   AuthenticatedTimetableIndexRoute: AuthenticatedTimetableIndexRoute,
+  AuthenticatedPlatformSchoolsSchoolIdRoute:
+    AuthenticatedPlatformSchoolsSchoolIdRoute,
+  AuthenticatedPlatformSchoolsIndexRoute:
+    AuthenticatedPlatformSchoolsIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

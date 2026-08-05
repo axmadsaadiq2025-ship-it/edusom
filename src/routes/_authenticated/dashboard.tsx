@@ -24,7 +24,7 @@ import {
   Bar,
 } from "recharts";
 import { useAuth } from "@/hooks/use-auth";
-import { roleLabel } from "@/lib/roles";
+import { isSuperAdmin, roleLabel } from "@/lib/roles";
 import { StatCard } from "@/components/dashboard/stat-card";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -51,17 +51,17 @@ const feesData = [
 function DashboardPage() {
   const { profile, roles, user, loading } = useAuth();
   const navigate = useNavigate();
-  const isSuper = roles.includes("super_admin");
+  const isSuper = isSuperAdmin(roles, user?.email);
 
   // Super Admins manage the whole platform, not a single school.
   useEffect(() => {
-    if (!loading && isSuper) navigate({ to: "/platform", replace: true });
+    if (!loading && isSuper) navigate({ to: "/platform/dashboard", replace: true });
   }, [loading, isSuper, navigate]);
 
   const primary = roles[0];
   const name = profile?.full_name?.split(" ")[0] ?? user?.email?.split("@")[0] ?? "there";
 
-  if (isSuper) return null;
+  if (loading || (user && roles.length === 0 && !profile) || isSuper) return null;
 
 
   return (
