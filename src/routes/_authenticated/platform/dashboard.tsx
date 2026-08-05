@@ -78,7 +78,7 @@ function PlatformOverview() {
         action={
           <div className="flex flex-wrap gap-2">
             <Button asChild variant="outline">
-              <Link to="/schools">
+              <Link to="/platform/schools">
                 <Building2 className="mr-2 h-4 w-4" /> Schools
               </Link>
             </Button>
@@ -261,7 +261,7 @@ function PlatformOverview() {
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[
             { to: "/registration-requests", label: "Review registration requests", icon: ClipboardList },
-            { to: "/schools", label: "Manage schools", icon: Building2 },
+            { to: "/platform/schools", label: "Manage schools", icon: Building2 },
             { to: "/platform/subscriptions", label: "Subscriptions & plans", icon: CreditCard },
             { to: "/platform/revenue", label: "Revenue & payments", icon: Wallet },
             { to: "/platform/users", label: "Users & roles", icon: Users },

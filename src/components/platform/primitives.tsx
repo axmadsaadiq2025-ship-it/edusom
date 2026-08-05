@@ -2,13 +2,14 @@ import { useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import type { LucideIcon } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { isSuperAdmin } from "@/lib/roles";
 import { cn } from "@/lib/utils";
 
 /** Redirects non Super Admins back to the school dashboard. */
 export function usePlatformGuard() {
-  const { roles, loading } = useAuth();
+  const { roles, user, loading } = useAuth();
   const navigate = useNavigate();
-  const isSuper = roles.includes("super_admin");
+  const isSuper = isSuperAdmin(roles, user?.email);
 
   useEffect(() => {
     if (!loading && !isSuper) navigate({ to: "/dashboard", replace: true });

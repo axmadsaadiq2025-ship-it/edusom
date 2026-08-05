@@ -34,7 +34,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { BrandLogo } from "@/components/brand-logo";
 import { useAuth } from "@/hooks/use-auth";
-import { roleLabel } from "@/lib/roles";
+import { isSuperAdmin, roleLabel } from "@/lib/roles";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -111,9 +111,9 @@ const PLATFORM_NAV: NavSection[] = [
   {
     section: "Platform",
     items: [
-      { label: "Dashboard Overview", to: "/platform", icon: LayoutDashboard },
+      { label: "Dashboard Overview", to: "/platform/dashboard", icon: LayoutDashboard },
       { label: "Registration Requests", to: "/registration-requests", icon: ClipboardList },
-      { label: "Schools Management", to: "/schools", icon: Building2 },
+      { label: "Schools Management", to: "/platform/schools", icon: Building2 },
     ],
   },
   {
@@ -146,8 +146,8 @@ const PLATFORM_NAV: NavSection[] = [
 
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { roles } = useAuth();
-  const isSuper = roles.includes("super_admin");
+  const { roles, user } = useAuth();
+  const isSuper = isSuperAdmin(roles, user?.email);
   const sections = isSuper ? PLATFORM_NAV : NAV;
 
   return (

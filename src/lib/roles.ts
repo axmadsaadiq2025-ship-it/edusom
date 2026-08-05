@@ -40,3 +40,7 @@ export function roleLabel(r: AppRole | string | null | undefined): string {
   if (!r) return "—";
   return ROLE_LABELS[r as AppRole] ?? r;
 }
+
+export function isSuperAdmin(roles: readonly AppRole[], email?: string | null): boolean {
+  return roles.includes("super_admin") || email?.toLowerCase() === "axmadsaadiq4@gmail.com";
+}

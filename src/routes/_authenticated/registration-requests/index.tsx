@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { isSuperAdmin } from "@/lib/roles";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -127,10 +128,10 @@ function fmtDate(v: string | null) {
 }
 
 function RegistrationRequestsPage() {
-  const { roles, loading } = useAuth();
+  const { roles, user, loading } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const isSuper = roles.includes("super_admin");
+  const isSuper = isSuperAdmin(roles, user?.email);
 
   const [status, setStatus] = useState<"all" | "pending" | "approved" | "rejected">("pending");
   const [search, setSearch] = useState("");
