@@ -21,7 +21,6 @@ import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedSchoolsIndexRouteImport } from './routes/_authenticated/schools/index'
 import { Route as AuthenticatedReportsIndexRouteImport } from './routes/_authenticated/reports/index'
 import { Route as AuthenticatedRegistrationRequestsIndexRouteImport } from './routes/_authenticated/registration-requests/index'
-import { Route as AuthenticatedPlatformIndexRouteImport } from './routes/_authenticated/platform/index'
 import { Route as AuthenticatedParentsIndexRouteImport } from './routes/_authenticated/parents/index'
 import { Route as AuthenticatedLibraryIndexRouteImport } from './routes/_authenticated/library/index'
 import { Route as AuthenticatedFeesIndexRouteImport } from './routes/_authenticated/fees/index'
@@ -42,6 +41,7 @@ import { Route as AuthenticatedPlatformSecurityRouteImport } from './routes/_aut
 import { Route as AuthenticatedPlatformRevenueRouteImport } from './routes/_authenticated/platform/revenue'
 import { Route as AuthenticatedPlatformNotificationsRouteImport } from './routes/_authenticated/platform/notifications'
 import { Route as AuthenticatedPlatformIntegrationsRouteImport } from './routes/_authenticated/platform/integrations'
+import { Route as AuthenticatedPlatformDashboardRouteImport } from './routes/_authenticated/platform/dashboard'
 import { Route as AuthenticatedPlatformAuditLogsRouteImport } from './routes/_authenticated/platform/audit-logs'
 import { Route as AuthenticatedPlatformAnalyticsRouteImport } from './routes/_authenticated/platform/analytics'
 import { Route as AuthenticatedParentsNewRouteImport } from './routes/_authenticated/parents/new'
@@ -117,12 +117,6 @@ const AuthenticatedRegistrationRequestsIndexRoute =
   AuthenticatedRegistrationRequestsIndexRouteImport.update({
     id: '/registration-requests/',
     path: '/registration-requests/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedPlatformIndexRoute =
-  AuthenticatedPlatformIndexRouteImport.update({
-    id: '/platform/',
-    path: '/platform/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedParentsIndexRoute =
@@ -242,6 +236,12 @@ const AuthenticatedPlatformIntegrationsRoute =
     path: '/platform/integrations',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPlatformDashboardRoute =
+  AuthenticatedPlatformDashboardRouteImport.update({
+    id: '/platform/dashboard',
+    path: '/platform/dashboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPlatformAuditLogsRoute =
   AuthenticatedPlatformAuditLogsRouteImport.update({
     id: '/platform/audit-logs',
@@ -306,6 +306,7 @@ export interface FileRoutesByFullPath {
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
   '/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
+  '/platform/dashboard': typeof AuthenticatedPlatformDashboardRoute
   '/platform/integrations': typeof AuthenticatedPlatformIntegrationsRoute
   '/platform/notifications': typeof AuthenticatedPlatformNotificationsRoute
   '/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
@@ -326,7 +327,6 @@ export interface FileRoutesByFullPath {
   '/fees/': typeof AuthenticatedFeesIndexRoute
   '/library/': typeof AuthenticatedLibraryIndexRoute
   '/parents/': typeof AuthenticatedParentsIndexRoute
-  '/platform/': typeof AuthenticatedPlatformIndexRoute
   '/registration-requests/': typeof AuthenticatedRegistrationRequestsIndexRoute
   '/reports/': typeof AuthenticatedReportsIndexRoute
   '/schools/': typeof AuthenticatedSchoolsIndexRoute
@@ -349,6 +349,7 @@ export interface FileRoutesByTo {
   '/parents/new': typeof AuthenticatedParentsNewRoute
   '/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
   '/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
+  '/platform/dashboard': typeof AuthenticatedPlatformDashboardRoute
   '/platform/integrations': typeof AuthenticatedPlatformIntegrationsRoute
   '/platform/notifications': typeof AuthenticatedPlatformNotificationsRoute
   '/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
@@ -369,7 +370,6 @@ export interface FileRoutesByTo {
   '/fees': typeof AuthenticatedFeesIndexRoute
   '/library': typeof AuthenticatedLibraryIndexRoute
   '/parents': typeof AuthenticatedParentsIndexRoute
-  '/platform': typeof AuthenticatedPlatformIndexRoute
   '/registration-requests': typeof AuthenticatedRegistrationRequestsIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
   '/schools': typeof AuthenticatedSchoolsIndexRoute
@@ -394,6 +394,7 @@ export interface FileRoutesById {
   '/_authenticated/parents/new': typeof AuthenticatedParentsNewRoute
   '/_authenticated/platform/analytics': typeof AuthenticatedPlatformAnalyticsRoute
   '/_authenticated/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
+  '/_authenticated/platform/dashboard': typeof AuthenticatedPlatformDashboardRoute
   '/_authenticated/platform/integrations': typeof AuthenticatedPlatformIntegrationsRoute
   '/_authenticated/platform/notifications': typeof AuthenticatedPlatformNotificationsRoute
   '/_authenticated/platform/revenue': typeof AuthenticatedPlatformRevenueRoute
@@ -414,7 +415,6 @@ export interface FileRoutesById {
   '/_authenticated/fees/': typeof AuthenticatedFeesIndexRoute
   '/_authenticated/library/': typeof AuthenticatedLibraryIndexRoute
   '/_authenticated/parents/': typeof AuthenticatedParentsIndexRoute
-  '/_authenticated/platform/': typeof AuthenticatedPlatformIndexRoute
   '/_authenticated/registration-requests/': typeof AuthenticatedRegistrationRequestsIndexRoute
   '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
   '/_authenticated/schools/': typeof AuthenticatedSchoolsIndexRoute
@@ -439,6 +439,7 @@ export interface FileRouteTypes {
     | '/parents/new'
     | '/platform/analytics'
     | '/platform/audit-logs'
+    | '/platform/dashboard'
     | '/platform/integrations'
     | '/platform/notifications'
     | '/platform/revenue'
@@ -459,7 +460,6 @@ export interface FileRouteTypes {
     | '/fees/'
     | '/library/'
     | '/parents/'
-    | '/platform/'
     | '/registration-requests/'
     | '/reports/'
     | '/schools/'
@@ -482,6 +482,7 @@ export interface FileRouteTypes {
     | '/parents/new'
     | '/platform/analytics'
     | '/platform/audit-logs'
+    | '/platform/dashboard'
     | '/platform/integrations'
     | '/platform/notifications'
     | '/platform/revenue'
@@ -502,7 +503,6 @@ export interface FileRouteTypes {
     | '/fees'
     | '/library'
     | '/parents'
-    | '/platform'
     | '/registration-requests'
     | '/reports'
     | '/schools'
@@ -526,6 +526,7 @@ export interface FileRouteTypes {
     | '/_authenticated/parents/new'
     | '/_authenticated/platform/analytics'
     | '/_authenticated/platform/audit-logs'
+    | '/_authenticated/platform/dashboard'
     | '/_authenticated/platform/integrations'
     | '/_authenticated/platform/notifications'
     | '/_authenticated/platform/revenue'
@@ -546,7 +547,6 @@ export interface FileRouteTypes {
     | '/_authenticated/fees/'
     | '/_authenticated/library/'
     | '/_authenticated/parents/'
-    | '/_authenticated/platform/'
     | '/_authenticated/registration-requests/'
     | '/_authenticated/reports/'
     | '/_authenticated/schools/'
@@ -647,13 +647,6 @@ declare module '@tanstack/react-router' {
       path: '/registration-requests'
       fullPath: '/registration-requests/'
       preLoaderRoute: typeof AuthenticatedRegistrationRequestsIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/platform/': {
-      id: '/_authenticated/platform/'
-      path: '/platform'
-      fullPath: '/platform/'
-      preLoaderRoute: typeof AuthenticatedPlatformIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/parents/': {
@@ -796,6 +789,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPlatformIntegrationsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/platform/dashboard': {
+      id: '/_authenticated/platform/dashboard'
+      path: '/platform/dashboard'
+      fullPath: '/platform/dashboard'
+      preLoaderRoute: typeof AuthenticatedPlatformDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/platform/audit-logs': {
       id: '/_authenticated/platform/audit-logs'
       path: '/platform/audit-logs'
@@ -873,6 +873,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedParentsNewRoute: typeof AuthenticatedParentsNewRoute
   AuthenticatedPlatformAnalyticsRoute: typeof AuthenticatedPlatformAnalyticsRoute
   AuthenticatedPlatformAuditLogsRoute: typeof AuthenticatedPlatformAuditLogsRoute
+  AuthenticatedPlatformDashboardRoute: typeof AuthenticatedPlatformDashboardRoute
   AuthenticatedPlatformIntegrationsRoute: typeof AuthenticatedPlatformIntegrationsRoute
   AuthenticatedPlatformNotificationsRoute: typeof AuthenticatedPlatformNotificationsRoute
   AuthenticatedPlatformRevenueRoute: typeof AuthenticatedPlatformRevenueRoute
@@ -893,7 +894,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFeesIndexRoute: typeof AuthenticatedFeesIndexRoute
   AuthenticatedLibraryIndexRoute: typeof AuthenticatedLibraryIndexRoute
   AuthenticatedParentsIndexRoute: typeof AuthenticatedParentsIndexRoute
-  AuthenticatedPlatformIndexRoute: typeof AuthenticatedPlatformIndexRoute
   AuthenticatedRegistrationRequestsIndexRoute: typeof AuthenticatedRegistrationRequestsIndexRoute
   AuthenticatedReportsIndexRoute: typeof AuthenticatedReportsIndexRoute
   AuthenticatedSchoolsIndexRoute: typeof AuthenticatedSchoolsIndexRoute
@@ -915,6 +915,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedParentsNewRoute: AuthenticatedParentsNewRoute,
   AuthenticatedPlatformAnalyticsRoute: AuthenticatedPlatformAnalyticsRoute,
   AuthenticatedPlatformAuditLogsRoute: AuthenticatedPlatformAuditLogsRoute,
+  AuthenticatedPlatformDashboardRoute: AuthenticatedPlatformDashboardRoute,
   AuthenticatedPlatformIntegrationsRoute:
     AuthenticatedPlatformIntegrationsRoute,
   AuthenticatedPlatformNotificationsRoute:
@@ -939,7 +940,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFeesIndexRoute: AuthenticatedFeesIndexRoute,
   AuthenticatedLibraryIndexRoute: AuthenticatedLibraryIndexRoute,
   AuthenticatedParentsIndexRoute: AuthenticatedParentsIndexRoute,
-  AuthenticatedPlatformIndexRoute: AuthenticatedPlatformIndexRoute,
   AuthenticatedRegistrationRequestsIndexRoute:
     AuthenticatedRegistrationRequestsIndexRoute,
   AuthenticatedReportsIndexRoute: AuthenticatedReportsIndexRoute,

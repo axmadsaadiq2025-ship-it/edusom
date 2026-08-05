@@ -39,7 +39,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export const Route = createFileRoute("/_authenticated/platform/")({
+export const Route = createFileRoute("/_authenticated/platform/dashboard")({
   head: () => ({
     meta: [
       { title: "Platform Overview · EduSom Console" },
