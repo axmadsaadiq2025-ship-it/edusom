@@ -61,7 +61,7 @@ function DashboardPage() {
   const primary = roles[0];
   const name = profile?.full_name?.split(" ")[0] ?? user?.email?.split("@")[0] ?? "there";
 
-  if (isSuper) return null;
+  if (loading || (user && roles.length === 0 && !profile) || isSuper) return null;
 
 
   return (
