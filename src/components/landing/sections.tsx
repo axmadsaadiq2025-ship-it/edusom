@@ -198,21 +198,18 @@ export function Hero() {
                 className="bg-gradient-primary shadow-glow min-h-11 rounded-xl text-primary-foreground transition-transform hover:scale-[1.03]"
               >
                 <Link to="/auth">
-                  Start Free Trial <ArrowRight className="ml-1 h-4 w-4" />
+                  Login <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
               <RequestAccessDialog>
                 <Button size="lg" variant="outline" className="min-h-11 rounded-xl">
-                  <CalendarCheck className="mr-1 h-4 w-4" /> Request Access
+                  <CalendarCheck className="mr-1 h-4 w-4" /> Book a Demo
                 </Button>
               </RequestAccessDialog>
               <Button asChild size="lg" variant="ghost" className="min-h-11 rounded-xl">
                 <a href="#dashboard-preview">
                   <PlayCircle className="mr-1 h-4 w-4" /> Watch Demo
                 </a>
-              </Button>
-              <Button asChild size="lg" variant="ghost" className="min-h-11 rounded-xl">
-                <Link to="/auth">Login</Link>
               </Button>
             </div>
           </Reveal>
@@ -735,7 +732,7 @@ export function Pricing() {
                       : "bg-gradient-primary text-primary-foreground",
                   )}
                 >
-                  <Link to="/auth">Start Free Trial</Link>
+                  <Link to="/auth">Login</Link>
                 </Button>
                 <ul className="mt-7 space-y-3">
                   {p.features.map((f) => (
@@ -887,7 +884,7 @@ export function FinalCTA() {
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button asChild size="lg" className="min-h-11 rounded-xl bg-card text-primary hover:bg-card/90">
                 <Link to="/auth">
-                  Start Free Trial <ArrowRight className="ml-1 h-4 w-4" />
+                  Login <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
               <RequestAccessDialog>
@@ -896,7 +893,7 @@ export function FinalCTA() {
                   variant="outline"
                   className="min-h-11 rounded-xl border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
                 >
-                  <CalendarCheck className="mr-1 h-4 w-4" /> Request Access
+                  <CalendarCheck className="mr-1 h-4 w-4" /> Book a Demo
                 </Button>
               </RequestAccessDialog>
             </div>
