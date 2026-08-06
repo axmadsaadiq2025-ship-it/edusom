@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { EduSomLogo } from "./primitives";
@@ -59,17 +59,11 @@ export function LandingNav() {
         </ul>
 
         <div className="ml-auto flex items-center gap-2 xl:ml-4">
-          <Button asChild variant="ghost" className="hidden sm:inline-flex">
-            <Link to="/auth">Login</Link>
-          </Button>
           <Button
             asChild
             className="bg-gradient-primary shadow-glow rounded-xl text-primary-foreground transition-transform hover:scale-[1.03]"
           >
-            <Link to="/auth">
-              Start Free Trial
-              <ArrowRight className="ml-1 h-4 w-4" />
-            </Link>
+            <Link to="/auth">Login</Link>
           </Button>
 
           <Sheet open={open} onOpenChange={setOpen}>
@@ -110,14 +104,11 @@ export function LandingNav() {
                 ))}
               </ul>
               <div className="flex flex-col gap-2 border-t border-border p-4">
-                <Button asChild variant="outline" className="rounded-xl">
-                  <Link to="/auth">Login</Link>
-                </Button>
                 <Button
                   asChild
                   className="bg-gradient-primary rounded-xl text-primary-foreground"
                 >
-                  <Link to="/auth">Start Free Trial</Link>
+                  <Link to="/auth">Login</Link>
                 </Button>
               </div>
             </SheetContent>
