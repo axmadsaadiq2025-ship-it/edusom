@@ -33,8 +33,9 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { BrandLogo } from "@/components/brand-logo";
-import { useAuth } from "@/hooks/use-auth";
-import { isSuperAdmin, roleLabel } from "@/lib/roles";
+import type { Profile } from "@/hooks/use-auth";
+import { roleLabel, type AppRole } from "@/lib/roles";
+import type { User } from "@supabase/supabase-js";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -61,6 +62,13 @@ interface NavSection {
   section: string;
   items: NavItem[];
   superOnly?: boolean;
+}
+
+interface AuthenticatedIdentity {
+  user: User;
+  profile: Profile | null;
+  roles: AppRole[];
+  isSuper: boolean;
 }
 
 const NAV: NavSection[] = [
@@ -144,11 +152,15 @@ const PLATFORM_NAV: NavSection[] = [
   },
 ];
 
-function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
+function SidebarContent({
+  identity,
+  onNavigate,
+}: {
+  identity: AuthenticatedIdentity;
+  onNavigate?: () => void;
+}) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { roles, user } = useAuth();
-  const isSuper = isSuperAdmin(roles, user?.email);
-  const sections = isSuper ? PLATFORM_NAV : NAV;
+  const sections = identity.isSuper ? PLATFORM_NAV : NAV;
 
   return (
     <div className="flex h-full flex-col gap-6 overflow-y-auto p-4">
@@ -203,10 +215,10 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   );
 }
 
-function UserMenu() {
+function UserMenu({ identity }: { identity: AuthenticatedIdentity }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { user, profile, roles } = useAuth();
+  const { user, profile, roles } = identity;
 
   const initials = (profile?.full_name || user?.email || "U")
     .split(" ")
@@ -266,21 +278,27 @@ function UserMenu() {
   );
 }
 
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({
+  children,
+  identity,
+}: {
+  children: ReactNode;
+  identity: AuthenticatedIdentity;
+}) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <div className="bg-gradient-subtle min-h-screen">
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-sidebar-border bg-sidebar lg:block">
-        <SidebarContent />
+        <SidebarContent identity={identity} />
       </aside>
 
       {/* Mobile sidebar */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
         <SheetContent side="left" className="w-72 p-0">
           <SheetTitle className="sr-only">Navigation</SheetTitle>
-          <SidebarContent onNavigate={() => setMobileOpen(false)} />
+          <SidebarContent identity={identity} onNavigate={() => setMobileOpen(false)} />
         </SheetContent>
       </Sheet>
 
@@ -310,7 +328,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Bell className="h-5 w-5" />
                 <span className="bg-gradient-primary absolute right-2 top-2 h-2 w-2 rounded-full" />
               </Button>
-              <UserMenu />
+              <UserMenu identity={identity} />
             </div>
           </div>
         </header>
