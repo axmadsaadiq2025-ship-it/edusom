@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 import {
   Users,
@@ -23,8 +22,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
-import { useAuth } from "@/hooks/use-auth";
-import { isSuperAdmin, roleLabel } from "@/lib/roles";
+import { roleLabel } from "@/lib/roles";
 import { StatCard } from "@/components/dashboard/stat-card";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -49,20 +47,10 @@ const feesData = [
 ];
 
 function DashboardPage() {
-  const { profile, roles, user, loading } = useAuth();
-  const navigate = useNavigate();
-  const isSuper = isSuperAdmin(roles, user?.email);
-
-  // Super Admins manage the whole platform, not a single school.
-  useEffect(() => {
-    if (!loading && isSuper) navigate({ to: "/platform/dashboard", replace: true });
-  }, [loading, isSuper, navigate]);
+  const { profile, roles, user } = Route.useRouteContext();
 
   const primary = roles[0];
   const name = profile?.full_name?.split(" ")[0] ?? user?.email?.split("@")[0] ?? "there";
-
-  if (loading || (user && roles.length === 0 && !profile) || isSuper) return null;
-
 
   return (
     <div className="space-y-8">
