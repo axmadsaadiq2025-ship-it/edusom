@@ -1,21 +1,14 @@
-import { useEffect } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { getRouteApi } from "@tanstack/react-router";
 import type { LucideIcon } from "lucide-react";
-import { useAuth } from "@/hooks/use-auth";
-import { isSuperAdmin } from "@/lib/roles";
 import { cn } from "@/lib/utils";
 
-/** Redirects non Super Admins back to the school dashboard. */
+const authenticatedRoute = getRouteApi("/_authenticated");
+
+/** Platform access is resolved by the protected parent before this component renders. */
 export function usePlatformGuard() {
-  const { roles, user, loading } = useAuth();
-  const navigate = useNavigate();
-  const isSuper = isSuperAdmin(roles, user?.email);
+  const { isSuper } = authenticatedRoute.useRouteContext();
 
-  useEffect(() => {
-    if (!loading && !isSuper) navigate({ to: "/dashboard", replace: true });
-  }, [loading, isSuper, navigate]);
-
-  return { isSuper, loading };
+  return { isSuper, loading: false };
 }
 
 export function PlatformHeader({
