@@ -1255,29 +1255,32 @@ export type Database = {
           admin_email: string
           admin_full_name: string
           admin_phone: string
-          admin_position: string
+          admin_position: string | null
           admin_user_id: string | null
           city: string
           country: string
           created_at: string
-          district: string
+          district: string | null
           estimated_students: number
           estimated_teachers: number
           id: string
+          message: string | null
           notes: string | null
           postal_code: string | null
+          preferred_demo_date: string | null
           preferred_plan: Database["public"]["Enums"]["subscription_plan"]
           rejection_reason: string | null
+          request_source: string
           reviewed_at: string | null
           reviewed_by: string | null
           school_email: string
           school_id: string | null
           school_name: string
-          school_phone: string
+          school_phone: string | null
           school_type: Database["public"]["Enums"]["school_type"]
-          state_region: string
+          state_region: string | null
           status: Database["public"]["Enums"]["registration_status"]
-          street_address: string
+          street_address: string | null
           updated_at: string
           website: string | null
         }
@@ -1286,29 +1289,32 @@ export type Database = {
           admin_email: string
           admin_full_name: string
           admin_phone: string
-          admin_position: string
+          admin_position?: string | null
           admin_user_id?: string | null
           city: string
           country: string
           created_at?: string
-          district: string
+          district?: string | null
           estimated_students?: number
           estimated_teachers?: number
           id?: string
+          message?: string | null
           notes?: string | null
           postal_code?: string | null
+          preferred_demo_date?: string | null
           preferred_plan?: Database["public"]["Enums"]["subscription_plan"]
           rejection_reason?: string | null
+          request_source?: string
           reviewed_at?: string | null
           reviewed_by?: string | null
           school_email: string
           school_id?: string | null
           school_name: string
-          school_phone: string
+          school_phone?: string | null
           school_type: Database["public"]["Enums"]["school_type"]
-          state_region: string
+          state_region?: string | null
           status?: Database["public"]["Enums"]["registration_status"]
-          street_address: string
+          street_address?: string | null
           updated_at?: string
           website?: string | null
         }
@@ -1317,29 +1323,32 @@ export type Database = {
           admin_email?: string
           admin_full_name?: string
           admin_phone?: string
-          admin_position?: string
+          admin_position?: string | null
           admin_user_id?: string | null
           city?: string
           country?: string
           created_at?: string
-          district?: string
+          district?: string | null
           estimated_students?: number
           estimated_teachers?: number
           id?: string
+          message?: string | null
           notes?: string | null
           postal_code?: string | null
+          preferred_demo_date?: string | null
           preferred_plan?: Database["public"]["Enums"]["subscription_plan"]
           rejection_reason?: string | null
+          request_source?: string
           reviewed_at?: string | null
           reviewed_by?: string | null
           school_email?: string
           school_id?: string | null
           school_name?: string
-          school_phone?: string
+          school_phone?: string | null
           school_type?: Database["public"]["Enums"]["school_type"]
-          state_region?: string
+          state_region?: string | null
           status?: Database["public"]["Enums"]["registration_status"]
-          street_address?: string
+          street_address?: string | null
           updated_at?: string
           website?: string | null
         }
