@@ -7,6 +7,7 @@ import {
   makeSchoolCode,
   positionToRole,
 } from "./registration-shared";
+import { demoRequestSchema, type DemoRequestInput } from "./demo-request-shared";
 
 /** Public: submit a school access request. Creates a blocked auth user (password hashed by auth). */
 export const submitRegistrationRequest = createServerFn({ method: "POST" })
@@ -272,5 +273,44 @@ export const deleteRegistrationRequest = createServerFn({ method: "POST" })
     if (req.status === "pending" && req.admin_user_id) {
       await supabaseAdmin.auth.admin.deleteUser(req.admin_user_id);
     }
+    return { ok: true as const };
+  });
+
+/** Public: book a demo / request access. Creates NO auth account — Super Admin approves later. */
+export const submitDemoRequest = createServerFn({ method: "POST" })
+  .inputValidator((data: DemoRequestInput) => demoRequestSchema.parse(data))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const email = data.email.trim().toLowerCase();
+
+    const { data: existing, error: existingError } = await supabaseAdmin
+      .from("school_registration_requests")
+      .select("id, status")
+      .or(`school_email.ilike.${email},admin_email.ilike.${email}`)
+      .eq("status", "pending");
+    if (existingError) throw new Error(existingError.message);
+    if (existing && existing.length > 0) {
+      throw new Error("We already have a pending request for this email. Our team will reach out shortly.");
+    }
+
+    const { error } = await supabaseAdmin.from("school_registration_requests").insert({
+      school_name: data.schoolName.trim(),
+      school_type: data.schoolType,
+      school_email: email,
+      school_phone: data.phone.trim(),
+      country: data.country.trim(),
+      city: data.cityRegion.trim(),
+      admin_full_name: data.fullName.trim(),
+      admin_email: email,
+      admin_phone: data.phone.trim(),
+      estimated_students: Number(data.studentCount),
+      estimated_teachers: 1,
+      preferred_demo_date: data.preferredDate,
+      message: data.message?.trim() || null,
+      request_source: "demo",
+      accepted_terms: true,
+    });
+    if (error) throw new Error(error.message);
+
     return { ok: true as const };
   });
