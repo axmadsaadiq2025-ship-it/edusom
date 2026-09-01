@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { RequestAccessDialog } from "./request-access-dialog";
 import {
   ArrowRight,
   PlayCircle,
@@ -201,15 +200,10 @@ export function Hero() {
                   Login <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
-              <RequestAccessDialog>
-                <Button size="lg" variant="outline" className="min-h-11 rounded-xl">
+              <Button asChild size="lg" variant="outline" className="min-h-11 rounded-xl">
+                <Link to="/book-demo">
                   <CalendarCheck className="mr-1 h-4 w-4" /> Book a Demo
-                </Button>
-              </RequestAccessDialog>
-              <Button asChild size="lg" variant="ghost" className="min-h-11 rounded-xl">
-                <a href="#dashboard-preview">
-                  <PlayCircle className="mr-1 h-4 w-4" /> Watch Demo
-                </a>
+                </Link>
               </Button>
             </div>
           </Reveal>
@@ -887,15 +881,16 @@ export function FinalCTA() {
                   Login <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
-              <RequestAccessDialog>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="min-h-11 rounded-xl border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
-                >
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="min-h-11 rounded-xl border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+              >
+                <Link to="/book-demo">
                   <CalendarCheck className="mr-1 h-4 w-4" /> Book a Demo
-                </Button>
-              </RequestAccessDialog>
+                </Link>
+              </Button>
             </div>
           </div>
         </Reveal>
