@@ -149,15 +149,38 @@ export const approveRegistrationRequest = createServerFn({ method: "POST" })
     });
 
 
+    let adminUserId = req.admin_user_id;
+    let tempPassword: string | null = null;
 
-    if (req.admin_user_id) {
-      await supabaseAdmin.auth.admin.updateUserById(req.admin_user_id, {
+    // Demo/booking requests have no account yet — create one on approval.
+    if (!adminUserId) {
+      tempPassword = `Edu${Math.random().toString(36).slice(2, 10)}${Math.random()
+        .toString(36)
+        .slice(2, 6)
+        .toUpperCase()}!`;
+      const { data: createdAdmin, error: createAdminError } =
+        await supabaseAdmin.auth.admin.createUser({
+          email: req.admin_email,
+          password: tempPassword,
+          email_confirm: true,
+          user_metadata: { full_name: req.admin_full_name, phone: req.admin_phone },
+        });
+      if (createAdminError || !createdAdmin?.user) {
+        throw new Error(
+          createAdminError?.message ?? "Could not create the administrator account.",
+        );
+      }
+      adminUserId = createdAdmin.user.id;
+    }
+
+    if (adminUserId) {
+      await supabaseAdmin.auth.admin.updateUserById(adminUserId, {
         ban_duration: "none",
       });
       await supabaseAdmin
         .from("profiles")
         .upsert({
-          id: req.admin_user_id,
+          id: adminUserId,
           school_id: school.id,
           full_name: req.admin_full_name,
           email: req.admin_email,
@@ -165,11 +188,12 @@ export const approveRegistrationRequest = createServerFn({ method: "POST" })
           is_active: true,
         });
       await supabaseAdmin.from("user_roles").insert({
-        user_id: req.admin_user_id,
+        user_id: adminUserId,
         school_id: school.id,
-        role: positionToRole(req.admin_position),
+        role: positionToRole(req.admin_position ?? "administrator"),
       });
     }
+
 
     const { error: updateError } = await supabaseAdmin
       .from("school_registration_requests")
