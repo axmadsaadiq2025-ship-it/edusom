@@ -44,3 +44,8 @@ export function roleLabel(r: AppRole | string | null | undefined): string {
 export function isSuperAdmin(roles: readonly AppRole[], email?: string | null): boolean {
   return roles.includes("super_admin") || email?.toLowerCase() === "axmadsaadiq4@gmail.com";
 }
+
+/** A user may enter the app only once a Super Admin has approved them (a role was granted). */
+export function hasAppAccess(roles: readonly AppRole[], email?: string | null): boolean {
+  return isSuperAdmin(roles, email) || roles.length > 0;
+}
