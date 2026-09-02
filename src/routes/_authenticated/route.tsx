@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/layout/app-shell";
 import { BrandLogo } from "@/components/brand-logo";
 import type { Profile } from "@/hooks/use-auth";
-import { isSuperAdmin, type AppRole } from "@/lib/roles";
+import { hasAppAccess, isSuperAdmin, type AppRole } from "@/lib/roles";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -30,6 +30,12 @@ export const Route = createFileRoute("/_authenticated")({
 
     const roles = ((roleRows ?? []) as { role: AppRole }[]).map(({ role }) => role);
     const isSuper = isSuperAdmin(roles, data.user.email);
+
+    // Invitation-only: unapproved accounts (e.g. a fresh Google sign-in) get no access.
+    if (!hasAppAccess(roles, data.user.email)) {
+      await supabase.auth.signOut();
+      throw redirect({ to: "/access-pending" });
+    }
 
     if (location.pathname === "/dashboard" && isSuper) {
       throw redirect({ to: "/platform/dashboard", replace: true });

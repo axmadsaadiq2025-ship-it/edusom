@@ -10,6 +10,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BrandLogo } from "@/components/brand-logo";
+import { hasAppAccess, type AppRole } from "@/lib/roles";
+
+/** EduSom is invitation-only: a session is only usable once a Super Admin granted a role. */
+async function ensureApproved(userId: string, email?: string | null) {
+  const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", userId);
+  const roles = ((data ?? []) as { role: AppRole }[]).map((r) => r.role);
+  if (error || !hasAppAccess(roles, email)) {
+    await supabase.auth.signOut();
+    return false;
+  }
+  return true;
+}
 
 const searchSchema = z.object({
   redirect: z.string().optional(),
@@ -65,6 +77,13 @@ function AuthPage() {
       toast.error(error.message);
       return;
     }
+    const { data: userData } = await supabase.auth.getUser();
+    if (!userData.user || !(await ensureApproved(userData.user.id, userData.user.email))) {
+      toast.error("This account is not approved for EduSom yet.");
+      navigate({ to: "/access-pending" });
+      return;
+    }
+
     toast.success("Welcome back!");
     navigate({ to: redirectTo });
   }
@@ -80,6 +99,14 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
+
+    const { data: userData } = await supabase.auth.getUser();
+    setOauthLoading(false);
+    if (!userData.user || !(await ensureApproved(userData.user.id, userData.user.email))) {
+      toast.error("This Google account is not approved for EduSom yet.");
+      navigate({ to: "/access-pending" });
+      return;
+    }
     toast.success("Welcome back!");
     navigate({ to: redirectTo });
   }
