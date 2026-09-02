@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as BookDemoRouteImport } from './routes/book-demo'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AccessPendingRouteImport } from './routes/access-pending'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -64,6 +65,11 @@ const BookDemoRoute = BookDemoRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccessPendingRoute = AccessPendingRouteImport.update({
+  id: '/access-pending',
+  path: '/access-pending',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -322,6 +328,7 @@ const AuthenticatedPlatformSchoolsSchoolIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/access-pending': typeof AccessPendingRoute
   '/auth': typeof AuthRoute
   '/book-demo': typeof BookDemoRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -369,6 +376,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/access-pending': typeof AccessPendingRoute
   '/auth': typeof AuthRoute
   '/book-demo': typeof BookDemoRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -418,6 +426,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/access-pending': typeof AccessPendingRoute
   '/auth': typeof AuthRoute
   '/book-demo': typeof BookDemoRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -467,6 +476,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/access-pending'
     | '/auth'
     | '/book-demo'
     | '/dashboard'
@@ -514,6 +524,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/access-pending'
     | '/auth'
     | '/book-demo'
     | '/dashboard'
@@ -562,6 +573,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/access-pending'
     | '/auth'
     | '/book-demo'
     | '/_authenticated/dashboard'
@@ -611,6 +623,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AccessPendingRoute: typeof AccessPendingRoute
   AuthRoute: typeof AuthRoute
   BookDemoRoute: typeof BookDemoRoute
 }
@@ -629,6 +642,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/access-pending': {
+      id: '/access-pending'
+      path: '/access-pending'
+      fullPath: '/access-pending'
+      preLoaderRoute: typeof AccessPendingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -1045,6 +1065,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AccessPendingRoute: AccessPendingRoute,
   AuthRoute: AuthRoute,
   BookDemoRoute: BookDemoRoute,
 }
