@@ -86,44 +86,62 @@ function AuthPage() {
       email: emailResult.data,
       password: passwordResult.data,
     });
-    setSubmitting(false);
 
     if (error) {
+      setSubmitting(false);
       toast.error(error.message);
       return;
     }
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData.user || !(await ensureApproved(userData.user.id, userData.user.email))) {
-      toast.error("This account is not approved for EduSom yet.");
-      navigate({ to: "/access-pending" });
+
+    const result = await authorize();
+    setSubmitting(false);
+    finish(result);
+  }
+
+  /** Route the user according to the server's authorization verdict. */
+  function finish(result: AccessResult | null) {
+    if (!result) {
+      toast.error("We could not verify your EduSom access. Please try again.");
       return;
     }
-
+    if (result.state !== "active") {
+      toast.error(ACCESS_COPY[result.state].title);
+      navigate({ to: "/access-pending", search: { reason: result.state } });
+      return;
+    }
     toast.success("Welcome back!");
-    navigate({ to: redirectTo });
+    navigate({ to: result.isSuper ? "/platform/dashboard" : redirectTo });
   }
 
   async function handleGoogle() {
     setOauthLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
+    let result;
+    try {
+      result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+    } catch {
+      setOauthLoading(false);
+      toast.error("Unable to sign in with Google. Please try again.");
+      return;
+    }
+
     if (result.error) {
       setOauthLoading(false);
-      toast.error("Google sign-in failed. Please try again.");
+      const message = String((result.error as { message?: string }).message ?? "").toLowerCase();
+      toast.error(
+        message.includes("cancel") || message.includes("closed") || message.includes("denied")
+          ? "Google sign-in was cancelled."
+          : "Unable to sign in with Google. Please try again.",
+      );
       return;
     }
+    // Full-page redirect to Google — authorization happens when we come back.
     if (result.redirected) return;
 
-    const { data: userData } = await supabase.auth.getUser();
+    const access = await authorize();
     setOauthLoading(false);
-    if (!userData.user || !(await ensureApproved(userData.user.id, userData.user.email))) {
-      toast.error("This Google account is not approved for EduSom yet.");
-      navigate({ to: "/access-pending" });
-      return;
-    }
-    toast.success("Welcome back!");
-    navigate({ to: redirectTo });
+    finish(access);
   }
 
   return (
