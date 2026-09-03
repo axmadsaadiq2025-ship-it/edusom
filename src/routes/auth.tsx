@@ -216,7 +216,7 @@ function AuthPage() {
               ) : (
                 <GoogleIcon className="mr-2 h-4 w-4" />
               )}
-              Continue with Google
+              {oauthLoading ? "Signing in with Google…" : "Continue with Google"}
             </Button>
 
             <div className="my-6 flex items-center gap-3">
