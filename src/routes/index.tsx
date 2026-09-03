@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
+import { resolveAccessState } from "@/lib/access.functions";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { LandingFooter } from "@/components/landing/landing-footer";
 import {
@@ -71,9 +72,23 @@ function LandingPage() {
 
   useEffect(() => {
     let active = true;
-    supabase.auth.getSession().then(({ data }) => {
-      if (active && data.session) navigate({ to: "/dashboard", replace: true });
-    });
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      if (!active || !data.user) return;
+      // Signed in (including a returning Google OAuth redirect): let the server decide access.
+      try {
+        const access = await resolveAccessState();
+        if (!active) return;
+        if (access.state === "active" && access.redirectTo) {
+          navigate({ to: access.redirectTo, replace: true });
+          return;
+        }
+        await supabase.auth.signOut();
+        if (active) navigate({ to: "/access-pending", search: { reason: access.state }, replace: true });
+      } catch {
+        await supabase.auth.signOut();
+      }
+    })();
     return () => {
       active = false;
     };

@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/layout/app-shell";
 import { BrandLogo } from "@/components/brand-logo";
 import type { Profile } from "@/hooks/use-auth";
-import { hasAppAccess, isSuperAdmin, type AppRole } from "@/lib/roles";
+import { resolveAccessState } from "@/lib/access.functions";
+import type { AccessResult } from "@/lib/access-shared";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -18,23 +19,28 @@ export const Route = createFileRoute("/_authenticated")({
       });
     }
 
-    const [{ data: profile, error: profileError }, { data: roleRows, error: rolesError }] =
-      await Promise.all([
-        supabase.from("profiles").select("*").eq("id", data.user.id).maybeSingle(),
-        supabase.from("user_roles").select("role").eq("user_id", data.user.id),
-      ]);
-
-    if (profileError || rolesError) {
+    // Authorization is decided server-side; a session alone grants nothing.
+    let access: AccessResult;
+    try {
+      access = await resolveAccessState();
+    } catch {
       throw new Error("Unable to load your account permissions. Please try again.");
     }
 
-    const roles = ((roleRows ?? []) as { role: AppRole }[]).map(({ role }) => role);
-    const isSuper = isSuperAdmin(roles, data.user.email);
-
-    // Invitation-only: unapproved accounts (e.g. a fresh Google sign-in) get no access.
-    if (!hasAppAccess(roles, data.user.email)) {
+    if (access.state !== "active") {
       await supabase.auth.signOut();
-      throw redirect({ to: "/access-pending" });
+      throw redirect({ to: "/access-pending", search: { reason: access.state } });
+    }
+
+    const { roles, isSuper } = access;
+
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", data.user.id)
+      .maybeSingle();
+    if (profileError) {
+      throw new Error("Unable to load your account permissions. Please try again.");
     }
 
     if (location.pathname === "/dashboard" && isSuper) {

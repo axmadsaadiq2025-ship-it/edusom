@@ -10,17 +10,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BrandLogo } from "@/components/brand-logo";
-import { hasAppAccess, type AppRole } from "@/lib/roles";
+import { resolveAccessState } from "@/lib/access.functions";
+import { ACCESS_COPY, type AccessResult } from "@/lib/access-shared";
 
-/** EduSom is invitation-only: a session is only usable once a Super Admin granted a role. */
-async function ensureApproved(userId: string, email?: string | null) {
-  const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", userId);
-  const roles = ((data ?? []) as { role: AppRole }[]).map((r) => r.role);
-  if (error || !hasAppAccess(roles, email)) {
+/**
+ * Authentication proved identity — now ask the server whether this identity is a
+ * registered, approved and active EduSom user. Unauthorized identities are signed out.
+ */
+async function authorize(): Promise<AccessResult | null> {
+  try {
+    const result = await resolveAccessState();
+    if (result.state !== "active") {
+      await supabase.auth.signOut();
+    }
+    return result;
+  } catch {
     await supabase.auth.signOut();
-    return false;
+    return null;
   }
-  return true;
 }
 
 const searchSchema = z.object({
@@ -31,8 +38,16 @@ export const Route = createFileRoute("/auth")({
   ssr: false,
   validateSearch: searchSchema,
   beforeLoad: async () => {
-    const { data } = await supabase.auth.getSession();
-    if (data.session) throw redirect({ to: "/dashboard" });
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) return;
+    // A live session is only useful if it is also authorized.
+    const result = await authorize();
+    if (result?.state === "active" && result.redirectTo) {
+      throw redirect({ to: result.redirectTo });
+    }
+    if (result && result.state !== "active") {
+      throw redirect({ to: "/access-pending", search: { reason: result.state } });
+    }
   },
   component: AuthPage,
 });
@@ -71,44 +86,62 @@ function AuthPage() {
       email: emailResult.data,
       password: passwordResult.data,
     });
-    setSubmitting(false);
 
     if (error) {
+      setSubmitting(false);
       toast.error(error.message);
       return;
     }
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData.user || !(await ensureApproved(userData.user.id, userData.user.email))) {
-      toast.error("This account is not approved for EduSom yet.");
-      navigate({ to: "/access-pending" });
+
+    const result = await authorize();
+    setSubmitting(false);
+    finish(result);
+  }
+
+  /** Route the user according to the server's authorization verdict. */
+  function finish(result: AccessResult | null) {
+    if (!result) {
+      toast.error("We could not verify your EduSom access. Please try again.");
       return;
     }
-
+    if (result.state !== "active") {
+      toast.error(ACCESS_COPY[result.state].title);
+      navigate({ to: "/access-pending", search: { reason: result.state } });
+      return;
+    }
     toast.success("Welcome back!");
-    navigate({ to: redirectTo });
+    navigate({ to: result.isSuper ? "/platform/dashboard" : redirectTo });
   }
 
   async function handleGoogle() {
     setOauthLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
+    let result;
+    try {
+      result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+    } catch {
+      setOauthLoading(false);
+      toast.error("Unable to sign in with Google. Please try again.");
+      return;
+    }
+
     if (result.error) {
       setOauthLoading(false);
-      toast.error("Google sign-in failed. Please try again.");
+      const message = String((result.error as { message?: string }).message ?? "").toLowerCase();
+      toast.error(
+        message.includes("cancel") || message.includes("closed") || message.includes("denied")
+          ? "Google sign-in was cancelled."
+          : "Unable to sign in with Google. Please try again.",
+      );
       return;
     }
+    // Full-page redirect to Google — authorization happens when we come back.
     if (result.redirected) return;
 
-    const { data: userData } = await supabase.auth.getUser();
+    const access = await authorize();
     setOauthLoading(false);
-    if (!userData.user || !(await ensureApproved(userData.user.id, userData.user.email))) {
-      toast.error("This Google account is not approved for EduSom yet.");
-      navigate({ to: "/access-pending" });
-      return;
-    }
-    toast.success("Welcome back!");
-    navigate({ to: redirectTo });
+    finish(access);
   }
 
   return (
@@ -183,7 +216,7 @@ function AuthPage() {
               ) : (
                 <GoogleIcon className="mr-2 h-4 w-4" />
               )}
-              Continue with Google
+              {oauthLoading ? "Signing in with Google…" : "Continue with Google"}
             </Button>
 
             <div className="my-6 flex items-center gap-3">
