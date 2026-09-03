@@ -10,17 +10,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BrandLogo } from "@/components/brand-logo";
-import { hasAppAccess, type AppRole } from "@/lib/roles";
+import { resolveAccessState } from "@/lib/access.functions";
+import { ACCESS_COPY, type AccessResult } from "@/lib/access-shared";
 
-/** EduSom is invitation-only: a session is only usable once a Super Admin granted a role. */
-async function ensureApproved(userId: string, email?: string | null) {
-  const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", userId);
-  const roles = ((data ?? []) as { role: AppRole }[]).map((r) => r.role);
-  if (error || !hasAppAccess(roles, email)) {
+/**
+ * Authentication proved identity — now ask the server whether this identity is a
+ * registered, approved and active EduSom user. Unauthorized identities are signed out.
+ */
+async function authorize(): Promise<AccessResult | null> {
+  try {
+    const result = await resolveAccessState();
+    if (result.state !== "active") {
+      await supabase.auth.signOut();
+    }
+    return result;
+  } catch {
     await supabase.auth.signOut();
-    return false;
+    return null;
   }
-  return true;
 }
 
 const searchSchema = z.object({
