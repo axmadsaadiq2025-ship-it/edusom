@@ -38,8 +38,16 @@ export const Route = createFileRoute("/auth")({
   ssr: false,
   validateSearch: searchSchema,
   beforeLoad: async () => {
-    const { data } = await supabase.auth.getSession();
-    if (data.session) throw redirect({ to: "/dashboard" });
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) return;
+    // A live session is only useful if it is also authorized.
+    const result = await authorize();
+    if (result?.state === "active" && result.redirectTo) {
+      throw redirect({ to: result.redirectTo });
+    }
+    if (result && result.state !== "active") {
+      throw redirect({ to: "/access-pending", search: { reason: result.state } });
+    }
   },
   component: AuthPage,
 });
