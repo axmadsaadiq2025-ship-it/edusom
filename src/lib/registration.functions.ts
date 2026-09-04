@@ -167,7 +167,7 @@ export const approveRegistrationRequest = createServerFn({ method: "POST" })
       await supabaseAdmin.from("user_roles").insert({
         user_id: req.admin_user_id,
         school_id: school.id,
-        role: positionToRole(req.admin_position),
+        role: positionToRole(req.admin_position ?? ""),
       });
     }
 
