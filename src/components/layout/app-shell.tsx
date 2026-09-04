@@ -47,8 +47,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { GlobalSearch } from "@/components/layout/global-search";
+import { allowedModules, type ModuleKey } from "@/lib/rbac";
+import { useQuery } from "@tanstack/react-query";
+import { Plus } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
 interface NavItem {
@@ -56,6 +59,7 @@ interface NavItem {
   to: string;
   icon: typeof LayoutDashboard;
   badge?: string;
+  module?: ModuleKey;
 }
 
 interface NavSection {
@@ -74,43 +78,43 @@ interface AuthenticatedIdentity {
 const NAV: NavSection[] = [
   {
     section: "Overview",
-    items: [{ label: "Dashboard", to: "/dashboard", icon: LayoutDashboard }],
+    items: [{ label: "Dashboard", to: "/dashboard", icon: LayoutDashboard, module: "dashboard" }],
   },
   {
     section: "People",
     items: [
-      { label: "Students", to: "/students", icon: GraduationCap },
-      { label: "Teachers", to: "/teachers", icon: UserSquare2 },
-      { label: "Parents", to: "/parents", icon: Users },
+      { label: "Students", to: "/students", icon: GraduationCap, module: "students" },
+      { label: "Teachers", to: "/teachers", icon: UserSquare2, module: "teachers" },
+      { label: "Parents", to: "/parents", icon: Users, module: "parents" },
     ],
   },
   {
     section: "Academic Setup",
     items: [
-      { label: "Academic Years", to: "/academic-years", icon: CalendarClock },
-      { label: "Classes", to: "/classes", icon: BookOpen },
-      { label: "Subjects", to: "/subjects", icon: Library },
+      { label: "Academic Years", to: "/academic-years", icon: CalendarClock, module: "academic-years" },
+      { label: "Classes", to: "/classes", icon: BookOpen, module: "classes" },
+      { label: "Subjects", to: "/subjects", icon: Library, module: "subjects" },
     ],
   },
   {
     section: "Academics",
     items: [
-      { label: "Attendance", to: "/attendance", icon: ClipboardCheck },
-      { label: "Timetable", to: "/timetable", icon: CalendarClock },
-      { label: "Exams", to: "/exams", icon: GraduationCap },
+      { label: "Attendance", to: "/attendance", icon: ClipboardCheck, module: "attendance" },
+      { label: "Timetable", to: "/timetable", icon: CalendarClock, module: "timetable" },
+      { label: "Exams", to: "/exams", icon: GraduationCap, module: "exams" },
     ],
   },
   {
     section: "Operations",
     items: [
-      { label: "Fees", to: "/fees", icon: Wallet },
-      { label: "Reports", to: "/reports", icon: FileBarChart },
-      { label: "Library", to: "/library", icon: Library },
+      { label: "Fees", to: "/fees", icon: Wallet, module: "fees" },
+      { label: "Reports", to: "/reports", icon: FileBarChart, module: "reports" },
+      { label: "Library", to: "/library", icon: Library, module: "library" },
     ],
   },
   {
     section: "System",
-    items: [{ label: "Settings", to: "/settings", icon: Settings }],
+    items: [{ label: "Settings", to: "/settings", icon: Settings, module: "settings" }],
   },
 ];
 
@@ -160,7 +164,13 @@ function SidebarContent({
   onNavigate?: () => void;
 }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const sections = identity.isSuper ? PLATFORM_NAV : NAV;
+  const modules = allowedModules(identity.roles);
+  const sections = (identity.isSuper ? PLATFORM_NAV : NAV)
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item) => !item.module || modules.has(item.module)),
+    }))
+    .filter((section) => section.items.length > 0);
 
   return (
     <div className="flex h-full flex-col gap-6 overflow-y-auto p-4">
