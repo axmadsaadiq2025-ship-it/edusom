@@ -191,14 +191,9 @@ function RegistrationRequestsPage() {
 
   const approveMutation = useMutation({
     mutationFn: (id: string) => approveFn({ data: { id } }),
-    onSuccess: (res: { schoolCode?: string | null; tempPassword?: string | null }) => {
+    onSuccess: (res: { schoolCode?: string | null }) => {
       toast.success(`Approved — school created${res?.schoolCode ? ` (${res.schoolCode})` : ""}.`);
-      if (res?.tempPassword) {
-        toast.message("Temporary password created", {
-          description: `${res.tempPassword} — share it securely with the school administrator.`,
-          duration: 30000,
-        });
-      }
+      toast.message("Welcome email and SMS queued (placeholder).");
       queryClient.invalidateQueries({ queryKey: ["registration-requests"] });
       setApproveTarget(null);
       setDetail(null);

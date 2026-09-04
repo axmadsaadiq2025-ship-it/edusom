@@ -9,9 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as BookDemoRouteImport } from './routes/book-demo'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AccessPendingRouteImport } from './routes/access-pending'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -57,19 +55,9 @@ import { Route as AuthenticatedAttendanceNewRouteImport } from './routes/_authen
 import { Route as AuthenticatedPlatformSchoolsIndexRouteImport } from './routes/_authenticated/platform/schools/index'
 import { Route as AuthenticatedPlatformSchoolsSchoolIdRouteImport } from './routes/_authenticated/platform/schools/$schoolId'
 
-const BookDemoRoute = BookDemoRouteImport.update({
-  id: '/book-demo',
-  path: '/book-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AccessPendingRoute = AccessPendingRouteImport.update({
-  id: '/access-pending',
-  path: '/access-pending',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -328,9 +316,7 @@ const AuthenticatedPlatformSchoolsSchoolIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/access-pending': typeof AccessPendingRoute
   '/auth': typeof AuthRoute
-  '/book-demo': typeof BookDemoRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/attendance/new': typeof AuthenticatedAttendanceNewRoute
   '/exams/$id': typeof AuthenticatedExamsIdRoute
@@ -376,9 +362,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/access-pending': typeof AccessPendingRoute
   '/auth': typeof AuthRoute
-  '/book-demo': typeof BookDemoRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/attendance/new': typeof AuthenticatedAttendanceNewRoute
   '/exams/$id': typeof AuthenticatedExamsIdRoute
@@ -426,9 +410,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/access-pending': typeof AccessPendingRoute
   '/auth': typeof AuthRoute
-  '/book-demo': typeof BookDemoRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/attendance/new': typeof AuthenticatedAttendanceNewRoute
   '/_authenticated/exams/$id': typeof AuthenticatedExamsIdRoute
@@ -476,9 +458,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/access-pending'
     | '/auth'
-    | '/book-demo'
     | '/dashboard'
     | '/attendance/new'
     | '/exams/$id'
@@ -524,9 +504,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/access-pending'
     | '/auth'
-    | '/book-demo'
     | '/dashboard'
     | '/attendance/new'
     | '/exams/$id'
@@ -573,9 +551,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
-    | '/access-pending'
     | '/auth'
-    | '/book-demo'
     | '/_authenticated/dashboard'
     | '/_authenticated/attendance/new'
     | '/_authenticated/exams/$id'
@@ -623,32 +599,16 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  AccessPendingRoute: typeof AccessPendingRoute
   AuthRoute: typeof AuthRoute
-  BookDemoRoute: typeof BookDemoRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/book-demo': {
-      id: '/book-demo'
-      path: '/book-demo'
-      fullPath: '/book-demo'
-      preLoaderRoute: typeof BookDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/access-pending': {
-      id: '/access-pending'
-      path: '/access-pending'
-      fullPath: '/access-pending'
-      preLoaderRoute: typeof AccessPendingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -1065,9 +1025,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  AccessPendingRoute: AccessPendingRoute,
   AuthRoute: AuthRoute,
-  BookDemoRoute: BookDemoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

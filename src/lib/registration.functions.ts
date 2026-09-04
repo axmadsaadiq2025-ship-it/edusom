@@ -7,7 +7,6 @@ import {
   makeSchoolCode,
   positionToRole,
 } from "./registration-shared";
-import { demoRequestSchema, type DemoRequestInput } from "./demo-request-shared";
 
 /** Public: submit a school access request. Creates a blocked auth user (password hashed by auth). */
 export const submitRegistrationRequest = createServerFn({ method: "POST" })
@@ -150,38 +149,15 @@ export const approveRegistrationRequest = createServerFn({ method: "POST" })
     });
 
 
-    let adminUserId = req.admin_user_id;
-    let tempPassword: string | null = null;
 
-    // Demo/booking requests have no account yet — create one on approval.
-    if (!adminUserId) {
-      tempPassword = `Edu${Math.random().toString(36).slice(2, 10)}${Math.random()
-        .toString(36)
-        .slice(2, 6)
-        .toUpperCase()}!`;
-      const { data: createdAdmin, error: createAdminError } =
-        await supabaseAdmin.auth.admin.createUser({
-          email: req.admin_email,
-          password: tempPassword,
-          email_confirm: true,
-          user_metadata: { full_name: req.admin_full_name, phone: req.admin_phone },
-        });
-      if (createAdminError || !createdAdmin?.user) {
-        throw new Error(
-          createAdminError?.message ?? "Could not create the administrator account.",
-        );
-      }
-      adminUserId = createdAdmin.user.id;
-    }
-
-    if (adminUserId) {
-      await supabaseAdmin.auth.admin.updateUserById(adminUserId, {
+    if (req.admin_user_id) {
+      await supabaseAdmin.auth.admin.updateUserById(req.admin_user_id, {
         ban_duration: "none",
       });
       await supabaseAdmin
         .from("profiles")
         .upsert({
-          id: adminUserId,
+          id: req.admin_user_id,
           school_id: school.id,
           full_name: req.admin_full_name,
           email: req.admin_email,
@@ -189,12 +165,11 @@ export const approveRegistrationRequest = createServerFn({ method: "POST" })
           is_active: true,
         });
       await supabaseAdmin.from("user_roles").insert({
-        user_id: adminUserId,
+        user_id: req.admin_user_id,
         school_id: school.id,
-        role: positionToRole(req.admin_position ?? "administrator"),
+        role: positionToRole(req.admin_position),
       });
     }
-
 
     const { error: updateError } = await supabaseAdmin
       .from("school_registration_requests")
@@ -210,13 +185,9 @@ export const approveRegistrationRequest = createServerFn({ method: "POST" })
 
     // Placeholders for outbound notifications.
     console.log(`[placeholder email] Welcome to EduSom, ${req.admin_email} (school ${school.school_code})`);
+    console.log(`[placeholder sms] ${req.admin_phone}: Your EduSom school account is approved.`);
 
-    return {
-      ok: true as const,
-      schoolId: school.id,
-      schoolCode: school.school_code,
-      tempPassword,
-    };
+    return { ok: true as const, schoolId: school.id, schoolCode: school.school_code };
   });
 
 export const rejectRegistrationRequest = createServerFn({ method: "POST" })
@@ -273,44 +244,5 @@ export const deleteRegistrationRequest = createServerFn({ method: "POST" })
     if (req.status === "pending" && req.admin_user_id) {
       await supabaseAdmin.auth.admin.deleteUser(req.admin_user_id);
     }
-    return { ok: true as const };
-  });
-
-/** Public: book a demo / request access. Creates NO auth account — Super Admin approves later. */
-export const submitDemoRequest = createServerFn({ method: "POST" })
-  .inputValidator((data: DemoRequestInput) => demoRequestSchema.parse(data))
-  .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const email = data.email.trim().toLowerCase();
-
-    const { data: existing, error: existingError } = await supabaseAdmin
-      .from("school_registration_requests")
-      .select("id, status")
-      .or(`school_email.ilike.${email},admin_email.ilike.${email}`)
-      .eq("status", "pending");
-    if (existingError) throw new Error(existingError.message);
-    if (existing && existing.length > 0) {
-      throw new Error("We already have a pending request for this email. Our team will reach out shortly.");
-    }
-
-    const { error } = await supabaseAdmin.from("school_registration_requests").insert({
-      school_name: data.schoolName.trim(),
-      school_type: data.schoolType,
-      school_email: email,
-      school_phone: data.phone.trim(),
-      country: data.country.trim(),
-      city: data.cityRegion.trim(),
-      admin_full_name: data.fullName.trim(),
-      admin_email: email,
-      admin_phone: data.phone.trim(),
-      estimated_students: Number(data.studentCount),
-      estimated_teachers: 1,
-      preferred_demo_date: data.preferredDate,
-      message: data.message?.trim() || null,
-      request_source: "demo",
-      accepted_terms: true,
-    });
-    if (error) throw new Error(error.message);
-
     return { ok: true as const };
   });
