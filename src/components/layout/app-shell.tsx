@@ -27,6 +27,7 @@ import {
   SlidersHorizontal,
   ShieldCheck,
   Plug,
+  MessageSquare,
 
 
 } from "lucide-react";
@@ -288,6 +289,65 @@ function UserMenu({ identity }: { identity: AuthenticatedIdentity }) {
   );
 }
 
+function QuickActions({ identity }: { identity: AuthenticatedIdentity }) {
+  const modules = allowedModules(identity.roles);
+  const actions = [
+    { label: "Add student", to: "/students/new", module: "students" as ModuleKey },
+    { label: "Add parent", to: "/parents/new", module: "parents" as ModuleKey },
+    { label: "Add teacher", to: "/teachers/new", module: "teachers" as ModuleKey },
+    { label: "Create class", to: "/classes", module: "classes" as ModuleKey },
+    { label: "Record attendance", to: "/attendance/new", module: "attendance" as ModuleKey },
+    { label: "Add fee invoice", to: "/fees/new", module: "fees" as ModuleKey },
+    { label: "Create exam", to: "/exams", module: "exams" as ModuleKey },
+  ].filter((a) => modules.has(a.module));
+
+  if (identity.isSuper || actions.length === 0) return null;
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button size="sm" className="bg-gradient-primary shadow-glow hidden sm:inline-flex">
+          <Plus className="mr-1 h-4 w-4" /> Quick actions
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-52">
+        <DropdownMenuLabel>Quick actions</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {actions.map((a) => (
+          <DropdownMenuItem key={a.to} asChild>
+            <Link to={a.to}>{a.label}</Link>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function SchoolBadge({ schoolId }: { schoolId: string | null }) {
+  const schoolQ = useQuery({
+    queryKey: ["school-name", schoolId],
+    enabled: !!schoolId,
+    staleTime: 10 * 60_000,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("schools")
+        .select("name")
+        .eq("id", schoolId!)
+        .maybeSingle();
+      return data?.name ?? null;
+    },
+  });
+
+  if (!schoolQ.data) return null;
+
+  return (
+    <div className="hidden min-w-0 items-center gap-2 rounded-xl bg-muted/70 px-3 py-1.5 lg:flex">
+      <Building2 className="h-3.5 w-3.5 shrink-0 text-primary" />
+      <span className="truncate text-xs font-medium text-foreground">{schoolQ.data}</span>
+    </div>
+  );
+}
+
 export function AppShell({
   children,
   identity,
@@ -315,31 +375,40 @@ export function AppShell({
       <div className="lg:pl-64">
         {/* Top bar */}
         <header className="sticky top-0 z-20 border-b border-border/60 bg-background/70 backdrop-blur-xl">
-          <div className="flex h-16 items-center gap-3 px-4 sm:px-6">
+          <div className="flex h-16 items-center gap-2 px-3 sm:gap-3 sm:px-6">
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden"
+              className="shrink-0 lg:hidden"
               onClick={() => setMobileOpen(true)}
+              aria-label="Open navigation"
             >
               <Menu className="h-5 w-5" />
             </Button>
 
-            <div className="relative hidden max-w-md flex-1 md:block">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Search students, teachers, invoices…"
-                className="h-10 rounded-xl border-transparent bg-muted pl-9"
-              />
+            <div className="lg:hidden">
+              <BrandLogo size="sm" showText={false} />
             </div>
 
+            <GlobalSearch roles={identity.roles} className="hidden min-w-0 max-w-md flex-1 md:block" />
+            <SchoolBadge schoolId={identity.profile?.school_id ?? null} />
+
             <div className="flex flex-1 items-center justify-end gap-1 md:flex-none">
-              <Button variant="ghost" size="icon" className="relative">
+              <QuickActions identity={identity} />
+              <Button variant="ghost" size="icon" className="relative" aria-label="Messages">
+                <MessageSquare className="h-5 w-5" />
+              </Button>
+              <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
                 <Bell className="h-5 w-5" />
                 <span className="bg-gradient-primary absolute right-2 top-2 h-2 w-2 rounded-full" />
               </Button>
               <UserMenu identity={identity} />
             </div>
+          </div>
+
+          {/* Mobile search row */}
+          <div className="px-3 pb-3 md:hidden">
+            <GlobalSearch roles={identity.roles} />
           </div>
         </header>
 
