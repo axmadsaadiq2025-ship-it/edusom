@@ -163,14 +163,14 @@ function SidebarContent({
   const sections = identity.isSuper ? PLATFORM_NAV : NAV;
 
   return (
-    <div className="flex h-full flex-col gap-6 overflow-y-auto p-4">
-      <div className="px-2 pt-1">
+    <div className="flex h-full flex-col gap-5 overflow-y-auto px-3 py-4">
+      <div className="px-2 pb-1 pt-1">
         <BrandLogo size="sm" />
       </div>
-      <nav className="flex flex-col gap-6">
+      <nav className="flex flex-col gap-5" aria-label="Primary navigation">
         {sections.map((section) => (
           <div key={section.section} className="flex flex-col gap-1">
-            <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            <p className="px-3 pb-1 text-[10px] font-semibold uppercase text-muted-foreground/80">
               {section.section}
             </p>
             {section.items.map((item) => {
@@ -185,9 +185,9 @@ function SidebarContent({
                   to={item.to}
                   onClick={onNavigate}
                   className={cn(
-                    "group flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
+                    "group relative flex min-h-10 items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-[color,background-color] duration-200 focus-visible:ring-2 focus-visible:ring-sidebar-ring",
                     active
-                      ? "bg-gradient-primary text-primary-foreground shadow-glow"
+                      ? "bg-sidebar-accent font-semibold text-sidebar-primary before:absolute before:inset-y-2 before:left-0 before:w-0.5 before:rounded-full before:bg-sidebar-primary"
                       : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
                   )}
                 >
@@ -197,8 +197,8 @@ function SidebarContent({
                     <span
                       className={cn(
                         "rounded-md px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider",
-                        active
-                          ? "bg-primary-foreground/20 text-primary-foreground"
+                         active
+                           ? "bg-primary/10 text-primary"
                           : "bg-muted text-muted-foreground",
                       )}
                     >
@@ -239,9 +239,9 @@ function UserMenu({ identity }: { identity: AuthenticatedIdentity }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-2 rounded-full p-1 pr-3 transition-colors hover:bg-accent">
+         <button className="flex min-h-11 items-center gap-2 rounded-lg p-1 pr-2 transition-colors duration-200 hover:bg-accent" aria-label="Open account menu">
           <Avatar className="h-8 w-8">
-            <AvatarFallback className="bg-gradient-primary text-xs font-semibold text-primary-foreground">
+             <AvatarFallback className="bg-primary text-xs font-semibold text-primary-foreground">
               {initials}
             </AvatarFallback>
           </Avatar>
@@ -288,7 +288,7 @@ export function AppShell({
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="bg-gradient-subtle min-h-screen">
+    <div className="app-shell min-h-screen bg-background">
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-sidebar-border bg-sidebar lg:block">
         <SidebarContent identity={identity} />
@@ -304,13 +304,14 @@ export function AppShell({
 
       <div className="lg:pl-64">
         {/* Top bar */}
-        <header className="sticky top-0 z-20 border-b border-border/60 bg-background/70 backdrop-blur-xl">
-          <div className="flex h-16 items-center gap-3 px-4 sm:px-6">
+         <header className="sticky top-0 z-20 border-b border-border/80 bg-background/90 backdrop-blur-lg">
+           <div className="grid h-16 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:flex sm:px-6">
             <Button
               variant="ghost"
               size="icon"
               className="lg:hidden"
               onClick={() => setMobileOpen(true)}
+               aria-label="Open navigation"
             >
               <Menu className="h-5 w-5" />
             </Button>
@@ -319,21 +320,21 @@ export function AppShell({
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search students, teachers, invoices…"
-                className="h-10 rounded-xl border-transparent bg-muted pl-9"
+                 className="h-9 rounded-lg border-border/70 bg-muted/60 pl-9 transition-colors focus:bg-card"
               />
             </div>
 
-            <div className="flex flex-1 items-center justify-end gap-1 md:flex-none">
-              <Button variant="ghost" size="icon" className="relative">
+             <div className="flex shrink-0 items-center justify-end gap-1">
+               <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
                 <Bell className="h-5 w-5" />
-                <span className="bg-gradient-primary absolute right-2 top-2 h-2 w-2 rounded-full" />
+                 <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary ring-2 ring-background" />
               </Button>
               <UserMenu identity={identity} />
             </div>
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
+         <main className="mx-auto w-full max-w-7xl px-4 py-5 sm:px-6 sm:py-7">
           {children}
         </main>
       </div>
