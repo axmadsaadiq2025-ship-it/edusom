@@ -147,6 +147,7 @@ function RootComponent() {
         event !== "USER_UPDATED"
       )
         return;
+      clearIdentityCache();
       router.invalidate();
       if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
     });
