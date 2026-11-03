@@ -4,31 +4,50 @@ import { AppShell } from "@/components/layout/app-shell";
 import { BrandLogo } from "@/components/brand-logo";
 import type { Profile } from "@/hooks/use-auth";
 import { isSuperAdmin, type AppRole } from "@/lib/roles";
+import { clearIdentityCache, getCachedIdentity, setCachedIdentity } from "@/lib/identity-cache";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
   pendingMs: 0,
   pendingMinMs: 250,
   beforeLoad: async ({ location }) => {
-    const { data, error } = await supabase.auth.getUser();
-    if (error || !data.user) {
-      throw redirect({
-        to: "/auth",
-        search: { redirect: location.href },
-      });
+    // Fast local session read; full server verification only when the cached
+    // identity is missing or stale. RLS still enforces every data request.
+    const { data: sessionData } = await supabase.auth.getSession();
+    const sessionUserId = sessionData.session?.user.id;
+    let identity = sessionUserId ? getCachedIdentity(sessionUserId) : null;
+
+    if (!identity) {
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data.user) {
+        clearIdentityCache();
+        throw redirect({
+          to: "/auth",
+          search: { redirect: location.href },
+        });
+      }
+
+      const [{ data: profile, error: profileError }, { data: roleRows, error: rolesError }] =
+        await Promise.all([
+          supabase.from("profiles").select("*").eq("id", data.user.id).maybeSingle(),
+          supabase.from("user_roles").select("role").eq("user_id", data.user.id),
+        ]);
+
+      if (profileError || rolesError) {
+        throw new Error("Unable to load your account permissions. Please try again.");
+      }
+
+      identity = {
+        user: data.user,
+        profile: (profile as Profile | null) ?? null,
+        roles: ((roleRows ?? []) as { role: AppRole }[]).map(({ role }) => role),
+      };
+      setCachedIdentity(identity);
     }
 
-    const [{ data: profile, error: profileError }, { data: roleRows, error: rolesError }] =
-      await Promise.all([
-        supabase.from("profiles").select("*").eq("id", data.user.id).maybeSingle(),
-        supabase.from("user_roles").select("role").eq("user_id", data.user.id),
-      ]);
-
-    if (profileError || rolesError) {
-      throw new Error("Unable to load your account permissions. Please try again.");
-    }
-
-    const roles = ((roleRows ?? []) as { role: AppRole }[]).map(({ role }) => role);
+    const { roles } = identity;
+    const data = { user: identity.user };
+    const profile = identity.profile;
     const isSuper = isSuperAdmin(roles, data.user.email);
 
     if (location.pathname === "/dashboard" && isSuper) {
