@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useRouteContext } from "@tanstack/react-router";
 import type { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
 import type { AppRole } from "@/lib/roles";
 
 export interface Profile {
@@ -20,57 +19,20 @@ export interface AuthState {
   roles: AppRole[];
 }
 
+/**
+ * Reads the identity already resolved by the protected layout's beforeLoad.
+ * Previously every page mounting this hook re-fetched the session, profile and
+ * roles; now it is a zero-request context read.
+ */
 export function useAuth(): AuthState {
-  const [session, setSession] = useState<Session | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const [roles, setRoles] = useState<AppRole[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let mounted = true;
-
-    const load = async (s: Session | null) => {
-      if (!s?.user) {
-        setProfile(null);
-        setRoles([]);
-        return;
-      }
-      // Defer supabase calls to avoid deadlocks inside onAuthStateChange
-      setTimeout(async () => {
-        if (!mounted) return;
-        const [{ data: p }, { data: r }] = await Promise.all([
-          supabase.from("profiles").select("*").eq("id", s.user.id).maybeSingle(),
-          supabase.from("user_roles").select("role").eq("user_id", s.user.id),
-        ]);
-        if (!mounted) return;
-        setProfile((p as Profile) ?? null);
-        setRoles(((r ?? []) as { role: AppRole }[]).map((x) => x.role));
-      }, 0);
-    };
-
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s);
-      load(s);
-    });
-
-    supabase.auth.getSession().then(({ data }) => {
-      if (!mounted) return;
-      setSession(data.session);
-      load(data.session);
-      setLoading(false);
-    });
-
-    return () => {
-      mounted = false;
-      sub.subscription.unsubscribe();
-    };
-  }, []);
-
+  const ctx = useRouteContext({ from: "/_authenticated", shouldThrow: false }) as
+    | { user: User; profile: Profile | null; roles: AppRole[] }
+    | undefined;
   return {
-    loading,
-    session,
-    user: session?.user ?? null,
-    profile,
-    roles,
+    loading: false,
+    session: null,
+    user: ctx?.user ?? null,
+    profile: ctx?.profile ?? null,
+    roles: ctx?.roles ?? [],
   };
 }
