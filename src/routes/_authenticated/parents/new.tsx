@@ -1,148 +1,167 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { ArrowLeft, Users, Loader2, X } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRef, useState } from "react";
+import { z } from "zod";
+import { ArrowLeft, Loader2, Search, Users, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FormField, WizardCard } from "@/components/forms/wizard";
+import { splitFullName } from "@/lib/codes";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/parents/new")({
+  head: () => ({ meta: [{ title: "Register parent | EduSom" }] }),
   component: NewParentPage,
 });
 
-interface StudentLite {
+interface LinkedStudent {
   id: string;
-  first_name: string;
-  last_name: string;
+  name: string;
   admission_number: string;
 }
 
-interface ChildLink {
-  student_id: string;
-  relationship: string;
-  is_primary: boolean;
-}
+const RELATIONSHIPS = ["father", "mother", "guardian", "uncle", "aunt", "grandparent", "sibling", "other"];
+const phoneOk = (v: string) => /^[+\d][\d\s-]{5,19}$/.test(v.trim());
 
 function NewParentPage() {
   const { profile } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const submitting = useRef(false);
 
-  const [form, setForm] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    phone: "",
-    alt_phone: "",
-    occupation: "",
-    national_id: "",
-    address: "",
-    notes: "",
-  });
+  const [form, setForm] = useState({ full_name: "", phone: "", relationship: "", email: "", address: "" });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [admission, setAdmission] = useState("");
+  const [lookupError, setLookupError] = useState("");
+  const [looking, setLooking] = useState(false);
+  const [students, setStudents] = useState<LinkedStudent[]>([]);
 
-  const [links, setLinks] = useState<ChildLink[]>([]);
-  const [studentPick, setStudentPick] = useState("");
-  const [relationship, setRelationship] = useState("father");
+  const set = (patch: Partial<typeof form>) => {
+    setForm((f) => ({ ...f, ...patch }));
+    setErrors((e) => {
+      const n = { ...e };
+      for (const k of Object.keys(patch)) delete n[k];
+      return n;
+    });
+  };
 
-  const studentsQ = useQuery({
-    queryKey: ["students", "for-parents"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("students")
-        .select("id,first_name,last_name,admission_number")
-        .order("first_name");
-      if (error) throw error;
-      return (data ?? []) as StudentLite[];
-    },
-  });
-
-  const availableStudents = (studentsQ.data ?? []).filter(
-    (s) => !links.some((l) => l.student_id === s.id),
-  );
-
-  function addLink() {
-    if (!studentPick) return;
-    setLinks([
-      ...links,
-      { student_id: studentPick, relationship, is_primary: links.length === 0 },
+  async function findStudent() {
+    const code = admission.trim();
+    setLookupError("");
+    if (!code) return setLookupError("Enter an admission number");
+    if (!profile?.school_id) return setLookupError("No school assigned to your account");
+    if (students.some((s) => s.admission_number.toLowerCase() === code.toLowerCase()))
+      return setLookupError("This student is already added");
+    setLooking(true);
+    // Scoped to the admin's own school; RLS enforces the same.
+    const { data, error } = await supabase
+      .from("students")
+      .select("id,first_name,last_name,admission_number")
+      .eq("school_id", profile.school_id)
+      .ilike("admission_number", code)
+      .maybeSingle();
+    setLooking(false);
+    if (error) return setLookupError("Couldn't search right now. Try again.");
+    if (!data) return setLookupError("No student with that admission number in your school");
+    setStudents((s) => [
+      ...s,
+      { id: data.id, name: `${data.first_name} ${data.last_name}`, admission_number: data.admission_number },
     ]);
-    setStudentPick("");
-  }
-
-  function removeLink(id: string) {
-    setLinks(links.filter((l) => l.student_id !== id));
-  }
-
-  function togglePrimary(id: string) {
-    setLinks(links.map((l) => ({ ...l, is_primary: l.student_id === id })));
+    setAdmission("");
+    setErrors((e) => ({ ...e, students: "" }));
   }
 
   const create = useMutation({
     mutationFn: async () => {
       if (!profile?.school_id) throw new Error("No school assigned to your account");
-      const { data: parent, error } = await supabase
+      const phone = form.phone.trim();
+      // Prevent duplicate parent records in this school (same phone).
+      const { data: existing } = await supabase
         .from("parents")
-        .insert({
-          school_id: profile.school_id,
-          first_name: form.first_name.trim(),
-          last_name: form.last_name.trim(),
-          email: form.email.trim() || null,
-          phone: form.phone.trim(),
-          alt_phone: form.alt_phone.trim() || null,
-          occupation: form.occupation.trim() || null,
-          national_id: form.national_id.trim() || null,
-          address: form.address.trim() || null,
-          notes: form.notes.trim() || null,
-        })
         .select("id")
-        .single();
-      if (error) throw error;
+        .eq("school_id", profile.school_id)
+        .eq("phone", phone)
+        .maybeSingle();
 
-      if (links.length > 0 && parent) {
-        const { error: linkErr } = await supabase.from("student_parents").insert(
-          links.map((l) => ({
-            parent_id: parent.id,
-            student_id: l.student_id,
-            relationship: l.relationship,
-            is_primary: l.is_primary,
-          })),
-        );
-        if (linkErr) throw linkErr;
+      let parentId = existing?.id;
+      if (!parentId) {
+        const { first, last } = splitFullName(form.full_name);
+        const { data, error } = await supabase
+          .from("parents")
+          .insert({
+            school_id: profile.school_id,
+            first_name: first,
+            last_name: last,
+            phone,
+            email: form.email.trim() || null,
+            address: form.address.trim() || null,
+          })
+          .select("id")
+          .single();
+        if (error) throw error;
+        parentId = data.id;
       }
+
+      if (students.length) {
+        const { data: already } = await supabase
+          .from("student_parents")
+          .select("student_id")
+          .eq("parent_id", parentId)
+          .in("student_id", students.map((s) => s.id));
+        const skip = new Set((already ?? []).map((r) => r.student_id));
+        const { count } = await supabase
+          .from("student_parents")
+          .select("id", { count: "exact", head: true })
+          .eq("parent_id", parentId);
+        const rows = students
+          .filter((s) => !skip.has(s.id))
+          .map((s, i) => ({
+            parent_id: parentId!,
+            student_id: s.id,
+            relationship: form.relationship,
+            is_primary: (count ?? 0) === 0 && i === 0,
+          }));
+        if (rows.length) {
+          const { error } = await supabase.from("student_parents").insert(rows);
+          if (error) throw error;
+        }
+      }
+      return !!existing;
     },
-    onSuccess: () => {
-      toast.success("Parent added");
+    onSuccess: (reused) => {
+      toast.success(reused ? "Existing parent found — students linked" : "Parent registered");
       qc.invalidateQueries({ queryKey: ["parents"] });
       navigate({ to: "/parents" });
     },
-    onError: (e: Error) => toast.error(e.message || "Failed to add parent"),
+    onError: (e: Error) => toast.error(e.message || "Failed to register parent"),
+    onSettled: () => {
+      submitting.current = false;
+    },
   });
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.first_name || !form.last_name || !form.phone) {
-      toast.error("First name, last name and phone are required");
-      return;
-    }
+    const errs: Record<string, string> = {};
+    if (!form.full_name.trim()) errs.full_name = "Full name is required";
+    else if (form.full_name.trim().length > 100) errs.full_name = "Keep it under 100 characters";
+    if (!form.phone.trim()) errs.phone = "Phone number is required";
+    else if (!phoneOk(form.phone)) errs.phone = "Enter a valid phone number";
+    if (!form.relationship) errs.relationship = "Select the relationship";
+    if (form.email && !z.string().email().safeParse(form.email).success) errs.email = "Enter a valid email";
+    setErrors(errs);
+    if (Object.keys(errs).length) return toast.error("Please fix the highlighted fields");
+    if (submitting.current) return;
+    submitting.current = true;
     create.mutate();
   }
 
-  const studentById = new Map((studentsQ.data ?? []).map((s) => [s.id, s]));
-
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="mx-auto max-w-3xl space-y-5">
       <div>
         <Button asChild variant="ghost" size="sm" className="mb-2 -ml-2">
           <Link to="/parents">
@@ -150,222 +169,94 @@ function NewParentPage() {
           </Link>
         </Button>
         <div className="flex items-center gap-3">
-          <div className="bg-gradient-primary shadow-glow flex h-11 w-11 items-center justify-center rounded-xl text-primary-foreground">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/20">
             <Users className="h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">Add parent</h1>
-            <p className="text-sm text-muted-foreground">
-              Create a guardian record and link them to their children.
-            </p>
+            <h1 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">Register parent</h1>
+            <p className="text-sm text-muted-foreground">Add a parent and link them to their children.</p>
           </div>
         </div>
       </div>
 
       <form onSubmit={onSubmit} className="space-y-5">
-        <Section title="Identity">
+        <WizardCard title="Parent details">
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="First name *">
-              <Input
-                required
-                value={form.first_name}
-                onChange={(e) => setForm({ ...form, first_name: e.target.value })}
-                className="mt-1.5"
-              />
-            </Field>
-            <Field label="Last name *">
-              <Input
-                required
-                value={form.last_name}
-                onChange={(e) => setForm({ ...form, last_name: e.target.value })}
-                className="mt-1.5"
-              />
-            </Field>
-            <Field label="Occupation">
-              <Input
-                value={form.occupation}
-                onChange={(e) => setForm({ ...form, occupation: e.target.value })}
-                className="mt-1.5"
-              />
-            </Field>
-            <Field label="National ID">
-              <Input
-                value={form.national_id}
-                onChange={(e) => setForm({ ...form, national_id: e.target.value })}
-                className="mt-1.5"
-              />
-            </Field>
+            <FormField label="Full name" required htmlFor="full_name" error={errors.full_name}>
+              <Input id="full_name" autoFocus value={form.full_name} maxLength={100} aria-invalid={!!errors.full_name} onChange={(e) => set({ full_name: e.target.value })} />
+            </FormField>
+            <FormField label="Phone number" required htmlFor="phone" error={errors.phone}>
+              <Input id="phone" type="tel" inputMode="tel" value={form.phone} maxLength={20} placeholder="+252 61 234 5678" aria-invalid={!!errors.phone} onChange={(e) => set({ phone: e.target.value })} />
+            </FormField>
+            <FormField label="Relationship to student" required htmlFor="rel" error={errors.relationship}>
+              <Select value={form.relationship} onValueChange={(v) => set({ relationship: v })}>
+                <SelectTrigger id="rel" className="h-10" aria-invalid={!!errors.relationship}>
+                  <SelectValue placeholder="Select relationship" />
+                </SelectTrigger>
+                <SelectContent>
+                  {RELATIONSHIPS.map((r) => (
+                    <SelectItem key={r} value={r} className="capitalize">{r}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FormField>
+            <FormField label="Email" htmlFor="email" error={errors.email}>
+              <Input id="email" type="email" inputMode="email" value={form.email} maxLength={255} onChange={(e) => set({ email: e.target.value })} />
+            </FormField>
+            <FormField label="Address" htmlFor="address" className="sm:col-span-2">
+              <Textarea id="address" rows={2} value={form.address} maxLength={300} onChange={(e) => set({ address: e.target.value })} />
+            </FormField>
           </div>
-        </Section>
+        </WizardCard>
 
-        <Section title="Contact">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Phone *">
+        <WizardCard title="Link to student" description="Enter the student's admission number (e.g. STU-0001).">
+          <FormField label="Admission number" htmlFor="adm" error={lookupError}>
+            <div className="flex gap-2">
               <Input
-                required
-                value={form.phone}
-                onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                placeholder="+252 61 234 5678"
-                className="mt-1.5"
+                id="adm"
+                value={admission}
+                maxLength={40}
+                className="font-mono"
+                placeholder="STU-0001"
+                onChange={(e) => { setAdmission(e.target.value); setLookupError(""); }}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); findStudent(); } }}
               />
-            </Field>
-            <Field label="Alternate phone">
-              <Input
-                value={form.alt_phone}
-                onChange={(e) => setForm({ ...form, alt_phone: e.target.value })}
-                className="mt-1.5"
-              />
-            </Field>
-            <Field label="Email">
-              <Input
-                type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="mt-1.5"
-              />
-            </Field>
-            <div className="sm:col-span-2">
-              <Field label="Address">
-                <Textarea
-                  value={form.address}
-                  onChange={(e) => setForm({ ...form, address: e.target.value })}
-                  rows={2}
-                  className="mt-1.5"
-                />
-              </Field>
+              <Button type="button" variant="outline" onClick={findStudent} disabled={looking}>
+                {looking ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
+                <span className="ml-1.5">Find</span>
+              </Button>
             </div>
-          </div>
-        </Section>
-
-        <Section title="Linked children">
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Select value={studentPick} onValueChange={setStudentPick}>
-              <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Select student" />
-              </SelectTrigger>
-              <SelectContent>
-                {availableStudents.length === 0 ? (
-                  <div className="px-2 py-1.5 text-sm text-muted-foreground">
-                    No more students
+          </FormField>
+          {students.length > 0 && (
+            <ul className="space-y-2">
+              {students.map((s) => (
+                <li key={s.id} className="flex items-center justify-between rounded-xl border border-border/60 bg-background/50 p-3">
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-medium">{s.name}</div>
+                    <div className="font-mono text-xs text-muted-foreground">{s.admission_number}</div>
                   </div>
-                ) : (
-                  availableStudents.map((s) => (
-                    <SelectItem key={s.id} value={s.id}>
-                      {s.first_name} {s.last_name} ({s.admission_number})
-                    </SelectItem>
-                  ))
-                )}
-              </SelectContent>
-            </Select>
-            <Select value={relationship} onValueChange={setRelationship}>
-              <SelectTrigger className="sm:w-40">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="father">Father</SelectItem>
-                <SelectItem value="mother">Mother</SelectItem>
-                <SelectItem value="guardian">Guardian</SelectItem>
-                <SelectItem value="uncle">Uncle</SelectItem>
-                <SelectItem value="aunt">Aunt</SelectItem>
-                <SelectItem value="grandparent">Grandparent</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button type="button" onClick={addLink} disabled={!studentPick}>
-              Add
-            </Button>
-          </div>
-
-          {links.length > 0 && (
-            <div className="mt-4 space-y-2">
-              {links.map((l) => {
-                const s = studentById.get(l.student_id);
-                return (
-                  <div
-                    key={l.student_id}
-                    className="flex items-center justify-between rounded-xl border border-border/60 bg-background/50 p-3"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="text-sm font-medium">
-                        {s ? `${s.first_name} ${s.last_name}` : "Student"}
-                      </div>
-                      <Badge variant="secondary" className="capitalize">
-                        {l.relationship}
-                      </Badge>
-                      {l.is_primary && (
-                        <Badge className="bg-primary/15 text-primary">Primary</Badge>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      {!l.is_primary && (
-                        <Button
-                          type="button"
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => togglePrimary(l.student_id)}
-                        >
-                          Make primary
-                        </Button>
-                      )}
-                      <Button
-                        type="button"
-                        size="icon"
-                        variant="ghost"
-                        onClick={() => removeLink(l.student_id)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
+                  <div className="flex items-center gap-1">
+                    {form.relationship && <Badge variant="secondary" className="capitalize">{form.relationship}</Badge>}
+                    <Button type="button" size="icon" variant="ghost" aria-label={`Remove ${s.name}`} onClick={() => setStudents((l) => l.filter((x) => x.id !== s.id))}>
+                      <X className="h-4 w-4" />
+                    </Button>
                   </div>
-                );
-              })}
-            </div>
+                </li>
+              ))}
+            </ul>
           )}
-        </Section>
+        </WizardCard>
 
-        <Section title="Notes">
-          <Textarea
-            value={form.notes}
-            onChange={(e) => setForm({ ...form, notes: e.target.value })}
-            rows={3}
-            placeholder="Any additional information about this parent…"
-          />
-        </Section>
-
-        <div className="flex items-center justify-end gap-2 pt-2">
-          <Button asChild type="button" variant="ghost">
-            <Link to="/parents">Cancel</Link>
+        <div className="sticky bottom-0 z-10 flex items-center justify-between gap-2 border-t border-border/60 bg-background/90 py-3 backdrop-blur">
+          <Button type="button" variant="ghost" onClick={() => navigate({ to: "/parents" })} disabled={create.isPending}>
+            Cancel
           </Button>
-          <Button
-            type="submit"
-            disabled={create.isPending}
-            className="bg-gradient-primary shadow-glow"
-          >
+          <Button type="submit" disabled={create.isPending} className="min-w-32">
             {create.isPending && <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />}
-            Add parent
+            {create.isPending ? "Saving…" : "Register parent"}
           </Button>
         </div>
       </form>
-    </div>
-  );
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="glass space-y-4 rounded-2xl p-6 shadow-sm">
-      <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        {title}
-      </h2>
-      {children}
-    </div>
-  );
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <Label>{label}</Label>
-      {children}
     </div>
   );
 }
