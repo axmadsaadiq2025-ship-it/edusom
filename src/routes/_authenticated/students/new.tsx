@@ -305,7 +305,7 @@ function NewStudentPage() {
       {step === 1 && (
         <WizardCard title="Enrollment" description="Where will the student study?">
           <div className="grid gap-4 sm:grid-cols-2">
-            <FormField label="Academic year" required htmlFor="year" error={errors.academic_year_id}>
+            <FormField label="Academic year" required htmlFor="year" error={errors.academic_year_id} hint={!yearsQ.isLoading && yearOptions.length === 0 ? "No academic years yet — add one under Academic Years first." : undefined}>
               <SearchableSelect id="year" options={yearOptions} value={form.academic_year_id} invalid={!!errors.academic_year_id} placeholder={yearsQ.isLoading ? "Loading…" : "Select year"} onChange={(v) => set({ academic_year_id: v })} />
             </FormField>
             <FormField label="Class" required htmlFor="class" error={errors.class_id} hint={!classesQ.isLoading && classOptions.length === 0 ? "No classes yet — add one under Classes first." : undefined}>
@@ -314,7 +314,7 @@ function NewStudentPage() {
             <FormField label="Section" htmlFor="section" hint={form.class_id && sectionOptions.length === 0 ? "This class has no sections." : undefined}>
               <SearchableSelect id="section" options={sectionOptions} value={form.section_id} disabled={!form.class_id} placeholder={form.class_id ? "Select section" : "Choose a class first"} onChange={(v) => set({ section_id: v })} />
             </FormField>
-            <FormField label="Admission number" htmlFor="adm" hint={editId ? undefined : "Assigned automatically when you save (e.g. STU-0001)."}>
+            <FormField label="Admission number" htmlFor="adm" hideOptional hint={editId ? undefined : "Assigned automatically when you save (e.g. STU-0001)."}>
               <Input id="adm" value={editId ? form.admission_number : "Auto-generated"} readOnly disabled className="font-mono" />
             </FormField>
           </div>

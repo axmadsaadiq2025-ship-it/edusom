@@ -57,8 +57,10 @@ export function FormField({
   htmlFor,
   hint,
   className,
+  hideOptional,
   children,
 }: {
+  hideOptional?: boolean;
   label: string;
   required?: boolean;
   error?: string;
@@ -73,7 +75,7 @@ export function FormField({
         {label}
         {required ? (
           <span className="text-destructive" aria-hidden>*</span>
-        ) : (
+        ) : hideOptional ? null : (
           <span className="text-xs font-normal text-muted-foreground">(optional)</span>
         )}
       </Label>
