@@ -192,11 +192,11 @@ function StudentsPage() {
           </div>
           <h3 className="mt-4 text-lg font-semibold">No students found</h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            {(studentsQ.data?.length ?? 0) === 0
+            {!hasFilters
               ? "Admit your first student to get started."
               : "Try changing your filters or search."}
           </p>
-          {(studentsQ.data?.length ?? 0) === 0 && (
+          {!hasFilters && (
             <Button asChild className="bg-gradient-primary shadow-glow mt-6">
               <Link to="/students/new">
                 <Plus className="mr-1.5 h-4 w-4" /> Admit student
