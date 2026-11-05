@@ -54,6 +54,7 @@ const STATUS_STYLES: Record<EmpStatus, string> = {
 };
 
 function TeachersPage() {
+  const navigate = useNavigate();
   const [q, setQ] = useState("");
   const [status, setStatus] = useState<string>("all");
 
