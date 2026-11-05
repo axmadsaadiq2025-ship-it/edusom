@@ -59,19 +59,34 @@ function StudentsPage() {
   const [status, setStatus] = useState<string>("all");
   const [classId, setClassId] = useState<string>("all");
 
+  const [page, setPage] = useState(0);
+  const PAGE = 25;
+  const term = q.trim().replace(/[,%()]/g, "");
+  // Server-side filtering + pagination: only one page of rows is fetched.
   const studentsQ = useQuery({
-    queryKey: ["students"],
+    queryKey: ["students", "list", { term, status, classId, page }],
+    placeholderData: (prev) => prev,
     queryFn: async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from("students")
         .select(
           "id,admission_number,first_name,last_name,middle_name,gender,date_of_birth,phone,email,photo_url,status,class_id,section_id,guardian_name,admission_date",
+          { count: "exact" },
         )
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .range(page * PAGE, page * PAGE + PAGE - 1);
+      if (status !== "all") query = query.eq("status", status as Student["status"]);
+      if (classId !== "all") query = query.eq("class_id", classId);
+      if (term)
+        query = query.or(
+          `first_name.ilike.%${term}%,last_name.ilike.%${term}%,admission_number.ilike.%${term}%,email.ilike.%${term}%,phone.ilike.%${term}%`,
+        );
+      const { data, error, count } = await query;
       if (error) throw error;
-      return (data ?? []) as Student[];
+      return { rows: (data ?? []) as Student[], total: count ?? 0 };
     },
   });
+  const total = studentsQ.data?.total ?? 0;
 
   const classesQ = useQuery({
     queryKey: ["classes"],
@@ -100,12 +115,8 @@ function StudentsPage() {
     [sectionsQ.data],
   );
 
-  const filtered = (studentsQ.data ?? []).filter((s) => {
-    if (status !== "all" && s.status !== status) return false;
-    if (classId !== "all" && s.class_id !== classId) return false;
-    const hay = `${s.first_name} ${s.last_name} ${s.admission_number} ${s.email ?? ""} ${s.phone ?? ""}`.toLowerCase();
-    return hay.includes(q.toLowerCase());
-  });
+  const filtered = studentsQ.data?.rows ?? [];
+  const hasFilters = !!term || status !== "all" || classId !== "all";
 
   const isLoading = studentsQ.isLoading;
 
@@ -181,11 +192,11 @@ function StudentsPage() {
           </div>
           <h3 className="mt-4 text-lg font-semibold">No students found</h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            {(studentsQ.data?.length ?? 0) === 0
+            {!hasFilters
               ? "Admit your first student to get started."
               : "Try changing your filters or search."}
           </p>
-          {(studentsQ.data?.length ?? 0) === 0 && (
+          {!hasFilters && (
             <Button asChild className="bg-gradient-primary shadow-glow mt-6">
               <Link to="/students/new">
                 <Plus className="mr-1.5 h-4 w-4" /> Admit student

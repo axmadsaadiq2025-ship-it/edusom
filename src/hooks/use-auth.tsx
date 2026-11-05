@@ -25,7 +25,7 @@ export interface AuthState {
  * roles; now it is a zero-request context read.
  */
 export function useAuth(): AuthState {
-  const ctx = useRouteContext({ from: "/_authenticated", shouldThrow: false }) as
+  const ctx = useRouteContext({ strict: false }) as
     | { user: User; profile: Profile | null; roles: AppRole[] }
     | undefined;
   return {
