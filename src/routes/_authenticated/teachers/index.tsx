@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { UserSquare2, Plus, Search, Filter } from "lucide-react";
@@ -166,7 +166,7 @@ function TeachersPage() {
                   .map((s) => s[0]?.toUpperCase())
                   .join("");
                 return (
-                  <TableRow key={t.id}>
+                  <TableRow key={t.id} className="cursor-pointer" onClick={() => navigate({ to: "/teachers/new", search: { id: t.id } })}>
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9">
