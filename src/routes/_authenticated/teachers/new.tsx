@@ -305,7 +305,7 @@ function NewTeacherPage() {
             <FormField label="Profile photo link" htmlFor="photo" error={errors.avatar_url} hint="Paste a link to the teacher's photo.">
               <Input id="photo" type="url" value={form.avatar_url} maxLength={500} placeholder="https://…" onChange={(e) => set({ avatar_url: e.target.value })} />
             </FormField>
-            <FormField label="Employee code" htmlFor="code" hint={editId ? undefined : "Assigned automatically when you save (e.g. EMP-0001)."}>
+            <FormField label="Employee code" htmlFor="code" hideOptional hint={editId ? undefined : "Assigned automatically when you save (e.g. EMP-0001)."}>
               <Input id="code" value={editId ? form.employee_code : "Auto-generated"} readOnly disabled className="font-mono" />
             </FormField>
           </div>
