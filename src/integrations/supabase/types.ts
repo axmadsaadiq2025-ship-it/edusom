@@ -2269,6 +2269,7 @@ export type Database = {
     }
     Functions: {
       get_parent_id: { Args: { _user_id: string }; Returns: string }
+      get_school_trial: { Args: never; Returns: Json }
       get_student_id: { Args: { _user_id: string }; Returns: string }
       get_teacher_id: { Args: { _user_id: string }; Returns: string }
       get_user_school: { Args: { _user_id: string }; Returns: string }
@@ -2292,9 +2293,14 @@ export type Database = {
         Returns: boolean
       }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
+      refresh_school_trials: { Args: never; Returns: undefined }
       reserve_school_trial: {
         Args: { _id: string; _limit_key: string; _payload: Json }
         Returns: string
+      }
+      school_operational_access: {
+        Args: { _school_id: string }
+        Returns: boolean
       }
       teacher_can_manage_exam: {
         Args: { _exam_id: string; _user_id: string }
