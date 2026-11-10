@@ -8,6 +8,13 @@
       "when": 1794305316072,
       "tag": "0000_trial_storage",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794305335665,
+      "tag": "0001_atomic_trial_provisioning",
+      "breakpoints": true
     }
   ]
 }

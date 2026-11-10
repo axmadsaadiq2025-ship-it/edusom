@@ -2292,6 +2292,10 @@ export type Database = {
         Returns: boolean
       }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
+      reserve_school_trial: {
+        Args: { _id: string; _limit_key: string; _payload: Json }
+        Returns: string
+      }
       teacher_can_manage_exam: {
         Args: { _exam_id: string; _user_id: string }
         Returns: boolean
