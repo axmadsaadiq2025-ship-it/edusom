@@ -1384,6 +1384,9 @@ export type Database = {
           state_region: string | null
           subscription_status: string
           timezone: string
+          trial_converted_at: string | null
+          trial_expires_at: string | null
+          trial_started_at: string | null
           updated_at: string
           website: string | null
         }
@@ -1408,6 +1411,9 @@ export type Database = {
           state_region?: string | null
           subscription_status?: string
           timezone?: string
+          trial_converted_at?: string | null
+          trial_expires_at?: string | null
+          trial_started_at?: string | null
           updated_at?: string
           website?: string | null
         }
@@ -1432,6 +1438,9 @@ export type Database = {
           state_region?: string | null
           subscription_status?: string
           timezone?: string
+          trial_converted_at?: string | null
+          trial_expires_at?: string | null
+          trial_started_at?: string | null
           updated_at?: string
           website?: string | null
         }
@@ -1738,6 +1747,41 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "subjects_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscription_upgrade_requests: {
+        Row: {
+          created_at: string
+          id: string
+          plan: Database["public"]["Enums"]["subscription_plan"]
+          requested_by: string
+          school_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          plan: Database["public"]["Enums"]["subscription_plan"]
+          requested_by: string
+          school_id: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          plan?: Database["public"]["Enums"]["subscription_plan"]
+          requested_by?: string
+          school_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscription_upgrade_requests_school_id_fkey"
             columns: ["school_id"]
             isOneToOne: false
             referencedRelation: "schools"
@@ -2107,6 +2151,86 @@ export type Database = {
           },
         ]
       }
+      trial_notifications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          milestone: number
+          school_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          milestone: number
+          school_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          milestone?: number
+          school_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trial_notifications_school_id_fkey"
+            columns: ["school_id"]
+            isOneToOne: false
+            referencedRelation: "schools"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trial_registration_limits: {
+        Row: {
+          attempts: number
+          key: string
+          window_started_at: string
+        }
+        Insert: {
+          attempts?: number
+          key: string
+          window_started_at?: string
+        }
+        Update: {
+          attempts?: number
+          key?: string
+          window_started_at?: string
+        }
+        Relationships: []
+      }
+      trial_registrations: {
+        Row: {
+          admin_email: string
+          created_at: string
+          id: string
+          payload: Json
+          school_email: string
+          school_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          admin_email: string
+          created_at?: string
+          id?: string
+          payload: Json
+          school_email: string
+          school_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          admin_email?: string
+          created_at?: string
+          id?: string
+          payload?: Json
+          school_email?: string
+          school_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -2145,6 +2269,7 @@ export type Database = {
     }
     Functions: {
       get_parent_id: { Args: { _user_id: string }; Returns: string }
+      get_school_trial: { Args: never; Returns: Json }
       get_student_id: { Args: { _user_id: string }; Returns: string }
       get_teacher_id: { Args: { _user_id: string }; Returns: string }
       get_user_school: { Args: { _user_id: string }; Returns: string }
@@ -2168,6 +2293,15 @@ export type Database = {
         Returns: boolean
       }
       is_super_admin: { Args: { _user_id: string }; Returns: boolean }
+      refresh_school_trials: { Args: never; Returns: undefined }
+      reserve_school_trial: {
+        Args: { _id: string; _limit_key: string; _payload: Json }
+        Returns: string
+      }
+      school_operational_access: {
+        Args: { _school_id: string }
+        Returns: boolean
+      }
       teacher_can_manage_exam: {
         Args: { _exam_id: string; _user_id: string }
         Returns: boolean

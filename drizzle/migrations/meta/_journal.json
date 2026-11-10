@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794305316072,
+      "tag": "0000_trial_storage",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794305335665,
+      "tag": "0001_atomic_trial_provisioning",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794305356072,
+      "tag": "0002_secure_trial_lifecycle",
+      "breakpoints": true
+    }
+  ]
+}
