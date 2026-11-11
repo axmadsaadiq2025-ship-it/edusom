@@ -1,0 +1,1 @@
+ALTER FUNCTION public.reserve_school_trial(uuid,jsonb,text) SET search_path=public,extensions;
