@@ -25,6 +25,7 @@ import {
 } from "recharts";
 import { roleLabel } from "@/lib/roles";
 import { StatCard } from "@/components/dashboard/stat-card";
+import { TrialBanner } from "@/components/dashboard/trial-banner";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -68,6 +69,7 @@ function DashboardPage() {
 
   return (
     <div className="space-y-6 sm:space-y-8">
+      <TrialBanner />
       {/* Greeting */}
       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3 sm:flex sm:justify-between">
         <div className="min-w-0">

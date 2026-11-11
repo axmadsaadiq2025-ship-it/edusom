@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { CreditCard } from "lucide-react";
+import { TrialManagement } from "@/components/platform/trial-management";
 import { supabase } from "@/integrations/supabase/client";
 import { PLAN_LABELS } from "@/lib/registration-shared";
 import {
@@ -89,6 +90,8 @@ function SubscriptionsPage() {
           </PlatformPanel>
         ))}
       </div>
+
+      <TrialManagement />
 
       <PlatformPanel title="All subscriptions" description="Sorted by newest tenant">
         {isLoading ? (

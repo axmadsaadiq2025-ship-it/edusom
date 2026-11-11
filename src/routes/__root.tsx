@@ -105,8 +105,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "theme-color", content: "#7c3aed" },
       { name: "twitter:title", content: "EduSom — School Management System" },
       { name: "twitter:description", content: "Modern cloud-based school management system for schools in Somalia. Manage admissions, students, teachers, fees, exams, and more." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/b65f6795-30b3-4fa7-81eb-b0a7654b2b36" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/b65f6795-30b3-4fa7-81eb-b0a7654b2b36" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

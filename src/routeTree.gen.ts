@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedSubscriptionRouteImport } from './routes/_authenticated/subscription'
 import { Route as AuthenticatedAcademicYearsIndexRouteImport } from './routes/_authenticated/academic-years/index'
 import { Route as AuthenticatedAttendanceIndexRouteImport } from './routes/_authenticated/attendance/index'
 import { Route as AuthenticatedAttendanceNewRouteImport } from './routes/_authenticated/attendance/new'
@@ -69,11 +71,22 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSubscriptionRoute =
+  AuthenticatedSubscriptionRouteImport.update({
+    id: '/subscription',
+    path: '/subscription',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAcademicYearsIndexRoute =
   AuthenticatedAcademicYearsIndexRouteImport.update({
     id: '/academic-years/',
@@ -317,7 +330,9 @@ const AuthenticatedPlatformSchoolsSchoolIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/register': typeof RegisterRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/subscription': typeof AuthenticatedSubscriptionRoute
   '/attendance/new': typeof AuthenticatedAttendanceNewRoute
   '/exams/$id': typeof AuthenticatedExamsIdRoute
   '/fees/$id': typeof AuthenticatedFeesIdRoute
@@ -363,7 +378,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/register': typeof RegisterRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/subscription': typeof AuthenticatedSubscriptionRoute
   '/attendance/new': typeof AuthenticatedAttendanceNewRoute
   '/exams/$id': typeof AuthenticatedExamsIdRoute
   '/fees/$id': typeof AuthenticatedFeesIdRoute
@@ -411,7 +428,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/register': typeof RegisterRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/subscription': typeof AuthenticatedSubscriptionRoute
   '/_authenticated/attendance/new': typeof AuthenticatedAttendanceNewRoute
   '/_authenticated/exams/$id': typeof AuthenticatedExamsIdRoute
   '/_authenticated/fees/$id': typeof AuthenticatedFeesIdRoute
@@ -459,7 +478,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/register'
     | '/dashboard'
+    | '/subscription'
     | '/attendance/new'
     | '/exams/$id'
     | '/fees/$id'
@@ -505,7 +526,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/register'
     | '/dashboard'
+    | '/subscription'
     | '/attendance/new'
     | '/exams/$id'
     | '/fees/$id'
@@ -552,7 +575,9 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/register'
     | '/_authenticated/dashboard'
+    | '/_authenticated/subscription'
     | '/_authenticated/attendance/new'
     | '/_authenticated/exams/$id'
     | '/_authenticated/fees/$id'
@@ -600,6 +625,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  RegisterRoute: typeof RegisterRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -625,11 +651,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/subscription': {
+      id: '/_authenticated/subscription'
+      path: '/subscription'
+      fullPath: '/subscription'
+      preLoaderRoute: typeof AuthenticatedSubscriptionRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/academic-years/': {
@@ -924,6 +964,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedSubscriptionRoute: typeof AuthenticatedSubscriptionRoute
   AuthenticatedAttendanceNewRoute: typeof AuthenticatedAttendanceNewRoute
   AuthenticatedExamsIdRoute: typeof AuthenticatedExamsIdRoute
   AuthenticatedFeesIdRoute: typeof AuthenticatedFeesIdRoute
@@ -969,6 +1010,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedSubscriptionRoute: AuthenticatedSubscriptionRoute,
   AuthenticatedAttendanceNewRoute: AuthenticatedAttendanceNewRoute,
   AuthenticatedExamsIdRoute: AuthenticatedExamsIdRoute,
   AuthenticatedFeesIdRoute: AuthenticatedFeesIdRoute,
@@ -1026,6 +1068,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  RegisterRoute: RegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

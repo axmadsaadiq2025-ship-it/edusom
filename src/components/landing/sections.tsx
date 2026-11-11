@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { RequestAccessDialog } from "./request-access-dialog";
 import {
   ArrowRight,
   PlayCircle,
@@ -201,11 +200,9 @@ export function Hero() {
                   Login <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
-              <RequestAccessDialog>
-                <Button size="lg" variant="outline" className="min-h-11 rounded-xl">
-                  <CalendarCheck className="mr-1 h-4 w-4" /> Book a Demo
+                <Button asChild size="lg" variant="outline" className="min-h-11 rounded-xl">
+                  <Link to="/register"><CalendarCheck className="mr-1 h-4 w-4" /> Book a Demo</Link>
                 </Button>
-              </RequestAccessDialog>
               <Button asChild size="lg" variant="ghost" className="min-h-11 rounded-xl">
                 <a href="#dashboard-preview">
                   <PlayCircle className="mr-1 h-4 w-4" /> Watch Demo
@@ -215,7 +212,7 @@ export function Hero() {
           </Reveal>
           <Reveal delay={320}>
             <p className="mt-6 text-xs text-muted-foreground">
-              No credit card required · Free 30-day trial · Setup in under an hour
+              No credit card required · Free 7-day trial · Instant activation
             </p>
           </Reveal>
         </div>
@@ -819,7 +816,7 @@ const FAQS: { q: string; a: string }[] = [
   { q: "Is EduSom suitable for schools in Somalia?", a: "Yes. EduSom was designed for Somali and wider African schools, with local currency support, SMS notifications and resilience on low-bandwidth connections." },
   { q: "Can I manage multiple schools?", a: "Yes. Multi-school administration lets groups and ministries run many campuses from one platform with strict data isolation per school." },
   { q: "How long does setup take?", a: "Most schools are live within a day. You can import students and staff from spreadsheets and configure classes in under an hour." },
-  { q: "Is there a free trial?", a: "Every plan starts with a free 30-day trial. No credit card is required to begin." },
+  { q: "Is there a free trial?", a: "Register your school for a free 7-day trial with instant activation. No credit card or approval is required to begin." },
   { q: "How is our data secured?", a: "Data is encrypted in transit and at rest, protected by row-level security policies and isolated per school tenant." },
   { q: "Who can access what?", a: "Role-based access covers ten roles — Super Admin, School Owner, Principal, Vice Principal, Accountant, Registrar, Teacher, Librarian, Parent and Student." },
   { q: "Does EduSom work offline?", a: "Core screens keep working through short connectivity drops and synchronise automatically once the connection returns." },
@@ -879,7 +876,7 @@ export function FinalCTA() {
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-primary-foreground/85 sm:text-base">
               Join 100+ schools already running admissions, academics and finance on EduSom
-              Cloud. Free for 30 days.
+              Cloud. Free for 7 days.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button asChild size="lg" className="min-h-11 rounded-xl bg-card text-primary hover:bg-card/90">
@@ -887,15 +884,14 @@ export function FinalCTA() {
                   Login <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
-              <RequestAccessDialog>
                 <Button
+                  asChild
                   size="lg"
                   variant="outline"
                   className="min-h-11 rounded-xl border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
                 >
-                  <CalendarCheck className="mr-1 h-4 w-4" /> Book a Demo
+                  <Link to="/register"><CalendarCheck className="mr-1 h-4 w-4" /> Book a Demo</Link>
                 </Button>
-              </RequestAccessDialog>
             </div>
           </div>
         </Reveal>
