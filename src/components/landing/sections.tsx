@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { RequestAccessDialog } from "./request-access-dialog";
 import {
   ArrowRight,
   PlayCircle,
@@ -201,11 +200,9 @@ export function Hero() {
                   Login <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
-              <RequestAccessDialog>
-                <Button size="lg" variant="outline" className="min-h-11 rounded-xl">
-                  <CalendarCheck className="mr-1 h-4 w-4" /> Book a Demo
+                <Button asChild size="lg" variant="outline" className="min-h-11 rounded-xl">
+                  <Link to="/register"><CalendarCheck className="mr-1 h-4 w-4" /> Book a Demo</Link>
                 </Button>
-              </RequestAccessDialog>
               <Button asChild size="lg" variant="ghost" className="min-h-11 rounded-xl">
                 <a href="#dashboard-preview">
                   <PlayCircle className="mr-1 h-4 w-4" /> Watch Demo
@@ -879,7 +876,7 @@ export function FinalCTA() {
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-primary-foreground/85 sm:text-base">
               Join 100+ schools already running admissions, academics and finance on EduSom
-              Cloud. Free for 30 days.
+              Cloud. Free for 7 days.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button asChild size="lg" className="min-h-11 rounded-xl bg-card text-primary hover:bg-card/90">
@@ -887,15 +884,14 @@ export function FinalCTA() {
                   Login <ArrowRight className="ml-1 h-4 w-4" />
                 </Link>
               </Button>
-              <RequestAccessDialog>
                 <Button
+                  asChild
                   size="lg"
                   variant="outline"
                   className="min-h-11 rounded-xl border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
                 >
-                  <CalendarCheck className="mr-1 h-4 w-4" /> Book a Demo
+                  <Link to="/register"><CalendarCheck className="mr-1 h-4 w-4" /> Book a Demo</Link>
                 </Button>
-              </RequestAccessDialog>
             </div>
           </div>
         </Reveal>

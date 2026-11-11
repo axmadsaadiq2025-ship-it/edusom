@@ -5,6 +5,7 @@ import { BrandLogo } from "@/components/brand-logo";
 import type { Profile } from "@/hooks/use-auth";
 import { isSuperAdmin, type AppRole } from "@/lib/roles";
 import { clearIdentityCache, getCachedIdentity, setCachedIdentity } from "@/lib/identity-cache";
+import { getSchoolTrial } from "@/lib/trial.functions";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -58,11 +59,18 @@ export const Route = createFileRoute("/_authenticated")({
       throw redirect({ to: "/dashboard", replace: true });
     }
 
+    // Subscription status is never cached with identity: expiration must apply immediately.
+    const trial = !isSuper && profile?.school_id ? await getSchoolTrial() : null;
+    if (trial && !trial.allowed && location.pathname !== "/subscription" && location.pathname !== "/settings" && location.pathname !== "/settings/") {
+      throw redirect({ to: "/subscription", replace: true });
+    }
+
     return {
       user: data.user,
       profile: (profile as Profile | null) ?? null,
       roles,
       isSuper,
+      trial,
     };
   },
   component: AuthenticatedLayout,

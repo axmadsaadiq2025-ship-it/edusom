@@ -46,7 +46,7 @@ export function usePlatformMetrics(enabled: boolean) {
         count("school_registration_requests", (q) => q.eq("status", "pending")),
         count("schools"),
         count("schools", (q) => q.eq("is_active", true)),
-        count("schools", (q) => q.eq("subscription_status", "trial")),
+        count("schools", (q) => q.eq("subscription_status", "trialing").gt("trial_expires_at", new Date().toISOString())),
         count("students"),
         count("teachers"),
         count("profiles"),
