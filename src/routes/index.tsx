@@ -24,7 +24,7 @@ const OG_IMAGE =
   "https://edusom.lovable.app/__l5e/assets-v1/04154a7e-b5c2-451d-85f7-b14b2383942d/edusom-logo.png";
 const TITLE = "EduSom Cloud — School Management System for Africa";
 const DESCRIPTION =
-  "Manage admissions, students, teachers, attendance, exams, finance and school operations from one secure cloud platform. Free 30-day trial.";
+  "Manage admissions, students, teachers, attendance, exams, finance and school operations from one secure cloud platform. Free 7-day trial with instant activation.";
 
 export const Route = createFileRoute("/")({
   head: () => ({

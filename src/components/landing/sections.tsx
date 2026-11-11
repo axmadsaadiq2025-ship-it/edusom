@@ -212,7 +212,7 @@ export function Hero() {
           </Reveal>
           <Reveal delay={320}>
             <p className="mt-6 text-xs text-muted-foreground">
-              No credit card required · Free 30-day trial · Setup in under an hour
+              No credit card required · Free 7-day trial · Instant activation
             </p>
           </Reveal>
         </div>
@@ -816,7 +816,7 @@ const FAQS: { q: string; a: string }[] = [
   { q: "Is EduSom suitable for schools in Somalia?", a: "Yes. EduSom was designed for Somali and wider African schools, with local currency support, SMS notifications and resilience on low-bandwidth connections." },
   { q: "Can I manage multiple schools?", a: "Yes. Multi-school administration lets groups and ministries run many campuses from one platform with strict data isolation per school." },
   { q: "How long does setup take?", a: "Most schools are live within a day. You can import students and staff from spreadsheets and configure classes in under an hour." },
-  { q: "Is there a free trial?", a: "Every plan starts with a free 30-day trial. No credit card is required to begin." },
+  { q: "Is there a free trial?", a: "Register your school for a free 7-day trial with instant activation. No credit card or approval is required to begin." },
   { q: "How is our data secured?", a: "Data is encrypted in transit and at rest, protected by row-level security policies and isolated per school tenant." },
   { q: "Who can access what?", a: "Role-based access covers ten roles — Super Admin, School Owner, Principal, Vice Principal, Accountant, Registrar, Teacher, Librarian, Parent and Student." },
   { q: "Does EduSom work offline?", a: "Core screens keep working through short connectivity drops and synchronise automatically once the connection returns." },
