@@ -15,3 +15,4 @@
 - Trial access is enforced by restrictive database policies and checked separately from cached identity; subscription changes are platform-authorized and account/billing remain reachable.
 - Trial reminders use a single hourly SQL lifecycle job; exact expiration is evaluated from database timestamps on every protected operational request.
 - Auth signup triggers create profiles only and never grant platform roles from email or metadata; explicit protected role assignment prevents school registration from claiming platform privileges.
+- Private identity and relationship RPC helpers bind the target user to auth.uid() while retaining authenticated execution for RLS; approval logs must not include recipient email addresses or phone numbers.

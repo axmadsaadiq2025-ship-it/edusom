@@ -183,9 +183,7 @@ export const approveRegistrationRequest = createServerFn({ method: "POST" })
       .eq("id", req.id);
     if (updateError) throw new Error(updateError.message);
 
-    // Placeholders for outbound notifications.
-    console.log(`[placeholder email] Welcome to EduSom, ${req.admin_email} (school ${school.school_code})`);
-    console.log(`[placeholder sms] ${req.admin_phone}: Your EduSom school account is approved.`);
+    // Outbound notifications are not configured; never log recipients' personal details.
 
     return { ok: true as const, schoolId: school.id, schoolCode: school.school_code };
   });
