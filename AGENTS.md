@@ -14,3 +14,4 @@
 - Self-service school provisioning uses an admin-only registration reservation and an Auth insert trigger so account, school, role, and initial year commit atomically; passwords never enter application tables.
 - Trial access is enforced by restrictive database policies and checked separately from cached identity; subscription changes are platform-authorized and account/billing remain reachable.
 - Trial reminders use a single hourly SQL lifecycle job; exact expiration is evaluated from database timestamps on every protected operational request.
+- Auth signup triggers create profiles only and never grant platform roles from email or metadata; explicit protected role assignment prevents school registration from claiming platform privileges.
